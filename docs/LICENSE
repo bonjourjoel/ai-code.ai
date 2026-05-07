@@ -1,0 +1,141 @@
+AICODE PROPRIETARY & BUSINESS LICENSE
+Copyright (c) 2026 AI Sovereign Labs (AI Sovereign Labs SASU, Paris, France).
+All rights reserved.
+
+This License is entered into between the Licensee and AI Sovereign Labs
+SASU, a French simplified joint-stock company registered in Paris, France.
+No personal liability is assumed by any individual associated with
+AI Sovereign Labs SASU beyond the assets of the company.
+
+1. OWNERSHIP AND INTELLECTUAL PROPERTY
+
+The Software (AICode) and its source code, including but not limited to the
+"5D Indexing" algorithms, the orchestration logic, and specialized system
+instructions, are the exclusive property of AI Sovereign Labs SASU (Paris, France).
+The Software is protected by international copyright laws and French INPI
+eSoleau deposit n° DSO2026012803.
+
+2. LICENSE GRANTS
+
+Subject to the terms of this License, AI Sovereign Labs grants you a limited,
+non-exclusive, non-transferable license to use the Software under the following
+conditions:
+
+A. EVALUATION USE
+
+You may use the Software free of charge for a period of thirty (30) days
+from the date of first installation for evaluation purposes.
+
+B. FREE USE
+
+You are granted a free license if you meet one of the following
+criteria:
+
+B.1. Individual professional, or organization with fewer than ten (10)
+paid employees or registered volunteers.
+B.2. Student, teacher, or researcher at an accredited educational institution.
+B.3. Member of a registered non-profit organization.
+
+This license remains valid for qualifying users subject to continued
+compliance with the terms of this License and any future modifications
+published under Section 9.
+
+C. COMMERCIAL USE
+
+Organizations with ten (10) or more paid employees or registered volunteers
+must obtain a paid commercial license after the 30-day evaluation period.
+Current pricing is available at: https://ai-code.ai
+
+3. RESTRICTIONS
+
+You may not:
+
+3.1. Sell, rent, lease, sublicense, or redistribute the Software.
+3.2. Decompile, reverse engineer, disassemble, observe, or analyze the
+Software's behavior, architecture, or output for the purpose of creating
+a competing product, derivative work, or training an artificial
+intelligence model.
+3.3. Wrap the Software in a web service or provide it as a hosted service
+to third parties.
+3.4. Use the Software's outputs, generated specifications, patches, or analyses
+to train, fine-tune, or benchmark any artificial intelligence model without
+prior written consent from AI Sovereign Labs.
+3.5. Use the Software to design, develop, train, or improve any AI coding
+assistant, AI coding agent, or any software whose primary purpose is to
+assist developers in writing, editing, reviewing, or generating code using
+artificial intelligence, without prior written consent from AI Sovereign Labs.
+3.6. Use the Software through a third party, agent, or automated system
+in order to circumvent the licensing requirements of Section 2C.
+
+Any breach of the restrictions set forth in this Section 3 shall result
+in the immediate termination of this License and may give rise to legal
+action, including claims for damages and injunctive or other equitable relief.
+
+4. DATA SOVEREIGNTY AND LIABILITY
+
+The Software is provided "as is" without warranty of any kind.
+
+Sovereignty: AI Sovereign Labs does not operate any intermediate server.
+No codebase data is transmitted to AI Sovereign Labs infrastructure.
+The Software connects directly to the model provider designated by the user.
+
+Automated Execution: When using batch or automated features of the
+Software, you acknowledge that code may be generated and proposed without
+manual review of each individual change. You are solely responsible for
+reviewing, testing, and validating all outputs before applying them to
+any production environment.
+
+Intellectual Property: AICode does not provide intellectual property
+indemnification for AI-generated outputs. The Software operates exclusively
+with third-party AI model providers designated and configured by the user
+(BYOK). Any intellectual property claims arising from AI-generated outputs
+are governed solely by the terms of the user's agreement with their chosen
+model provider.
+
+Liability: THE SOFTWARE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+IN NO EVENT SHALL AI SOVEREIGN LABS OR ITS AUTHORS BE LIABLE FOR ANY CLAIM,
+DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR
+OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE
+USE OR OTHER DEALINGS IN THE SOFTWARE. IN ALL CASES, THE TOTAL LIABILITY
+OF AI SOVEREIGN LABS SHALL NOT EXCEED THE AMOUNTS PAID BY THE LICENSEE IN
+THE TWELVE (12) MONTHS PRECEDING THE CLAIM. FOR FREE OR EVALUATION USERS,
+THIS LIMIT IS ONE EURO (€1).
+
+5. DATA AND OUTPUTS OWNERSHIP
+
+All code, specifications, analyses, patches, and other outputs generated
+by the Software during its use remain the exclusive property of the user
+who initiated the generation. AI Sovereign Labs claims no rights over
+user-generated outputs. The user is solely responsible for verifying the
+accuracy and legal compliance of any output before use in production.
+
+6. TERMINATION
+
+This license terminates automatically if you fail to comply with its terms.
+For payment obligations under Section 2C, AI Sovereign Labs will provide
+written notice of non-compliance. If the breach is not remedied within
+thirty (30) days of such notice, the license terminates immediately.
+Upon termination, you must immediately cease all use of the Software
+and destroy all copies in your possession.
+
+7. GOVERNING LAW AND JURISDICTION
+
+This License shall be governed by and construed in accordance with the laws
+of France. Any dispute arising out of or in connection with this License
+shall be subject to the exclusive jurisdiction of the courts of Paris, France.
+
+8. ENTIRE AGREEMENT
+
+This License constitutes the entire agreement between the parties
+with respect to the Software and supersedes all prior or contemporaneous
+understandings, agreements, representations, or warranties, unless
+superseded by a separate written agreement signed by both parties.
+
+9. MODIFICATIONS TO THIS LICENSE
+
+These terms apply to all versions of the Software. AI Sovereign Labs
+reserves the right to modify this License at any time. Current terms
+are always available at https://ai-code.ai. Installation or continued
+use of the Software constitutes acceptance of the current terms.
