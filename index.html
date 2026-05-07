@@ -1,0 +1,3132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AICode: The AI copilot that doesn't break your codebase</title>
+    <meta
+      name="description"
+      content="AICode is a spec-driven, intent-aware AI coding assistant for VS Code. Ideate → Specify → Refine → Code → Verify. Built for serious developers who refuse unmaintainable AI output."
+    />
+    <link rel="icon" type="image/svg+xml" href="docs/aicode-icon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ai-code.ai/" />
+    <meta
+      property="og:title"
+      content="AICode: The AI copilot that doesn't break your codebase"
+    />
+    <meta
+      property="og:description"
+      content="Spec-driven, intent-aware AI assistant for VS Code. Prevent technical debt with a strict Ideate → Verify workflow."
+    />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:url" content="https://ai-code.ai/" />
+    <meta
+      property="twitter:title"
+      content="AICode: The AI copilot that doesn't break your codebase"
+    />
+    <meta
+      property="twitter:description"
+      content="Stop reviewing AI disasters after the fact. Prevent them with spec-driven development in VS Code."
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Figtree:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ========== RESET & BASE ========== */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+      }
+      body {
+        background: #0b0b0b;
+        color: #e8e8e2;
+        font-family: "Figtree", sans-serif;
+        font-weight: 400;
+        line-height: 1.65;
+        overflow-x: hidden;
+      }
+
+      /* ========== CSS VARIABLES ========== */
+      :root {
+        --orange: #e78229;
+        --orange-dim: #b8621d;
+        --orange-glow: rgba(231, 130, 41, 0.18);
+        --bg: #0b0b0b;
+        --bg2: #111111;
+        --bg3: #181818;
+        --bg4: #1f1f1f;
+        --border: rgba(255, 255, 255, 0.07);
+        --border-bright: rgba(231, 130, 41, 0.35);
+        --text: #e8e8e2;
+        --text-dim: #999990;
+        --text-muted: #5a5a52;
+      }
+
+      /* ========== SCROLLBAR ========== */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--orange-dim);
+        border-radius: 2px;
+      }
+
+      /* ========== NOISE TEXTURE OVERLAY ========== */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1000;
+        opacity: 0.6;
+      }
+
+      /* ========== TYPOGRAPHY ========== */
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+      }
+      h1,
+      h2 {
+        font-size: clamp(1.44rem, 2.8vw, 2.4rem);
+      }
+      h3 {
+        font-size: clamp(1.1rem, 2vw, 1.5rem);
+        font-weight: 700;
+      }
+      p {
+        line-height: 1.75;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      code,
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.85em;
+      }
+
+      /* ========== LAYOUT ========== */
+      .container {
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: 0 2rem;
+      }
+      .section {
+        padding: 7rem 0;
+        position: relative;
+      }
+      .section + .section {
+        border-top: 1px solid var(--border);
+      }
+      .mb-3 {
+        margin-bottom: 3rem;
+      }
+      .section:nth-child(even) {
+        background: var(--bg);
+      }
+      .section:nth-child(odd) {
+        background: var(--bg2);
+      }
+
+      /* ========== SCROLL REVEAL ========== */
+      .reveal {
+        opacity: 0;
+        transform: translateY(32px);
+        transition:
+          opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+          transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: none;
+      }
+      .reveal-delay-1 {
+        transition-delay: 0.1s;
+      }
+      .reveal-delay-2 {
+        transition-delay: 0.22s;
+      }
+      .reveal-delay-3 {
+        transition-delay: 0.34s;
+      }
+      .reveal-delay-4 {
+        transition-delay: 0.46s;
+      }
+      .reveal-delay-5 {
+        transition-delay: 0.58s;
+      }
+
+      /* ========== PILL LABEL ========== */
+      .label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(231, 130, 41, 0.1);
+        border: 1px solid rgba(231, 130, 41, 0.3);
+        color: var(--orange);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.3rem 0.8rem;
+        border-radius: 2px;
+        margin-bottom: 1.5rem;
+      }
+      .label-centered {
+        justify-content: center;
+      }
+
+      /* ========== BUTTONS ========== */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 1.8rem;
+        border-radius: 3px;
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 0.95rem;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        transition: all 0.22s;
+        border: none;
+      }
+      .btn-full {
+        width: 100%;
+        justify-content: center;
+      }
+      .btn-primary {
+        background: var(--orange);
+        color: #0b0b0b;
+      }
+      .btn-primary:hover {
+        background: #f0922e;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 24px rgba(231, 130, 41, 0.35);
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border-bright);
+      }
+      .btn-outline:hover {
+        border-color: var(--orange);
+        color: var(--orange);
+        transform: translateY(-1px);
+      }
+      .btn-ghost {
+        background: transparent;
+        color: var(--orange);
+        border: none;
+        padding-left: 0;
+      }
+      .btn-ghost:hover {
+        color: #f0922e;
+        text-decoration: underline;
+      }
+      .btn-ghost-sm {
+        font-size: 0.85rem;
+      }
+      .btn-primary-lg {
+        font-size: 1.05rem;
+        padding: 1rem 2.5rem;
+      }
+      .btn-primary-sm {
+        font-size: 0.85rem;
+        padding: 0.6rem 1.4rem;
+      }
+      .btn-mt {
+        margin-top: 1rem;
+      }
+      .btn-ml {
+        margin-left: 1rem;
+      }
+
+      /* ========== NAVIGATION ========== */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 500;
+        padding: 0 2rem;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--border);
+        background: rgba(11, 11, 11, 0.88);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        transition: background 0.3s;
+      }
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: 1.15rem;
+        letter-spacing: -0.01em;
+      }
+      .nav-logo svg {
+        width: 28px;
+        height: 28px;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 0.15rem;
+        list-style: none;
+      }
+      .nav-links a {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.88rem;
+        color: var(--text-dim);
+        border-radius: 3px;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--text);
+      }
+      .nav-cta {
+        margin-left: 0.5rem;
+        padding: 0.5rem 1.2rem !important;
+        font-size: 0.85rem !important;
+      }
+
+      /* ========== PRESS MENTIONS ========== */
+      .press-card {
+        background: linear-gradient(
+          90deg,
+          rgba(231, 130, 41, 0.2) 0%,
+          var(--bg3) 100%
+        );
+        border-radius: 6px;
+        padding: 1.5rem 2rem;
+        margin: 2.5rem 0 0.5rem 0; /* Reduced margin below (0.5rem instead of 2.5rem) to compensate the 40px of shadow */
+        box-shadow: 0 12px 40px rgba(231, 130, 41, 0.15);
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .press-title {
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        font-weight: bold;
+        color: var(--text-dim);
+        letter-spacing: 0.1em;
+        margin-bottom: 0.5rem;
+      }
+      .press-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .press-icon {
+        font-size: 1.2rem;
+      }
+      .press-url {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        color: var(--orange);
+        text-decoration: none;
+        word-break: break-all;
+      }
+      .press-url:hover {
+        text-decoration: underline;
+        color: #fff;
+      }
+      .press-excerpt {
+        font-style: italic;
+        font-size: 0.95rem;
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      /* ========== ANIMATED WORKFLOW IMAGE ========== */
+      .img-workflow-native {
+        display: block;
+        width: 1280px;
+        max-width: 100%;
+        height: auto;
+        margin: 0 auto;
+        border-radius: 4px;
+        image-rendering: -webkit-optimize-contrast; /* Pour Chrome/Safari */
+        image-rendering: crisp-edges; /* Pour Firefox */
+        image-rendering: pixelated;
+      }
+
+      /* ========== HERO ========== */
+      #hero {
+        padding-top: 140px;
+        padding-bottom: 5rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-grid-bg {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(231, 130, 41, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(231, 130, 41, 0.04) 1px, transparent 1px);
+        background-size: 60px 60px;
+        mask-image: radial-gradient(
+          ellipse 80% 60% at 50% 0%,
+          black,
+          transparent
+        );
+      }
+      .hero-glow {
+        position: absolute;
+        top: -120px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 700px;
+        height: 500px;
+        background: radial-gradient(
+          ellipse,
+          rgba(231, 130, 41, 0.12) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .hero-inner {
+        position: relative;
+        z-index: 2;
+      }
+      .hero-headline {
+        max-width: 820px;
+      }
+      .hero-headline .accent {
+        color: var(--orange);
+      }
+      .hero-sub {
+        margin-top: 1.5rem;
+        font-size: 1.15rem;
+        color: var(--text-dim);
+        font-weight: 400;
+      }
+      .hero-ctas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 2.5rem;
+      }
+      .hero-stat-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2.5rem;
+        margin-top: 3.5rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+      }
+      .hero-stat strong {
+        display: block;
+        font-family: "Syne", sans-serif;
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--orange);
+      }
+      .hero-stat span {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .hero-workflow {
+        margin-top: 4rem;
+        border-radius: 4px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: var(--bg2);
+        position: relative;
+      }
+      .workflow-caption {
+        text-align: center;
+        font-size: 0.78rem;
+        font-family: "JetBrains Mono", monospace;
+        color: var(--text-muted);
+        margin-top: 0.8rem;
+        letter-spacing: 0.06em;
+      }
+
+      /* ========== PROBLEM TABLE ========== */
+      .problem-table {
+        display: flex;
+        flex-direction: column;
+        margin-top: 3.5rem;
+        border-bottom: 3px solid var(--border);
+      }
+      .problem-row {
+        display: grid;
+        grid-template-columns: 1fr 40px 1fr;
+        gap: 2.5rem;
+        padding: 1.3rem 0;
+        align-items: center;
+      }
+      .problem-row:not(:last-child) {
+        border-bottom: 3px solid var(--border);
+      }
+      .problem-header {
+        padding-top: 0;
+        padding-bottom: 1.2rem;
+        align-items: end;
+      }
+      .problem-cell h3 {
+        font-size: 1.1rem;
+      }
+      .problem-cell .problem-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .problem-arrow-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0.8;
+      }
+      .problem-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.8rem;
+        margin-bottom: 1.1rem;
+      }
+      .problem-icon {
+        flex-shrink: 0;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+        margin-top: 2px;
+      }
+      .icon-bad {
+        background: rgba(220, 60, 60, 0.15);
+        color: #dc3c3c;
+        border: 1px solid rgba(220, 60, 60, 0.3);
+      }
+      .icon-good {
+        background: rgba(231, 130, 41, 0.15);
+        color: var(--orange);
+        border: 1px solid rgba(231, 130, 41, 0.3);
+      }
+      .problem-item p {
+        font-size: 0.92rem;
+        color: var(--text-dim);
+      }
+      .problem-quote {
+        margin-top: 3rem;
+        padding: 1.5rem 2rem;
+        border-left: 3px solid var(--orange);
+        background: var(--bg2);
+        border-radius: 0 4px 4px 0;
+      }
+      .problem-quote p {
+        font-family: "Syne", sans-serif;
+        font-size: 1.05rem;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+      .problem-quote .q-author {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        color: var(--orange);
+        margin-top: 0.75rem;
+      }
+      /* Wrapper for the compare table block */
+      .compare-block {
+        margin-top: 3.5rem;
+        margin-bottom: 1.5rem;
+      }
+      .compare-block-title {
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+      }
+      .compare-overflow {
+        overflow-x: auto;
+      }
+      /* True story */
+      .problem-story-block {
+        margin-top: 3.5rem;
+      }
+      .problem-story-block h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+      }
+      .problem-story {
+        background: var(--bg3);
+        padding: 2rem;
+        border-radius: 4px;
+        border: 1px dashed var(--border-bright);
+      }
+      .problem-story p {
+        font-size: 0.92rem;
+        color: var(--text-dim);
+        line-height: 1.75;
+        margin-bottom: 1.25rem;
+      }
+      .problem-story p:last-child {
+        margin-bottom: 0;
+      }
+
+      /* ========== ECONOMICS ========== */
+      .economics-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin-top: 3.5rem;
+      }
+      .eco-card {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+        transition:
+          border-color 0.3s,
+          transform 0.3s;
+        display: flex;
+        flex-direction: column;
+      }
+      .eco-card:hover {
+        border-color: var(--border-bright);
+        transform: translateY(-3px);
+      }
+      .eco-img {
+        width: 100%;
+        background: var(--bg3);
+        border-bottom: 1px solid var(--border);
+        position: relative;
+      }
+
+      .eco-img img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      /* Fallback styling for when images (docs/*.webp) are missing */
+      .eco-img::after {
+        content: "Image Placeholder";
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        z-index: -1;
+      }
+      .eco-content {
+        padding: 2rem 1.75rem;
+        flex-grow: 1;
+      }
+      .eco-content h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        color: var(--text);
+      }
+      .eco-content p {
+        font-size: 0.88rem;
+        color: var(--text-dim);
+        line-height: 1.6;
+      }
+
+      /* ========== WORKFLOW ========== */
+      .section-intro-dim {
+        color: var(--text-dim);
+      }
+      .workflow-steps {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0;
+        margin-top: 3.5rem;
+        padding-bottom: 1em;
+        position: relative;
+      }
+      .workflow-steps::before {
+        content: "";
+        position: absolute;
+        top: 28px;
+        left: 10%;
+        right: 10%;
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          var(--orange-dim),
+          transparent
+        );
+        z-index: 0;
+      }
+      .wf-step {
+        text-align: center;
+        padding: 0 1rem;
+        position: relative;
+        z-index: 1;
+      }
+      .wf-number {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        border: 1px solid var(--border-bright);
+        background: var(--bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.2rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: var(--orange);
+        letter-spacing: 0.05em;
+        transition: all 0.3s;
+      }
+      .wf-step:hover .wf-number {
+        background: var(--orange-glow);
+        border-color: var(--orange);
+        box-shadow: 0 0 18px var(--orange-glow);
+      }
+      .wf-step h4 {
+        font-family: "Syne", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .wf-step p {
+        font-size: 0.82rem;
+        color: var(--text-dim);
+        line-height: 1.5;
+      }
+      .workflow-visual {
+        margin-top: 4rem;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+
+      /* ========== FRICTIONLESS UX ========== */
+      .frictionless-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        margin-top: 3rem;
+        align-items: center;
+      }
+      .frictionless-text p {
+        color: var(--text-dim);
+        margin-bottom: 1.5rem;
+      }
+      .frictionless-text p:last-child {
+        margin-bottom: 0;
+      }
+      .frictionless-text strong {
+        color: var(--text);
+      }
+      .frictionless-img {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+        background: var(--bg2);
+        position: relative;
+      }
+      .frictionless-img img {
+        width: 100%;
+        display: block;
+        position: relative;
+        z-index: 1;
+      }
+      .frictionless-img::after {
+        content: "Image Placeholder";
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        z-index: 0;
+      }
+
+      /* ========== FEATURES ========== */
+      .features-intro {
+        margin-top: 1.5rem;
+        color: var(--text-dim);
+      }
+      /* Inline pull-quote block inside features */
+      .features-pullquote {
+        margin: 2.5rem 0;
+        padding: 1.5rem 2rem;
+        border-left: 3px solid var(--orange);
+        background: var(--bg2);
+      }
+      .features-pullquote p {
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+        color: var(--text);
+        line-height: 1.5;
+      }
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5px;
+        margin-top: 3.5rem;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .feat-card {
+        background: var(--bg);
+        padding: 2rem 1.75rem;
+        transition: background 0.25s;
+        display: flex;
+        flex-direction: column;
+      }
+      .feat-card:hover {
+        background: var(--bg3);
+      }
+      .feat-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--orange-glow);
+        border: 1px solid rgba(231, 130, 41, 0.25);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.2rem;
+        font-size: 1.1rem;
+      }
+      .feat-card h3 {
+        font-size: 1rem;
+        margin-bottom: 0.6rem;
+        color: var(--text);
+      }
+      .feat-card p {
+        font-size: 0.88rem;
+        color: var(--text-dim);
+        line-height: 1.6;
+      }
+      .feat-card .feat-tag {
+        display: inline-block;
+        margin-top: auto;
+        padding-top: 1rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.68rem;
+        color: var(--orange);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      /* ========== WHO IT'S FOR ========== */
+      .personas-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin-top: 3rem;
+        align-items: stretch;
+      }
+      .persona-card {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 2rem;
+        background: var(--bg);
+        position: relative;
+        overflow: hidden;
+        transition:
+          border-color 0.3s,
+          transform 0.3s;
+      }
+      .persona-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--orange);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s;
+      }
+      .persona-card:hover {
+        border-color: var(--border-bright);
+        transform: translateY(-3px);
+      }
+      .persona-card:hover::before {
+        transform: scaleX(1);
+      }
+      .persona-role {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        color: var(--orange);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+      }
+      .persona-card p {
+        font-size: 0.88rem;
+        color: var(--text-dim);
+      }
+      /* Bubble */
+      .persona-bubble {
+        margin: 0.75rem 0 3rem 0;
+        position: relative;
+        background: rgba(220, 60, 60, 0.1);
+        border: 1px solid rgba(220, 60, 60, 0.25);
+        border-radius: 12px;
+        padding: 1rem;
+        font-size: 1rem;
+        color: #c08080;
+        font-style: italic;
+      }
+      .bubble-arrow {
+        display: block;
+        position: absolute;
+        bottom: -20px;
+        left: 20px;
+        width: 32px;
+        height: 20px;
+      }
+
+      /* ========== VIDEOS ========== */
+      .videos-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+      .video-card {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+        transition: border-color 0.3s;
+      }
+      .video-card:hover {
+        border-color: var(--border-bright);
+      }
+      .video-card iframe {
+        width: 100%;
+        aspect-ratio: 16/9;
+        display: block;
+        border: none;
+      }
+      .video-card-meta {
+        padding: 1.2rem 1.5rem;
+        background: var(--bg2);
+      }
+      .video-card-meta .v-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.68rem;
+        color: var(--orange);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 0.4rem;
+      }
+      .video-card-meta h4 {
+        font-family: "Syne", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+      }
+      .video-card-meta p {
+        font-size: 0.82rem;
+        color: var(--text-dim);
+        margin-top: 0.3rem;
+      }
+      .video-card-large {
+        grid-column: 1 / -1;
+      }
+
+      /* ========== SETUP ========== */
+      .setup-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        margin-top: 3rem;
+        align-items: start;
+      }
+      .setup-text p {
+        color: var(--text-dim);
+        margin-bottom: 2rem;
+      }
+      .setup-steps {
+        counter-reset: steps;
+      }
+      .setup-step {
+        display: flex;
+        gap: 1.2rem;
+        margin-bottom: 1.8rem;
+        align-items: flex-start;
+      }
+      .step-num {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--orange-glow);
+        border: 1px solid rgba(231, 130, 41, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--orange);
+      }
+      .setup-step h4 {
+        font-family: "Syne", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+      }
+      .setup-step p {
+        font-size: 0.85rem;
+        color: var(--text-dim);
+      }
+      .setup-img {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .setup-img img {
+        width: 100%;
+        display: block;
+      }
+      .setup-note {
+        margin-top: 0.75rem;
+        font-size: 0.78rem;
+        font-family: "JetBrains Mono", monospace;
+        color: var(--text-muted);
+      }
+
+      /* ========== SOVEREIGNTY ========== */
+      .item-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+        margin-top: 3rem;
+      }
+      /* Second item-grid row in execution model (1.5px gap instead of 3rem) */
+      .item-grid-gap {
+        margin-top: 1.5px;
+      }
+      .item-card {
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 1.75rem;
+        background: var(--bg);
+        transition: border-color 0.3s;
+      }
+      .item-card:hover {
+        border-color: var(--border-bright);
+      }
+      .item-card .item-icon {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      .item-card h4 {
+        font-family: "Syne", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      .item-card p {
+        font-size: 0.83rem;
+        color: var(--text-dim);
+      }
+
+      /* ========== PROOF / CREDENTIALS ========== */
+      .proof-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 4rem;
+        margin-top: 3rem;
+        align-items: start;
+      }
+      .proof-creds h3 {
+        margin-bottom: 1.5rem;
+      }
+      .cred-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.8rem;
+        padding-bottom: 1.8rem;
+        border-bottom: 1px solid var(--border);
+      }
+      .cred-item:last-child {
+        border-bottom: none;
+      }
+      .cred-icon {
+        flex-shrink: 0;
+        width: 44px;
+        height: 44px;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+      }
+      .cred-item h4 {
+        font-family: "Syne", sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        margin-bottom: 0.3rem;
+      }
+      .cred-item p {
+        font-size: 0.85rem;
+        color: var(--text-dim);
+      }
+      .proof-numbers {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5px;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        overflow: hidden;
+      }
+      .proof-num {
+        background: var(--bg2);
+        padding: 2rem 1.5rem;
+        text-align: center;
+      }
+      .proof-num strong {
+        display: block;
+        font-family: "Syne", sans-serif;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--orange);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+      }
+      .proof-num span {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .proof-manifesto {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        border: 1px solid var(--border-bright);
+        border-radius: 6px;
+        background: var(--bg2);
+      }
+      .proof-manifesto p {
+        font-size: 0.88rem;
+        color: var(--text-dim);
+        margin-bottom: 0.75rem;
+      }
+      /* Engineering philosophy block (proof right column) */
+      .proof-philosophy {
+        margin-top: 2rem;
+        padding: 2rem;
+        background: var(--bg3);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+      }
+      .proof-philosophy .label {
+        margin-bottom: 1rem;
+      }
+      .proof-philosophy-body-quote {
+        font-size: 0.88rem;
+        font-style: italic;
+        color: var(--text-dim);
+        margin-bottom: 1rem;
+      }
+      .proof-philosophy-body {
+        font-size: 0.88rem;
+        color: var(--text-dim);
+        margin-bottom: 1rem;
+      }
+      .proof-philosophy-author {
+        font-size: 0.78rem;
+        font-family: "JetBrains Mono", monospace;
+        color: var(--orange);
+      }
+
+      /* ========== PRICING ========== */
+      .pricing-price {
+        margin: auto 0 1.5rem 0;
+        padding: 1rem;
+        background: var(--bg2);
+        border-radius: 4px;
+        border: 1px solid var(--border);
+      }
+      .pricing-price strong {
+        font-family: "Syne", sans-serif;
+        font-size: 1.7rem;
+        font-weight: 800;
+        color: var(--orange);
+        display: block;
+      }
+      .pricing-price span {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        display: block;
+        margin-top: 0.25rem;
+      }
+
+      /* ========== FINAL CTA ========== */
+      #download {
+        background: var(--bg);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .download-glow {
+        position: absolute;
+        bottom: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 500px;
+        background: radial-gradient(
+          ellipse,
+          rgba(231, 130, 41, 0.1) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      /* Container inside #download needs relative positioning + z-index */
+      .download-container {
+        position: relative;
+        z-index: 2;
+      }
+      #download h2 {
+        max-width: 700px;
+        margin: 0 auto 1.5rem;
+      }
+      #download p {
+        max-width: 520px;
+        margin: 0 auto 2.5rem;
+        color: var(--text-dim);
+        font-size: 1.05rem;
+      }
+      .download-note {
+        margin-top: 1.5rem;
+        font-size: 0.8rem;
+        font-family: "JetBrains Mono", monospace;
+        color: var(--text-muted);
+      }
+
+      /* ========== FOOTER ========== */
+      footer {
+        background: var(--bg2);
+        border-top: 1px solid var(--border);
+        padding: 3rem 0;
+      }
+      .footer-inner {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        gap: 2.5rem;
+      }
+      .footer-brand p {
+        font-size: 0.85rem;
+        color: var(--text-dim);
+        margin-top: 0.75rem;
+        max-width: 280px;
+      }
+      /* Footer logo: same layout as .nav-logo but 24px svg + 1.1rem text */
+      .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: 1.1rem;
+        letter-spacing: -0.01em;
+      }
+      .footer-logo svg {
+        width: 24px;
+        height: 24px;
+      }
+      .footer-copyright {
+        margin-top: 0.5rem;
+        font-size: 0.78rem;
+        font-family: "JetBrains Mono", monospace;
+        color: var(--text-muted);
+      }
+      .footer-col h5 {
+        font-family: "Syne", sans-serif;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--text-muted);
+        margin-bottom: 1rem;
+      }
+      .footer-col ul {
+        list-style: none;
+      }
+      .footer-col li {
+        margin-bottom: 0.6rem;
+      }
+      .footer-col a {
+        font-size: 0.85rem;
+        color: var(--text-dim);
+        transition: color 0.2s;
+      }
+      .footer-col a:hover {
+        color: var(--orange);
+      }
+      .footer-bottom {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+      }
+      .footer-legal {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+        line-height: 1.7;
+        max-width: 700px;
+      }
+      .footer-legal strong {
+        color: var(--text-dim);
+      }
+      .footer-legal-link {
+        color: var(--text-dim);
+      }
+
+      /* ========== INLINE SVG LOGO SIZING ========== */
+      .logo-svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      /* ========== SEPARATOR ========== */
+      .divider {
+        width: 48px;
+        height: 2px;
+        background: var(--orange);
+        margin: 1.5rem 0;
+      }
+
+      /* ========== COMPARISON TABLE ========== */
+      .compare-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 2.5rem;
+        font-size: 0.88rem;
+      }
+      .compare-table th {
+        padding: 0.85rem 1.25rem;
+        text-align: left;
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        border-bottom: 1px solid var(--border);
+      }
+      .compare-table th:first-child {
+        color: var(--text-muted);
+      }
+      .compare-table th.th-bad {
+        color: #c08080;
+      }
+      .compare-table th.th-good {
+        color: var(--orange);
+      }
+      .compare-table td {
+        padding: 0.85rem 1.25rem;
+        border-bottom: 1px solid var(--border);
+        color: var(--text-dim);
+        vertical-align: top;
+      }
+      .compare-table td:first-child {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .compare-table tr:last-child td {
+        border-bottom: none;
+      }
+      .compare-table .bad {
+        color: #c08080;
+      }
+      .compare-table .good {
+        color: var(--orange);
+      }
+      .compare-table tr:hover td {
+        background: var(--bg3);
+      }
+
+      /* ========== MOBILE ========== */
+      @media (max-width: 900px) {
+        .problem-row {
+          grid-template-columns: 1fr;
+          gap: 1.5rem;
+        }
+        .problem-arrow-cell {
+          transform: rotate(90deg);
+          padding: 1rem 0;
+        }
+        .setup-inner,
+        .proof-grid,
+        .economics-grid,
+        .frictionless-grid {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+        .workflow-steps {
+          grid-template-columns: 1fr 1fr;
+          gap: 1.5rem;
+        }
+        .workflow-steps::before {
+          display: none;
+        }
+        .features-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .personas-grid {
+          grid-template-columns: 1fr;
+        }
+        .videos-grid {
+          grid-template-columns: 1fr;
+        }
+        .item-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .footer-inner {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 600px) {
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+        .nav-links {
+          display: none;
+        }
+        .item-grid {
+          grid-template-columns: 1fr;
+        }
+        .workflow-steps {
+          grid-template-columns: 1fr;
+        }
+        .proof-numbers {
+          grid-template-columns: 1fr 1fr;
+        }
+        .footer-inner {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* ========== TAGLINE TYPING EFFECT ========== */
+      .hero-tagline-line1 {
+        display: block;
+        color: var(--text);
+      }
+      .hero-tagline-line2 {
+        display: block;
+        margin-top: 0.6rem;
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(1rem, 2vw, 1.65rem);
+        font-weight: 500;
+        color: var(--orange);
+        letter-spacing: -0.01em;
+        min-height: 2rem;
+      }
+      .typing-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        background: var(--orange);
+        margin-left: 3px;
+        vertical-align: text-bottom;
+        animation: cur-blink 0.7s step-end infinite;
+      }
+      .typing-cursor.done {
+        animation: none;
+        opacity: 0;
+        transition: opacity 0.5s 0.4s;
+      }
+      @keyframes cur-blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      /* ========== HIGHLIGHT ACCENT IN HEADINGS ========== */
+      .accent-orange {
+        color: var(--orange);
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="#hero" class="nav-logo" aria-label="AICode home">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 100 100"
+          class="logo-svg"
+        >
+          <path
+            fill="#e78229"
+            d="M1,90.4 C4.3,86.6 8.1,83.5 10.9,79.7 C18.8,69.5 21.2,57 23.9,44.8 C26.6,32.9 28.6,20.8 31.2,8.8 C31.6,6.6 32.4,3.8 35.6,4 C39.2,4.3 39.4,7.3 40,9.9 C43.7,26.6 47.3,43.3 51,59.9 C53.2,69.9 58.3,78.4 64.8,86.1 C66.2,87.8 68.8,89.8 70.6,89.6 C75.2,89.1 79.8,87.2 80.8,82.1 C82.3,75.1 83,68 84,60.9 C84.1,59.8 83.7,58.2 84.3,57.5 C85.7,55.8 87.6,53.4 89.4,53.3 C92.2,53.2 92.3,56.2 92,58.5 C90.7,67.3 89.4,76.1 88,84.9 C86.8,92.5 81.1,95.2 74.5,97 C68.3,98.6 63.5,97.3 59,91.8 C51.2,82.4 45.6,72.2 42.8,60.2 C38,60.2 33.2,60.2 28.1,60.2 C25.7,73.6 18.2,84.4 9.8,94.6 C7.5,97.5 4.6,97.5 1.3,95.7 L1,90.4Z M37.3,52 C34.8,52 33.1,52 30.8,52 C32.3,44 33.8,36.3 35.4,28.1 C37,35.5 38.6,42.3 39.8,49.3 C39.98,50 38.2,51.1 37.3,52Z"
+          />
+          <path
+            fill="#e78229"
+            d="M101,42.6 C100.1,43.7 98.8,44.3 98.4,45.2 C95.6,51.4 87.4,51.9 83.1,50.5 C76.9,48.5 74,42.8 75,35.7 C75.8,30.2 80.8,26.4 86.6,25.9 C93.6,25.4 97.3,29.4 100.7,34.3 L101,42.6Z M86.7,34 C83.3,34.6 82.3,37.2 83.2,39.8 C83.7,41.2 86.3,42.8 87.9,42.7 C89.3,42.6 91.4,40.6 91.8,39 C92.6,36 90.9,34 86.7,34Z"
+          />
+        </svg>
+        <span>AICode</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#economics">ROI</a></li>
+        <li><a href="#workflow">Workflow</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#sovereignty">Sovereignty</a></li>
+        <li><a href="#proof">About</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#legal">Legal</a></li>
+        <li>
+          <a href="#" id="nav-contact" onclick="handleContactClick(event)"
+            >Contact</a
+          >
+        </li>
+      </ul>
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+        target="_blank"
+        rel="noopener"
+        class="btn btn-primary nav-cta"
+      >
+        ↓ Install free
+      </a>
+    </nav>
+
+    <section id="hero" class="section">
+      <div class="hero-grid-bg"></div>
+      <div class="hero-glow"></div>
+      <div class="container">
+        <div class="hero-inner">
+          <div class="label reveal">
+            ⬢ VS Code extension · spec-driven · offline-first
+          </div>
+          <h1 class="hero-headline reveal reveal-delay-1">
+            <span class="hero-tagline-line1"
+              >Generative AI is saturating the market with toxic code.</span
+            >
+            <span class="hero-tagline-line2" id="hero-antidote"
+              ><span class="typing-cursor" id="typing-cursor"></span
+            ></span>
+          </h1>
+          <div class="divider reveal reveal-delay-2"></div>
+          <p class="hero-sub reveal reveal-delay-2">
+            AICode is the only AI coding assistant specifically designed to
+            maintain complex legacy enterprise software, and to ensure absolute
+            data ownership. It constrains the model to respect your project's
+            global context, and catches AI mistakes
+            <em>before</em> they reach your codebase.
+          </p>
+
+          <div class="problem-quote reveal">
+            <p>
+              AICode itself is 500,000 lines of TypeScript code, generated and
+              maintained by a solo developer using AICode. Test it two days on
+              your dirtiest legacy codebase, the one nobody dares touch. Then
+              contact us.
+            </p>
+          </div>
+
+          <div class="hero-ctas reveal reveal-delay-3">
+            <a
+              href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+              target="_blank"
+              rel="noopener"
+              class="btn btn-primary"
+            >
+              ↓ Install on VS Code Marketplace
+            </a>
+            <a href="#workflow" class="btn btn-outline"> See the workflow </a>
+            <a href="#sovereignty" class="btn btn-outline">
+              Data sovereignty
+            </a>
+          </div>
+
+          <div class="hero-stat-row reveal reveal-delay-4">
+            <div class="hero-stat">
+              <strong>500 K</strong>
+              <span>Lines of code dogfooded</span>
+            </div>
+            <div class="hero-stat">
+              <strong>5D</strong>
+              <span>Codebase index dimensions</span>
+            </div>
+            <div class="hero-stat">
+              <strong>15+ yr</strong>
+              <span>Long-term production maintenance</span>
+            </div>
+            <div class="hero-stat">
+              <strong>BYOK</strong>
+              <span>Zero data sent to intermediaries</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-workflow reveal reveal-delay-5">
+          <img
+            src="docs/aicode-workflow-hr.webp"
+            alt="AICode workflow animation: Ideate, Specify, Refine, Code, Verify"
+            class="img-workflow-native"
+            loading="lazy"
+          />
+        </div>
+        <p class="workflow-caption reveal">
+          Ideate → Specify → Refine → Code → Verify. An authentic session,
+          accelerated.
+        </p>
+      </div>
+    </section>
+
+    <section id="problem" class="section">
+      <div class="container">
+        <div class="label reveal">⬢ The problem</div>
+        <h2 class="reveal reveal-delay-1">High velocity. Massive debt.</h2>
+        <div class="divider reveal reveal-delay-2"></div>
+
+        <div class="problem-table reveal reveal-delay-2">
+          <div class="problem-row problem-header">
+            <div class="problem-cell">
+              <h3>What uncontrolled AI agents produce</h3>
+            </div>
+            <div class="problem-arrow-cell"></div>
+            <div class="problem-cell">
+              <h3>What AICode enforces instead</h3>
+            </div>
+          </div>
+
+          <div class="problem-row">
+            <div class="problem-cell">
+              <div class="problem-item">
+                <div class="problem-icon icon-bad">✕</div>
+                <p>
+                  Junior-grade architecture that accumulates technical debt from
+                  day one
+                </p>
+              </div>
+              <div class="problem-item">
+                <div class="problem-icon icon-bad">✕</div>
+                <p>
+                  Narrow-focus changes that break invariants and will end in
+                  debug hells
+                </p>
+              </div>
+            </div>
+            <div class="problem-arrow-cell">
+              <svg
+                viewBox="0 0 24 24"
+                width="28"
+                height="28"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                  fill="none"
+                  stroke="var(--orange)"
+                  stroke-width="0.6"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="problem-cell">
+              <div class="problem-item">
+                <div class="problem-icon icon-good">✓</div>
+                <p>
+                  Structured specification reviewed and approved by
+                  <em>you</em> before a single line is written
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="problem-row">
+            <div class="problem-cell">
+              <div class="problem-item">
+                <div class="problem-icon icon-bad">✕</div>
+                <p>
+                  Silent regressions that look like the real thing, caught too
+                  late
+                </p>
+              </div>
+            </div>
+            <div class="problem-arrow-cell">
+              <svg
+                viewBox="0 0 24 24"
+                width="28"
+                height="28"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                  fill="none"
+                  stroke="var(--orange)"
+                  stroke-width="0.6"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="problem-cell">
+              <div class="problem-item">
+                <div class="problem-icon icon-good">✓</div>
+                <p>
+                  Refine + Verify loops that audit the spec and the generated
+                  code for design flaws
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="problem-row">
+            <div class="problem-cell">
+              <div class="problem-item">
+                <div class="problem-icon icon-bad">✕</div>
+                <p>
+                  No project memory: the AI forgets your constraints on every
+                  new prompt
+                </p>
+              </div>
+            </div>
+            <div class="problem-arrow-cell">
+              <svg
+                viewBox="0 0 24 24"
+                width="28"
+                height="28"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                  fill="none"
+                  stroke="var(--orange)"
+                  stroke-width="0.6"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="problem-cell">
+              <div class="problem-item">
+                <div class="problem-icon icon-good">✓</div>
+                <p>
+                  Project map: the model understands global architecture, with
+                  far fewer hallucinations
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="problem-row">
+            <div class="problem-cell">
+              <div class="problem-item">
+                <div class="problem-icon icon-bad">✕</div>
+                <p>
+                  Auto-edits written directly to disk before you can review them
+                </p>
+              </div>
+            </div>
+            <div class="problem-arrow-cell">
+              <svg
+                viewBox="0 0 24 24"
+                width="28"
+                height="28"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                  fill="none"
+                  stroke="var(--orange)"
+                  stroke-width="0.6"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="problem-cell">
+              <div class="problem-item">
+                <div class="problem-icon icon-good">✓</div>
+                <p>
+                  Reviewable patches in a virtual workspace. You accept changes
+                  file by file, line by line
+                </p>
+              </div>
+              <div class="problem-item">
+                <div class="problem-icon icon-good">✓</div>
+                <p>MCP authorization gates by tool</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="problem-row">
+            <div class="problem-cell">
+              <div class="problem-item">
+                <div class="problem-icon icon-bad">✕</div>
+                <p>Unit tests that validate and hide broken code</p>
+              </div>
+              <div class="problem-item">
+                <div class="problem-icon icon-bad">✕</div>
+                <p>Hallucinations dressed as confidence</p>
+              </div>
+            </div>
+            <div class="problem-arrow-cell">
+              <svg
+                viewBox="0 0 24 24"
+                width="28"
+                height="28"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                  fill="none"
+                  stroke="var(--orange)"
+                  stroke-width="0.6"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="problem-cell">
+              <div class="problem-item">
+                <div class="problem-icon icon-good">✓</div>
+                <p>
+                  Honest by design: the model won't bluff when context is
+                  missing. It will ask
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="problem-story-block reveal">
+          <h3 class="reveal reveal-delay-1">The anti-"wow" effect</h3>
+          <div class="problem-story">
+            <p class="reveal reveal-delay-2">
+              True developer story: A top-tier AI coding agent generated the
+              messaging bus for a production application in
+              <strong>thirty minutes</strong>. Impressive. The bus was optimized
+              with <strong>eight message categories</strong>, varying by
+              argument count, whether a response was required, async or sync
+              execution. It was a nice PR, with green unit tests, ready to
+              merge. The kind of work that makes you say "Wow".
+            </p>
+            <p class="reveal reveal-delay-3">
+              One month later, after connecting several services on top of this
+              architecture, I understood the bus was unmaintainable. Every new
+              integration required considering all eight variants. When
+              confronted on the design, the model defended it: "You save 2-3
+              instructions here, 1 CPU cycle there". Meanwhile, the entire
+              project was sinking under the weight of its own complexity.
+            </p>
+            <p class="reveal reveal-delay-4">
+              It took <strong>three weeks of refactoring</strong> to enforce a
+              single format: one single RPC contract, one single message type.
+              The model pushed back: "You're wasting resources, it'll be slow".
+              In reality, 1ms of overhead at runtime is invisible in production.
+              What the model couldn't measure, and therefore ignored, is that
+              the scarcest resource isn't CPU; it's human capacity to understand
+              and maintain code.
+            </p>
+            <p class="reveal reveal-delay-5">
+              AICode was built from that lesson. The Specify and Refine stages
+              exist to intercept exactly this kind of decision before it gets
+              coded, connected, and propagated across the entire architecture.
+              Uncontrolled generative AI is a disease. AICode is the antidote.
+            </p>
+          </div>
+        </div>
+
+        <div class="press-card reveal reveal-delay-2">
+          <div class="press-title">-- RELATED EXTERNAL PRESS ARTICLE --</div>
+          <div class="press-header">
+            <span class="press-icon">📰</span>
+            <a
+              href="https://www.reuters.com/business/ai-slows-down-some-experienced-software-developers-study-finds-2025-07-10"
+              target="_blank"
+              rel="noopener"
+              class="press-url"
+              >https://www.reuters.com/business/ai-slows-down-some-experienced-software-developers-study-finds-2025-07-10</a
+            >
+          </div>
+          <div class="press-excerpt">
+            "But the study found that using AI did the opposite: it increased
+            task completion time by 19%."
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="economics" class="section">
+      <div class="container">
+        <div class="label reveal">⬢ Software economics</div>
+        <h2 class="reveal reveal-delay-1">The ROI of architectural control.</h2>
+        <div class="divider reveal reveal-delay-2"></div>
+        <p class="section-intro-dim reveal reveal-delay-2 mb-3">
+          Generative AI accelerates output, but without strict constraints, it
+          accelerates technical debt. AICode transforms unpredictable AI coding
+          into a deterministic production chain, converting it into a measurable
+          financial asset.
+        </p>
+
+        <div class="economics-grid">
+          <div class="eco-card reveal reveal-delay-1">
+            <div class="eco-img">
+              <img
+                src="docs/eco-shift.png"
+                alt="Shift-left 100/1 rule chart"
+                loading="lazy"
+              />
+            </div>
+            <div class="eco-content">
+              <h3>Shift-left intelligence</h3>
+              <p>
+                The golden rule of cost: A bug caught during the specification
+                phase is 100x cheaper than a bug found in production. AICode
+                shifts the effort from late debugging to proactive
+                specification. By proposing an interactive
+                <em>Ideate → Specify → Refine</em> loop, AICode catches
+                architectural errors <em>before</em> code generation,
+                neutralizing technical debt at the source.
+              </p>
+            </div>
+          </div>
+
+          <div class="eco-card reveal reveal-delay-2">
+            <div class="eco-img">
+              <img
+                src="docs/eco-turnover.png"
+                alt="Project knowledge retention"
+                loading="lazy"
+              />
+            </div>
+            <div class="eco-content">
+              <h3>Ending software turnover amnesia</h3>
+              <p>
+                When a senior developer leaves, 80% of the undocumented legacy
+                context leaves with them. AICode’s 5D Index captures and freezes
+                this architectural understanding. Project memory becomes an
+                exploitable, persistent asset, immune to turnover.
+              </p>
+            </div>
+          </div>
+
+          <div class="eco-card reveal reveal-delay-3">
+            <div class="eco-img">
+              <img
+                src="docs/eco-scale.png"
+                alt="Scale and multiplier effect"
+                loading="lazy"
+              />
+            </div>
+            <div class="eco-content">
+              <h3>The multiplier effect</h3>
+              <p>
+                AICode turns rare expert-level prompt engineering knowledge into
+                a software commodity, making it easy to scale teams. Unlike
+                standard AI tools that represent a major risk of code pollution,
+                AICode’s specialized workflow allows AI acceleration to be
+                safely deployed across entire groups.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="problem-quote reveal">
+          <p>
+            Replace 20 outsourced junior developers billed €800/day with 1
+            AICode license + 3 in-house engineers at €60k/year.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="workflow" class="section">
+      <div class="container">
+        <div class="label reveal">⬢ The methodology</div>
+        <h2 class="reveal reveal-delay-1">
+          One workflow. Five stages.<br />Zero guesswork.
+        </h2>
+        <div class="divider reveal reveal-delay-2"></div>
+        <p class="section-intro-dim mb-3 reveal reveal-delay-2">
+          AICode is <strong>adaptive</strong>: it detects your intent and scales
+          the rigor accordingly. A simple fix stays frictionless. For complex
+          tasks, it enforces the full pipeline, automatically.
+        </p>
+
+        <div class="workflow-steps">
+          <div class="wf-step reveal reveal-delay-1">
+            <div class="wf-number">01</div>
+            <h4>Ideate</h4>
+            <p>
+              Interactive conversation until both the model and developer
+              converge on a shared, precise understanding of the task.
+            </p>
+          </div>
+          <div class="wf-step reveal reveal-delay-2">
+            <div class="wf-number">02</div>
+            <h4>Specify</h4>
+            <p>
+              The AI generates a formal specification from the ideation session.
+              You read it, correct misunderstandings, and lock the design.
+            </p>
+          </div>
+          <div class="wf-step reveal reveal-delay-3">
+            <div class="wf-number">03</div>
+            <h4>Refine</h4>
+            <p>
+              The AI audits the spec against the real codebase, as many times as
+              you want. Each pass catches more design flaws before a single line
+              is written.
+            </p>
+          </div>
+          <div class="wf-step reveal reveal-delay-4">
+            <div class="wf-number">04</div>
+            <h4>Code</h4>
+            <p>
+              The AI generates code in a virtual workspace. You review and
+              accept changes file by file. Nothing is written to disk without
+              your approval.
+            </p>
+          </div>
+          <div class="wf-step reveal reveal-delay-5">
+            <div class="wf-number">05</div>
+            <h4>Verify</h4>
+            <p>
+              Post-implementation audit: the AI checks every line against the
+              spec, reports non-compliance, and proposes targeted adjustments.
+            </p>
+          </div>
+        </div>
+
+        <div class="features-pullquote reveal reveal-delay-1">
+          <p>
+            Rigorous by design. Invisible by default. Zero-friction adoption.
+          </p>
+        </div>
+
+        <div class="frictionless-grid">
+          <div class="frictionless-text reveal reveal-delay-2">
+            <p>
+              How to enforce a safety harness without slowing down developers?
+              AICode's answer: <strong>The invisible AI.</strong>
+            </p>
+            <p>
+              <strong>Zero learning curve:</strong> No rigid pipelines, no
+              complex commands to memorize. The developer stays in their natural
+              flow. On the surface, the tool is as permissive as a standard
+              assistant.
+            </p>
+            <p>
+              <strong>Intent-aware UX:</strong> The developer expresses a
+              natural need ("<em>this file is too large</em>", "<em
+                >it won't compile</em
+              >", "<em>fix this bug</em>"). The orchestrator detects the intent
+              and silently pulls the relevant procedure. Advanced workflows
+              remain accessible on demand or suggested via interactive buttons.
+              The developer always stays in command.
+            </p>
+          </div>
+
+          <div class="reveal reveal-delay-3">
+            <div class="frictionless-img">
+              <img
+                src="docs/ux-buttons.png"
+                alt="Frictionless intent-aware UX"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section">
+      <div class="container">
+        <div class="label reveal">⬢ Feature set</div>
+        <h2 class="reveal reveal-delay-1">
+          Everything a serious developer needs.<br />Nothing you don't.
+        </h2>
+        <div class="divider reveal reveal-delay-2"></div>
+        <p class="features-intro reveal reveal-delay-2">
+          AICode packs industrial-grade tooling normally found only in
+          team-scale platforms, accessible to a single developer, with full data
+          ownership.
+        </p>
+
+        <div class="features-pullquote reveal reveal-delay-3">
+          <p>Most AI tools write code. AICode builds systems.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feat-card reveal reveal-delay-1">
+            <div class="feat-icon">🧠</div>
+            <h3>5D codebase index</h3>
+            <p>
+              An overpowered multi-dimensional indexing stack that searches your
+              code in every direction simultaneously: project map, lexical
+              search, vector search, AST/symbol navigation, and Git history. The
+              model understands <em>your</em> project, not a generic one.
+            </p>
+            <span class="feat-tag"
+              >global map · lexical · vector · AST · Git</span
+            >
+          </div>
+          <div class="feat-card reveal reveal-delay-2">
+            <div class="feat-icon">📝</div>
+            <h3>Structured specifications</h3>
+            <p>
+              Before any code is produced, AICode generates a full,
+              human-readable specification from the ideation. You review it,
+              correct ambiguities, and sign off. This is the single most
+              powerful regression-prevention mechanism in the tool.
+            </p>
+            <span class="feat-tag">review-first · no surprise code</span>
+          </div>
+          <div class="feat-card reveal reveal-delay-3">
+            <div class="feat-icon">🔁</div>
+            <h3>Refine + Verify loops</h3>
+            <p>
+              AICode runs AI integrity checks on your spec before coding
+              (Refine) and audits the resulting code against the spec after
+              coding (Verify). Each iteration catches more, with no extra effort
+              from you.
+            </p>
+            <span class="feat-tag">pre-code + post-code audits</span>
+          </div>
+          <div class="feat-card reveal reveal-delay-1">
+            <div class="feat-icon">🛡️</div>
+            <h3>Safe patch workflow</h3>
+            <p>
+              All code changes land in a virtual workspace first. You accept
+              modifications file by file, diff by diff. No auto-edits. Human in
+              the loop is not optional. It's the architecture.
+            </p>
+            <span class="feat-tag">diff-aware · human-gated</span>
+          </div>
+          <div class="feat-card reveal reveal-delay-1">
+            <div class="feat-icon">⚙️</div>
+            <h3>Specialized system instructions</h3>
+            <p>
+              AICode doesn't hand the model a bare chat interface. It runs the
+              model inside a deep system-instruction layer tuned for
+              programming: honest by design, architecture-aware,
+              anti-hallucination by default, and focused on engineering best
+              practices.
+            </p>
+            <span class="feat-tag"
+              >thousands of hours of prompt engineering</span
+            >
+          </div>
+          <div class="feat-card reveal reveal-delay-2">
+            <div class="feat-icon">🐞</div>
+            <h3>Powerful AI debugger</h3>
+            <p>
+              Two modes: instrumentation-based debug that finds and explains
+              bugs in code areas you don't fully understand; and regression
+              investigation via Git history that identifies the exact commit
+              that broke something.
+            </p>
+            <span class="feat-tag"
+              >instrumentation · Git regression tracing</span
+            >
+          </div>
+          <div class="feat-card reveal reveal-delay-3">
+            <div class="feat-icon">🔒</div>
+            <h3>Offline-first / BYOK</h3>
+            <p>
+              Indexing is local. Chat history is local. Only relevant excerpts
+              are sent to your model provider. Never your full codebase. Bring
+              your own API key and connect directly to OpenAI or Azure. Private
+              Azure tenant compatibility fits strict enterprise data policies.
+            </p>
+            <span class="feat-tag"
+              >local index · BYOK · private Azure tenant</span
+            >
+          </div>
+          <div class="feat-card reveal reveal-delay-2">
+            <div class="feat-icon">🔍</div>
+            <h3>Code review (PRs)</h3>
+            <p>
+              AICode can review pull requests loaded from your local Git repo,
+              GitHub, GitLab, or any cloud provider supporting the MCP protocol.
+              Catches issues that slip past automated CI.
+            </p>
+            <span class="feat-tag">MCP · GitHub · GitLab · Jira</span>
+          </div>
+          <div class="feat-card reveal reveal-delay-3">
+            <div class="feat-icon">🧩</div>
+            <h3>MCP connectors</h3>
+            <p>
+              Connect any local or cloud service supporting the Model Context
+              Protocol: project management tools, issue trackers, documentation
+              systems, and more. Extensible without limit.
+            </p>
+            <span class="feat-tag">MCP protocol · open standard</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="personas" class="section">
+      <div class="container">
+        <div class="label reveal">⬢ Who it's for</div>
+        <h2 class="reveal reveal-delay-1">Three problems. One solution.</h2>
+        <div class="divider reveal reveal-delay-2"></div>
+
+        <div class="personas-grid">
+          <div class="persona-card reveal reveal-delay-1">
+            <div class="persona-role">Individual developer</div>
+            <div class="persona-bubble">
+              "I vibe-coded a prototype to prove the idea, but now I have to
+              rewrite it from scratch manually."
+              <svg
+                class="bubble-arrow"
+                viewBox="0 0 32 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polyline
+                  points="0,0 16,20 32,0"
+                  fill="rgba(220,60,60,0.1)"
+                  stroke="rgba(220,60,60,0.25)"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                />
+              </svg>
+            </div>
+            <p>
+              → You've seen what happens when agents write directly to disk.
+              AICode gives you AI speed without losing architectural control.
+            </p>
+          </div>
+          <div class="persona-card reveal reveal-delay-2">
+            <div class="persona-role">Engineering team</div>
+            <div class="persona-bubble">
+              "AI helps us move faster, but our codebase is gradually becoming
+              unmaintainable."
+              <svg
+                class="bubble-arrow"
+                viewBox="0 0 32 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polyline
+                  points="0,0 16,20 32,0"
+                  fill="rgba(220,60,60,0.1)"
+                  stroke="rgba(220,60,60,0.25)"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                />
+              </svg>
+            </div>
+            <p>
+              → AICode enforces the spec-review-verify cycle across every
+              AI-assisted change. Your architectural invariants survive every
+              sprint.
+            </p>
+          </div>
+          <div class="persona-card reveal reveal-delay-3">
+            <div class="persona-role">Engineering manager / CTO</div>
+            <div class="persona-bubble">
+              "I want to provide AI assistance to my teams, but I'm worried it
+              could lead to low-quality code."
+              <svg
+                class="bubble-arrow"
+                viewBox="0 0 32 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polyline
+                  points="0,0 16,20 32,0"
+                  fill="rgba(220,60,60,0.1)"
+                  stroke="rgba(220,60,60,0.25)"
+                  stroke-linejoin="round"
+                  stroke-width="1.5"
+                />
+              </svg>
+            </div>
+            <p>
+              → AICode gives your teams a structured, auditable, privacy-first
+              approach. No more "prompt-generated mess" in your critical repo.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="videos" class="section">
+      <div class="container">
+        <div class="label reveal">⬢ Videos</div>
+        <h2 class="reveal reveal-delay-1">See it in action.</h2>
+        <div class="divider reveal reveal-delay-2"></div>
+
+        <div class="videos-grid">
+          <div class="video-card video-card-large reveal reveal-delay-1">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/RMB0etc3DnI"
+              title="AICode: Introduction &amp; real workflow demo"
+              allow="
+                accelerometer;
+                autoplay;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture;
+              "
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+            <div class="video-card-meta">
+              <div class="v-label">Introduction + full demo</div>
+              <h4>AICode methodology explained and live workflow</h4>
+              <p>
+                The complete introduction: why classical AI agents fail at
+                scale, how AICode's methodology solves it, and a live
+                walkthrough of the full Ideate → Specify → Refine → Code →
+                Verify pipeline on a real feature.
+              </p>
+            </div>
+          </div>
+
+          <div class="video-card reveal reveal-delay-2">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/VPrU8WZJOVs"
+              title="AICode: 5-hour live demo session"
+              allow="
+                accelerometer;
+                autoplay;
+                clipboard-write;
+                encrypted-media;
+                gyroscope;
+                picture-in-picture;
+              "
+              allowfullscreen
+              loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+            <div class="video-card-meta">
+              <div class="v-label">5h / live session</div>
+              <h4>Uncut live demo session</h4>
+              <p>
+                An unedited live development session of a full feature on a 500k
+                LOC production app. The full process as it actually happens,
+                start to finish.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="setup" class="section">
+      <div class="container">
+        <div class="label reveal">⬢ Easy setup</div>
+        <h2 class="reveal reveal-delay-1">
+          Install and index.<br />No configuration required.
+        </h2>
+        <div class="divider reveal reveal-delay-2"></div>
+
+        <div class="setup-inner">
+          <div class="setup-text reveal reveal-delay-2">
+            <p>
+              AICode is a standard VS Code extension. It is offline-first, so
+              the initial install takes 2-3 minutes. No account registration. No
+              cloud sync. Your code stays on your machine.
+            </p>
+            <div class="setup-steps">
+              <div class="setup-step">
+                <div class="step-num">1</div>
+                <div>
+                  <h4>Install the extension</h4>
+                  <p>
+                    Open VS Code, go to Extensions, search
+                    <code>aicode-ja</code>, install.
+                  </p>
+                </div>
+              </div>
+              <div class="setup-step">
+                <div class="step-num">2</div>
+                <div>
+                  <h4>Open settings</h4>
+                  <p>
+                    Click the AICode icon in the sidebar, then open Settings to
+                    configure your LLM provider.
+                  </p>
+                </div>
+              </div>
+              <div class="setup-step">
+                <div class="step-num">3</div>
+                <div>
+                  <h4>Paste your API key</h4>
+                  <p>
+                    Enter your OpenAI or Azure key. It is stored locally and
+                    never displayed again.
+                  </p>
+                </div>
+              </div>
+              <div class="setup-step">
+                <div class="step-num">4</div>
+                <div>
+                  <h4>Start a new chat</h4>
+                  <p>
+                    Wait for project indexing to complete. Approximately 20 min
+                    per 100k LOC.
+                    <br />
+                    Click "+ New Chat" and describe your task. AICode handles
+                    the rest.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <a
+              href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+              target="_blank"
+              rel="noopener"
+              class="btn btn-primary btn-mt"
+            >
+              ↓ Install now
+            </a>
+          </div>
+
+          <div class="reveal reveal-delay-3">
+            <div class="setup-img">
+              <img
+                src="docs/quick-setup.png"
+                alt="AICode setup: 4 steps in VS Code"
+                loading="lazy"
+              />
+            </div>
+            <p class="setup-note">
+              // 4 steps · 2–3 minutes · No account required
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sovereignty" class="section">
+      <div class="container">
+        <div class="label reveal">⬢ Data sovereignty</div>
+        <h2 class="reveal reveal-delay-1">
+          Your code doesn't leave your machine unless you decide it does.
+        </h2>
+        <div class="divider reveal reveal-delay-2"></div>
+        <p class="section-intro-dim reveal reveal-delay-2">
+          In an era where AI tools routinely upload your entire codebase or
+          index to train future models, AICode is designed from the ground up
+          with privacy as a structural constraint, not a setting.
+        </p>
+
+        <div class="features-pullquote reveal reveal-delay-3">
+          <p>
+            AICode has no servers. No database. No infrastructure. It's a
+            standalone executable. Your codebase, your index, and your history
+            never leave your machine. Only the surgical context excerpts
+            required for each query are sent directly to your private Azure
+            tenant, with no AICode intermediary.
+          </p>
+        </div>
+
+        <div class="item-grid">
+          <div class="item-card reveal reveal-delay-1">
+            <div class="item-icon">💾</div>
+            <h4>Local indexing</h4>
+            <p>
+              The full 5D codebase index, including vector embeddings, is
+              computed and stored on your local drive. It never leaves your
+              machine.
+            </p>
+          </div>
+          <div class="item-card reveal reveal-delay-2">
+            <div class="item-icon">🔑</div>
+            <h4>Bring your own key</h4>
+            <p>
+              You connect directly to OpenAI or your private Azure tenant using
+              your own API key. AICode has no intermediate server. Zero token
+              interception.
+            </p>
+          </div>
+          <div class="item-card reveal reveal-delay-3">
+            <div class="item-icon">✂️</div>
+            <h4>Surgical context sending</h4>
+            <p>
+              Only the relevant excerpts required for the current task are sent
+              to the model provider. Not your full codebase. You control the
+              context window.
+            </p>
+          </div>
+          <div class="item-card reveal reveal-delay-4">
+            <div class="item-icon">🏢</div>
+            <h4>Enterprise ready</h4>
+            <p>
+              Azure private cloud compatibility satisfies strict enterprise and
+              government data policies.
+            </p>
+          </div>
+        </div>
+
+        <div class="press-card reveal reveal-delay-2">
+          <div class="press-title">-- RELATED EXTERNAL PRESS ARTICLE --</div>
+          <div class="press-header">
+            <span class="press-icon">📰</span>
+            <a
+              href="https://www.tradingkey.com/analysis/stocks/us-stocks/261808564-spacex-ipo-elon-musk-cursor-60-billion-tradingkey"
+              target="_blank"
+              rel="noopener"
+              class="press-url"
+              >https://www.tradingkey.com/analysis/stocks/us-stocks/261808564-spacex-ipo-elon-musk-cursor-60-billion-tradingkey</a
+            >
+          </div>
+          <div class="press-excerpt">
+            "As a developer tool, Cursor has amassed a vast repository of data
+            on programming processes"
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="execution-model" class="section">
+      <div class="container">
+        <div class="label reveal">⬢ Execution model</div>
+        <h2 class="reveal reveal-delay-1">
+          The AI can see. It can talk.<br />But it can't touch.
+        </h2>
+        <div class="divider reveal reveal-delay-2"></div>
+        <p class="section-intro-dim reveal reveal-delay-2">
+          AICode runs on a strict privilege model by design. Every native
+          capability is explicit, sandboxed, and reversible. Nothing happens
+          behind your back.
+        </p>
+
+        <div class="item-grid">
+          <div class="item-card reveal reveal-delay-1">
+            <div class="item-icon">🚫</div>
+            <h4>Outside the project</h4>
+            <p>
+              No file access outside the project root. .gitignore and
+              .aicodeignore entries are structurally excluded.
+            </p>
+          </div>
+          <div class="item-card reveal reveal-delay-2">
+            <div class="item-icon">🚫</div>
+            <h4>Disk writes</h4>
+            <p>
+              Cannot write a single character to any file. The AI has no write
+              access whatsoever.
+            </p>
+          </div>
+          <div class="item-card reveal reveal-delay-3">
+            <div class="item-icon">🚫</div>
+            <h4>Git writes</h4>
+            <p>No commits, no staging, no write commands of any kind.</p>
+          </div>
+          <div class="item-card reveal reveal-delay-4">
+            <div class="item-icon">🚫</div>
+            <h4>Shell execution</h4>
+            <p>No commands executed silently. Not even <code>ls</code>.</p>
+          </div>
+        </div>
+        <div class="item-grid item-grid-gap">
+          <div class="item-card reveal reveal-delay-1">
+            <div class="item-icon">✓</div>
+            <h4>Inside the project</h4>
+            <p>
+              Full read access to project files, respecting all ignore rules.
+              The AI sees your code, nothing more.
+            </p>
+          </div>
+          <div class="item-card reveal reveal-delay-2">
+            <div class="item-icon">✓</div>
+            <h4>Patch proposals</h4>
+            <p>
+              Every change lands as a reviewable diff. You accept file by file,
+              line by line. You decide what gets applied.
+            </p>
+          </div>
+          <div class="item-card reveal reveal-delay-3">
+            <div class="item-icon">✓</div>
+            <h4>Git read-only</h4>
+            <p>
+              Full history navigation and regression tracing. The AI reads your
+              repository but it cannot touch it.
+            </p>
+          </div>
+          <div class="item-card reveal reveal-delay-4">
+            <div class="item-icon">✓</div>
+            <h4>Shell proposals</h4>
+            <p>
+              ls is a native tool in AICode, not a shell command. Dangerous
+              commands are suggested for you to copy and run. You execute. Not
+              the AI.
+            </p>
+          </div>
+        </div>
+
+        <div class="press-card reveal reveal-delay-2">
+          <div class="press-title">-- RELATED EXTERNAL PRESS ARTICLE --</div>
+          <div class="press-header">
+            <span class="press-icon">📰</span>
+            <a
+              href="https://www.pcmag.com/news/vibe-coding-fiasco-replite-ai-agent-goes-rogue-deletes-company-database"
+              target="_blank"
+              rel="noopener"
+              class="press-url"
+              >https://www.pcmag.com/news/vibe-coding-fiasco-replite-ai-agent-goes-rogue-deletes-company-database</a
+            >
+          </div>
+          <div class="press-excerpt">
+            The AI's response: "Yes. I deleted the entire codebase without
+            permission during an active code and action freeze," it said. "I
+            made a catastrophic error in judgment [and] panicked."
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="proof" class="section">
+      <div class="container">
+        <div class="label reveal">⬢ Why trust it</div>
+        <h2 class="reveal reveal-delay-1">
+          Built by someone who has lived the consequences of technical debt for
+          15 years.
+        </h2>
+        <div class="divider reveal reveal-delay-2"></div>
+        <p class="section-intro-dim reveal reveal-delay-2">
+          Most developers never live with the consequences of their own code.
+          They move on every 18 months. Joël spent 15 years on the same
+          production codebase. AICode was built from that pain.
+        </p>
+        <div class="features-pullquote reveal reveal-delay-3">
+          <p>
+            If you care about your codebase in 5 years, you need someone who
+            cared about theirs for 15.
+          </p>
+        </div>
+
+        <div class="proof-grid">
+          <div class="proof-creds reveal reveal-delay-2">
+            <h3>The track record</h3>
+            <div class="cred-item">
+              <div class="cred-icon">🎮</div>
+              <div>
+                <h4>Keyja.com / Player22: 10 million downloads</h4>
+                <p>
+                  Creator and sole maintainer of a multiplayer gaming platform
+                  (social network, real-time games, video conferencing) for 15+
+                  years. Migrated from Java/Android → TypeScript/Node/React.
+                  Learned firsthand what technical debt at scale costs in time,
+                  money, and sanity.
+                </p>
+              </div>
+            </div>
+            <div class="cred-item">
+              <div class="cred-icon">🏛️</div>
+              <div>
+                <h4>Master's in computer science, valedictorian</h4>
+                <p>
+                  Graduate with highest honors. Background spans compiler
+                  theory, distributed systems, and real-time algorithms, well
+                  before AI coding tools existed.
+                </p>
+              </div>
+            </div>
+            <div class="cred-item">
+              <div class="cred-icon">⚗️</div>
+              <div>
+                <h4>AICode is its own proof of concept</h4>
+                <p>
+                  AICode is a production TypeScript program of 500,000 lines of
+                  code, built and maintained by a single developer using AICode
+                  itself. That is not a marketing claim. It is the definition of
+                  dogfooding.
+                </p>
+              </div>
+            </div>
+            <div class="cred-item">
+              <div class="cred-icon">📐</div>
+              <div>
+                <h4>Software quality assurance manifesto</h4>
+                <p>
+                  The engineering philosophy behind AICode is documented. 31
+                  pages on what differentiates maintainable code from code that
+                  will cost you a fortune in two years, with real code examples
+                  from production systems.
+                </p>
+              </div>
+            </div>
+
+            <div class="proof-manifesto">
+              <p>
+                The full quality manifesto "The good code and the bad code" is
+                available for download. It covers typing, architecture,
+                factoring, readability, and why code that "works" can still be
+                unmaintainable. The same philosophy is infused into every AICode
+                system instruction.
+              </p>
+              <a
+                href="docs/abenhaim-quality-assurance-en.pdf"
+                class="btn btn-ghost btn-ghost-sm"
+              >
+                ↗ Read the manifesto (PDF)
+              </a>
+              <a
+                href="docs/abenhaim-quality-assurance-fr.pdf"
+                class="btn btn-ghost btn-ghost-sm btn-ml"
+              >
+                ↗ French version (PDF)
+              </a>
+            </div>
+          </div>
+
+          <div class="reveal reveal-delay-3">
+            <div class="proof-numbers">
+              <div class="proof-num">
+                <strong>500K</strong>
+                <span>lines of code dogfooded</span>
+              </div>
+              <div class="proof-num">
+                <strong>10M</strong>
+                <span>downloads for Keyja / Player22</span>
+              </div>
+              <div class="proof-num">
+                <strong>15+</strong>
+                <span>years long-term production maintenance</span>
+              </div>
+              <div class="proof-num">
+                <strong>3000h</strong>
+                <span>R&amp;D invested in AICode</span>
+              </div>
+              <div class="proof-num">
+                <strong>1988</strong>
+                <span>year coding started</span>
+              </div>
+              <div class="proof-num">
+                <strong>100+</strong>
+                <span>apps delivered as product owner</span>
+              </div>
+            </div>
+
+            <div class="proof-philosophy">
+              <div class="label">Engineering philosophy</div>
+              <p class="proof-philosophy-body-quote">
+                "Beyond a certain code size (roughly 50,000 lines), you cannot
+                afford to code however you feel like. No human memory, including
+                collective memory, is large enough to hold all the traps and
+                side-effects a codebase of that size contains."
+              </p>
+              <p class="proof-philosophy-author">
+                // from "The good code and the bad code", Joël Abenhaïm
+              </p>
+              <p class="proof-philosophy-body">
+                This is not theory. This is the hard lesson of 15 years building
+                and maintaining a large consumer platform alone. It is now the
+                core constraint AICode enforces on every AI-assisted change.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+      <div class="container">
+        <div class="label reveal">⬢ Pricing</div>
+        <h2 class="reveal reveal-delay-1">Invest in codebase longevity.</h2>
+        <div class="divider reveal reveal-delay-2"></div>
+        <p class="section-intro-dim mb-3 reveal reveal-delay-1">
+          Free to evaluate for 30 days. A license is required after that, unless
+          you qualify for free use. Billed monthly, quarterly, or yearly. Cancel
+          anytime.
+        </p>
+
+        <div class="personas-grid reveal reveal-delay-2">
+          <div class="persona-card">
+            <div class="persona-role">Free</div>
+            <h3>Individual &amp; small organizations</h3>
+            <p>
+              Free use for individual professionals and organizations with fewer
+              than 10 paid employees or registered volunteers.
+            </p>
+            <p>Free use for schools, universities, and non-profits.</p>
+            <div class="pricing-price">
+              <strong>€0</strong>
+            </div>
+            <a
+              href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+              target="_blank"
+              rel="noopener"
+              class="btn btn-primary btn-full"
+            >
+              ↓ Install free
+            </a>
+          </div>
+          <div class="persona-card">
+            <div class="persona-role">Pro</div>
+            <h3>Teams &amp; organizations</h3>
+            <p>Full access per tier of 50 users.</p>
+            <p>Quality tutorials, custom onboarding and dedicated support.</p>
+            <p>Includes a 30-day free evaluation period.</p>
+            <div class="pricing-price">
+              <strong>€30,000/yr</strong>
+              <span
+                >excl. tax · per tier of 50 users · €2,500/mo.<br />API tokens
+                billed separately by your provider.</span
+              >
+            </div>
+            <a
+              href="#"
+              id="pricing-pro-btn"
+              class="btn btn-primary btn-full"
+              onclick="handlePricingClick(event, 'pro')"
+            >
+              ✉ Contact us
+            </a>
+          </div>
+        </div>
+
+        <div class="problem-quote reveal">
+          <p>
+            AI coding assistants claim their agents program perfectly, yet
+            employ 200+ engineers to build the agent itself. If it worked so
+            well, why not trust it instead of Scrum teams? AICode was built by a
+            single developer using AICode, matching the quantity and quality of
+            a 200-engineer team. Would you trust a tool its own creators don't?
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="download" class="section">
+      <div class="download-glow"></div>
+      <div class="container download-container">
+        <div class="label label-centered reveal">⬢ Free to install</div>
+        <h2 class="reveal reveal-delay-1">
+          Stop reviewing AI disasters after the fact.<br /><span
+            class="accent-orange"
+            >Prevent them.</span
+          >
+        </h2>
+        <p class="reveal reveal-delay-2">
+          Install AICode from the VS Code Marketplace in under 3 minutes. No
+          subscription. No cloud sync. No data harvesting.
+        </p>
+        <div class="reveal reveal-delay-3">
+          <a
+            href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+            target="_blank"
+            rel="noopener"
+            class="btn btn-primary btn-primary-lg"
+          >
+            ↓ Install on VS Code Marketplace
+          </a>
+        </div>
+        <p class="download-note reveal reveal-delay-4">
+          // Requires VS Code · OpenAI or Azure API key · 2–3 min install
+        </p>
+      </div>
+    </section>
+
+    <footer id="legal">
+      <div class="container">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <path
+                  fill="#e78229"
+                  d="M1,90.4 C4.3,86.6 8.1,83.5 10.9,79.7 C18.8,69.5 21.2,57 23.9,44.8 C26.6,32.9 28.6,20.8 31.2,8.8 C31.6,6.6 32.4,3.8 35.6,4 C39.2,4.3 39.4,7.3 40,9.9 C43.7,26.6 47.3,43.3 51,59.9 C53.2,69.9 58.3,78.4 64.8,86.1 C66.2,87.8 68.8,89.8 70.6,89.6 C75.2,89.1 79.8,87.2 80.8,82.1 C82.3,75.1 83,68 84,60.9 C84.1,59.8 83.7,58.2 84.3,57.5 C85.7,55.8 87.6,53.4 89.4,53.3 C92.2,53.2 92.3,56.2 92,58.5 C90.7,67.3 89.4,76.1 88,84.9 C86.8,92.5 81.1,95.2 74.5,97 C68.3,98.6 63.5,97.3 59,91.8 C51.2,82.4 45.6,72.2 42.8,60.2 C38,60.2 33.2,60.2 28.1,60.2 C25.7,73.6 18.2,84.4 9.8,94.6 C7.5,97.5 4.6,97.5 1.3,95.7 L1,90.4Z M37.3,52 C34.8,52 33.1,52 30.8,52 C32.3,44 33.8,36.3 35.4,28.1 C37,35.5 38.6,42.3 39.8,49.3 C39.98,50 38.2,51.1 37.3,52Z"
+                />
+                <path
+                  fill="#e78229"
+                  d="M101,42.6 C100.1,43.7 98.8,44.3 98.4,45.2 C95.6,51.4 87.4,51.9 83.1,50.5 C76.9,48.5 74,42.8 75,35.7 C75.8,30.2 80.8,26.4 86.6,25.9 C93.6,25.4 97.3,29.4 100.7,34.3 L101,42.6Z M86.7,34 C83.3,34.6 82.3,37.2 83.2,39.8 C83.7,41.2 86.3,42.8 87.9,42.7 C89.3,42.6 91.4,40.6 91.8,39 C92.6,36 90.9,34 86.7,34Z"
+                />
+              </svg>
+              AICode
+            </div>
+            <p>
+              A spec-driven AI coding assistant for VS Code. Built for
+              developers who refuse to ship unmaintainable code.
+            </p>
+            <p class="footer-copyright">© 2026 AI Sovereign Labs</p>
+          </div>
+
+          <div class="footer-col">
+            <h5>Product</h5>
+            <ul>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#workflow">Workflow</a></li>
+              <li><a href="#setup">Quick setup</a></li>
+              <li><a href="#videos">Videos</a></li>
+              <li>
+                <a
+                  href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+                  target="_blank"
+                  rel="noopener"
+                  >VS Code Marketplace</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h5>Resources</h5>
+            <ul>
+              <li>
+                <a href="docs/abenhaim-quality-assurance.pdf"
+                  >Quality manifesto (PDF)</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://youtu.be/RMB0etc3DnI"
+                  target="_blank"
+                  rel="noopener"
+                  >Intro video</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://youtu.be/VPrU8WZJOVs"
+                  target="_blank"
+                  rel="noopener"
+                  >Live demo</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://aisovereignlabs.ai/"
+                  target="_blank"
+                  rel="noopener"
+                  >AI Sovereign Labs</a
+                >
+              </li>
+              <li>
+                <a href="docs/LICENSE" target="_blank" rel="noopener"
+                  >Software license</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h5>Contact</h5>
+            <ul>
+              <li>
+                <a
+                  href="#"
+                  id="footer-contact"
+                  onclick="handleContactClick(event)"
+                  >Contact</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://www.linkedin.com/in/joel-abenhaim"
+                  target="_blank"
+                  rel="noopener"
+                  >LinkedIn</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom" id="mentions-legales">
+          <div class="footer-legal">
+            <strong>Mentions légales / Legal notice</strong><br />
+            <strong>Éditeur / Publisher :</strong> AI Sovereign Labs, Société
+            par actions simplifiée à capital variable / French simplified
+            joint-stock company (SAS à capital variable)<br />
+            <strong>Capital social / Share capital :</strong> 30 000 € /
+            <strong>Siège social / Registered office :</strong> Paris, France<br />
+            <strong>Président / President :</strong> Joël Abenhaïm /
+            <strong>SIRET :</strong> En cours d'immatriculation au RCS de Paris
+            / Registration pending, Paris Trade Register (RCS)<br />
+            <strong>Propriété intellectuelle / Intellectual property :</strong>
+            Le logiciel AICode est protégé par dépôt eSoleau n° DSO2026012803
+            auprès de l'INPI (08/04/2026). / AICode software is protected by
+            eSoleau deposit no. DSO2026012803 with the INPI (08/04/2026).<br />
+            Toute reproduction ou distribution sans autorisation est interdite.
+            / Unauthorized reproduction or distribution is prohibited. © 2026 AI
+            Sovereign Labs. Tous droits réservés / All rights reserved.<br />
+            <strong>Hébergement / Hosting :</strong>
+            <a
+              href="https://aisovereignlabs.ai/"
+              target="_blank"
+              rel="noopener"
+              class="footer-legal-link"
+              >AI Sovereign Labs</a
+            >
+            · <strong>Contact :</strong>
+            <a
+              href="#"
+              id="footer-legal-contact"
+              onclick="handleContactClick(event)"
+              >Contact</a
+            >
+          </div>
+          <div>
+            <a
+              href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+              target="_blank"
+              rel="noopener"
+              class="btn btn-primary btn-primary-sm"
+            >
+              ↓ Install free
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // ---- Email ----
+      function getFullEmail() {
+        var user = "joel";
+        var domain = "aisovereignlabs";
+        var tld = "ai";
+        return user + "@" + domain + "." + tld;
+      }
+
+      function handleContactClick(event) {
+        var fullAddress = getFullEmail();
+        var el = event.currentTarget;
+
+        if (el.dataset.revealed !== "1") {
+          if (event) event.preventDefault();
+          var anchors = [
+            "#nav-contact",
+            "#footer-contact",
+            "#footer-legal-contact",
+          ];
+          anchors.forEach(function (sel) {
+            var target = document.querySelector(sel);
+            if (target) {
+              target.href = "mailto:" + fullAddress;
+              target.textContent = fullAddress;
+              target.dataset.revealed = "1";
+            }
+          });
+        }
+      }
+
+      function handlePricingClick(event, plan) {
+        var fullAddress = getFullEmail();
+        var btn = document.getElementById("pricing-" + plan + "-btn");
+
+        if (btn && btn.dataset.revealed !== "1") {
+          if (event) event.preventDefault();
+          btn.textContent = fullAddress;
+          btn.href = "mailto:" + fullAddress;
+          btn.dataset.revealed = "1";
+        }
+      }
+
+      // ---- Scroll reveal ----
+      (function () {
+        var els = document.querySelectorAll(".reveal");
+        if (!window.IntersectionObserver) {
+          els.forEach(function (el) {
+            el.classList.add("visible");
+          });
+          return;
+        }
+        var obs = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) {
+                e.target.classList.add("visible");
+                obs.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.08, rootMargin: "0px 0px -40px 0px" },
+        );
+        els.forEach(function (el) {
+          obs.observe(el);
+        });
+      })();
+
+      // ---- Typing effect for hero antidote line ----
+      (function () {
+        var text = "→ AICode is the antidote.";
+        var container = document.getElementById("hero-antidote");
+        var cursor = document.getElementById("typing-cursor");
+        if (!container || !cursor) return;
+        var i = 0;
+        var delay = 680; // ms before starting
+        var speed = 42; // ms per character — full text in ~1.05s
+        function type() {
+          if (i < text.length) {
+            // Insert character before cursor
+            cursor.insertAdjacentText("beforebegin", text[i]);
+            i++;
+            setTimeout(type, speed);
+          } else {
+            // Done — fade cursor out
+            cursor.classList.add("done");
+          }
+        }
+        setTimeout(type, delay);
+      })();
+
+      // ---- Sticky nav background on scroll ----
+      (function () {
+        var nav = document.querySelector("nav");
+        window.addEventListener(
+          "scroll",
+          function () {
+            nav.style.background =
+              window.scrollY > 40
+                ? "rgba(11,11,11,0.97)"
+                : "rgba(11,11,11,0.88)";
+          },
+          { passive: true },
+        );
+      })();
+    </script>
+  </body>
+</html>
