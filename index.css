@@ -342,9 +342,6 @@ nav {
   height: auto;
   margin: 0 auto;
   border-radius: 4px;
-  image-rendering: -webkit-optimize-contrast; /* Pour Chrome/Safari */
-  image-rendering: crisp-edges; /* Pour Firefox */
-  image-rendering: pixelated;
 }
 
 /* ========== HERO ========== */
