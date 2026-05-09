@@ -15,7 +15,18 @@ instructions, are the exclusive property of AI Sovereign Labs SASU (Paris, Franc
 The Software is protected by international copyright laws and French INPI
 eSoleau deposit n° DSO2026012803.
 
-2. LICENSE GRANTS
+2. CONTRIBUTIONS AND FEEDBACK
+
+Any suggestions, enhancement requests, recommendations, or other feedback
+provided by the Licensee or any Third Party relating to the Software shall
+not grant the Licensee any ownership or intellectual property rights over
+the Software or its evolutions. All such improvements, even if requested
+or funded by the Licensee, shall remain the sole and exclusive property of
+AI Sovereign Labs SASU. The Licensee hereby assigns to AI Sovereign Labs SASU,
+without additional compensation, all rights, titles, and interests in any
+such modifications or feedback.
+
+3. LICENSE GRANTS
 
 Subject to the terms of this License, AI Sovereign Labs grants you a limited,
 non-exclusive, non-transferable license to use the Software under the following
@@ -31,8 +42,10 @@ B. FREE USE
 You are granted a free license if you meet one of the following
 criteria:
 
-B.1. Individual professional, or organization with fewer than ten (10)
-paid employees or registered volunteers.
+B.1. Individual professional, or organization with fewer than ten (10) paid
+employees or registered volunteers, calculated at the level of the global legal
+entity (including all subsidiaries, parent companies, and affiliated entities
+sharing the same ultimate beneficial owner).
 B.2. Student, teacher, or researcher at an accredited educational institution.
 B.3. Member of a registered non-profit organization.
 
@@ -42,36 +55,43 @@ published under Section 9.
 
 C. COMMERCIAL USE
 
-Organizations with ten (10) or more paid employees or registered volunteers
-must obtain a paid commercial license after the 30-day evaluation period.
+Organizations with ten (10) or more paid employees or registered volunteers,
+calculated at the level of the global legal entity (including all subsidiaries,
+parent companies, and affiliated entities sharing the same ultimate beneficial
+owner), must obtain a paid commercial license after the 30-day evaluation period.
 Current pricing is available at: https://ai-code.ai
 
-3. RESTRICTIONS
+4. RESTRICTIONS
 
 You may not:
 
-3.1. Sell, rent, lease, sublicense, or redistribute the Software.
-3.2. Decompile, reverse engineer, disassemble, observe, or analyze the
+4.1. Sell, rent, lease, sublicense, or redistribute the Software.
+4.2. Decompile, reverse engineer, disassemble, observe, or analyze the
 Software's behavior, architecture, or output for the purpose of creating
 a competing product, derivative work, or training an artificial
 intelligence model.
-3.3. Wrap the Software in a web service or provide it as a hosted service
+4.3. Wrap the Software in a web service or provide it as a hosted service
 to third parties.
-3.4. Use the Software's outputs, generated specifications, patches, or analyses
+4.4. Use the Software's outputs, generated specifications, patches, or analyses
 to train, fine-tune, or benchmark any artificial intelligence model without
 prior written consent from AI Sovereign Labs.
-3.5. Use the Software to design, develop, train, or improve any AI coding
+4.5. Use the Software to design, develop, train, or improve any AI coding
 assistant, AI coding agent, or any software whose primary purpose is to
 assist developers in writing, editing, reviewing, or generating code using
 artificial intelligence, without prior written consent from AI Sovereign Labs.
-3.6. Use the Software through a third party, agent, or automated system
+4.6. Use the Software through a third party, agent, or automated system
 in order to circumvent the licensing requirements of Section 2C.
+4.7. Use any technique, including but not limited to prompt injection,
+adversarial prompting, automated probing, or systematic observation of
+outputs, to extract, reconstruct, or approximate the Software's system
+instructions, internal orchestration logic, prompt architecture, or any
+proprietary methodology embedded in the Software.
 
-Any breach of the restrictions set forth in this Section 3 shall result
+Any breach of the restrictions set forth in this Section 4 shall result
 in the immediate termination of this License and may give rise to legal
 action, including claims for damages and injunctive or other equitable relief.
 
-4. DATA SOVEREIGNTY AND LIABILITY
+5. DATA SOVEREIGNTY AND LIABILITY
 
 The Software is provided "as is" without warranty of any kind.
 
@@ -103,7 +123,7 @@ OF AI SOVEREIGN LABS SHALL NOT EXCEED THE AMOUNTS PAID BY THE LICENSEE IN
 THE TWELVE (12) MONTHS PRECEDING THE CLAIM. FOR FREE OR EVALUATION USERS,
 THIS LIMIT IS ONE EURO (€1).
 
-5. DATA AND OUTPUTS OWNERSHIP
+6. DATA AND OUTPUTS OWNERSHIP
 
 All code, specifications, analyses, patches, and other outputs generated
 by the Software during its use remain the exclusive property of the user
@@ -111,7 +131,7 @@ who initiated the generation. AI Sovereign Labs claims no rights over
 user-generated outputs. The user is solely responsible for verifying the
 accuracy and legal compliance of any output before use in production.
 
-6. TERMINATION
+7. TERMINATION
 
 This license terminates automatically if you fail to comply with its terms.
 For payment obligations under Section 2C, AI Sovereign Labs will provide
@@ -120,20 +140,29 @@ thirty (30) days of such notice, the license terminates immediately.
 Upon termination, you must immediately cease all use of the Software
 and destroy all copies in your possession.
 
-7. GOVERNING LAW AND JURISDICTION
+8. AUDIT AND COMPLIANCE VERIFICATION
+
+AI Sovereign Labs reserves the right to request, no more than once per
+calendar year, a written certification signed by a legal representative
+or officer of the Licensee, confirming that the Software is being used
+in compliance with the number of licenses purchased and the terms of
+Section 2. The Licensee shall provide such certification within thirty
+(30) days of the request.
+
+9. GOVERNING LAW AND JURISDICTION
 
 This License shall be governed by and construed in accordance with the laws
 of France. Any dispute arising out of or in connection with this License
 shall be subject to the exclusive jurisdiction of the courts of Paris, France.
 
-8. ENTIRE AGREEMENT
+10. ENTIRE AGREEMENT
 
 This License constitutes the entire agreement between the parties
 with respect to the Software and supersedes all prior or contemporaneous
 understandings, agreements, representations, or warranties, unless
 superseded by a separate written agreement signed by both parties.
 
-9. MODIFICATIONS TO THIS LICENSE
+11. MODIFICATIONS TO THIS LICENSE
 
 These terms apply to all versions of the Software. AI Sovereign Labs
 reserves the right to modify this License at any time. Current terms
