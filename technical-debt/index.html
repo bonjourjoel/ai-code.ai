@@ -23,7 +23,6 @@
       content="Technical debt comes from locally plausible decisions made without architectural review. AICode prevents that with specification, refinement, and verification loops."
     />
     <style>
-      /* Core tokens keep the standalone page visually aligned with the main site without loading a shared stylesheet. */
       :root {
         color-scheme: dark;
         --bg: #0b0b0b;
@@ -35,7 +34,6 @@
         --accent: #e78229;
       }
 
-      /* The page is pure HTML and CSS on purpose so the SEO pages stay deterministic and zero-JS. */
       * {
         box-sizing: border-box;
       }
@@ -75,7 +73,6 @@
         padding: 1.5rem 0 4rem;
       }
 
-      /* The header exposes only stable absolute links so the page behaves the same from EN and FR entry points. */
       .topbar {
         display: flex;
         justify-content: space-between;
@@ -130,7 +127,6 @@
         border-radius: 1.25rem;
       }
 
-      /* The hero stays compact: logo first, exact keyword second, dense prose immediately visible. */
       .hero {
         padding: 2rem;
       }
@@ -199,7 +195,6 @@
         gap: 1rem;
       }
 
-      /* Each answer is isolated in its own card so LLM-oriented Q&A stays easy to parse. */
       .qa-item p {
         margin: 0.7rem 0 0;
       }
@@ -222,7 +217,6 @@
         margin-top: 2.5rem;
       }
 
-      /* The bottom CTA stays alone so both humans and crawlers can identify the canonical destination instantly. */
       .cta-button {
         width: min(100%, 20rem);
         padding: 1rem 1.4rem;
@@ -261,9 +255,9 @@
       }
     </style>
   </head>
+
   <body>
     <main class="page-shell">
-      <!-- The page starts with the canonical brand link and a direct install path, with no JavaScript dependency. -->
       <header class="topbar">
         <a
           class="brand-link"
@@ -287,7 +281,6 @@
       </header>
 
       <article>
-        <!-- The hero keeps the exact keyword in the H1 and immediately states the debt-prevention angle. -->
         <section class="hero">
           <p class="eyebrow">AICode technical debt page</p>
           <h1>
@@ -560,7 +553,6 @@
           </ul>
         </section>
 
-        <!-- These stable links give the page an explicit path back to the main site and the installation entry point. -->
         <section class="nav-card">
           <h2>Navigation</h2>
           <ul>
