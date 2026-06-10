@@ -336,7 +336,7 @@
           <h2>The duplication and conflict problem</h2>
           <p class="section-intro">
             On a large legacy codebase, the most expensive class of AI-generated
-            errors is not syntactically wrong code — it is architecturally wrong
+            errors is not syntactically wrong code, it is architecturally wrong
             code that compiles, passes tests, and breaks something six weeks
             later when a developer tries to extend it.
           </p>
@@ -365,7 +365,7 @@
             AICode builds a 5D index of the entire project at startup. The index
             combines lexical search, vector search, AST and symbol resolution
             via language server, a project map (PRJMAP/ PRJORIENT), and Git
-            history for regression tracing. This index is persistent — it does
+            history for regression tracing. This index is persistent, it does
             not rebuild from scratch each session, and it updates incrementally
             as the codebase changes.
           </p>
@@ -404,7 +404,7 @@
                 </tr>
                 <tr>
                   <td>Project memory</td>
-                  <td>None — rebuilt each session</td>
+                  <td>None, rebuilt each session</td>
                   <td>Persistent across sessions</td>
                 </tr>
                 <tr>
@@ -476,9 +476,9 @@
                 The 5D index gives the model a structural understanding of the
                 entire project before any task begins. The Refine phase audits
                 every proposed change against this index before code generation.
-                Conflicts — duplicate logic, constraint violations, deprecated
-                dependencies — are surfaced and resolved at the design stage,
-                not discovered months later during a debugging session.
+                Conflicts such as duplicate logic, constraint violations, and
+                deprecated dependencies are surfaced and resolved at the design
+                stage, not discovered months later during a debugging session.
               </p>
             </div>
             <div class="qa-item">

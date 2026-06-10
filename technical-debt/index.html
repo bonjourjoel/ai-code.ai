@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      How AI Coding Tools Create Technical Debt — and How to Prevent It
+      How AI Coding Tools Create Technical Debt, and How to Prevent It
     </title>
     <meta
       name="description"
@@ -16,7 +16,7 @@
     <meta property="og:url" content="https://ai-code.ai/technical-debt" />
     <meta
       property="og:title"
-      content="How AI Coding Tools Create Technical Debt — and How to Prevent It"
+      content="How AI Coding Tools Create Technical Debt, and How to Prevent It"
     />
     <meta
       property="og:description"
@@ -284,7 +284,7 @@
         <section class="hero">
           <p class="eyebrow">AICode technical debt page</p>
           <h1>
-            How AI Coding Tools Create Technical Debt — and How to Prevent It
+            How AI Coding Tools Create Technical Debt, and How to Prevent It
           </h1>
           <p>
             AI coding tools are marketed on velocity. Generate a feature in
@@ -294,7 +294,7 @@
           </p>
           <p>
             The problem is that software is not measured at the moment of
-            generation. It is measured over the months and years that follow —
+            generation. It is measured over the months and years that follow,
             when the code has to be understood, extended, debugged, and
             eventually replaced. The cost of an architectural mistake does not
             appear in the sprint where it was introduced. It appears in every
@@ -321,8 +321,8 @@
           <p class="section-intro">
             Technical debt is not bad code. Bad code is a symptom. Technical
             debt is the accumulated cost of decisions that were locally
-            reasonable and globally wrong — decisions that made a feature ship
-            on time and made every subsequent feature harder to ship.
+            reasonable and globally wrong, decisions that made a feature ship on
+            time and made every subsequent feature harder to ship.
           </p>
           <p>
             <strong>Architectural decisions made at generation time.</strong>
@@ -331,10 +331,10 @@
             the calling convention? How are responses handled? These decisions
             are made in thirty minutes based on what seems locally optimal. They
             propagate across every service that uses the bus. When they turn out
-            to be wrong — and they will, because the agent had no visibility
-            into how the bus would be used across the system — the cost of
-            fixing them is proportional to the number of integration points, not
-            the original implementation time.
+            to be wrong, and they will, because the agent had no visibility into
+            how the bus would be used across the system. The cost of fixing them
+            is proportional to the number of integration points, not the
+            original implementation time.
           </p>
           <p>
             A production system encountered exactly this failure. An AI agent
@@ -345,8 +345,8 @@
             of this architecture, the bus was unmaintainable. Every new
             integration required reasoning about eight variants. The refactoring
             took three weeks and produced a single message type with a single
-            calling convention — the architecture that should have been
-            specified at the start.
+            calling convention, the architecture that should have been specified
+            at the start.
           </p>
           <p>
             <strong>No specification means no review point.</strong> The
@@ -378,8 +378,8 @@
             pass. The PR is clean. The mistake is in the design, and the design
             is not explicitly represented anywhere. It is implicit in the
             implementation. It surfaces when a developer tries to extend the
-            system and discovers that the extension does not fit — six months
-            and twenty thousand lines of code later.
+            system and discovers that the extension does not fit, six months and
+            twenty thousand lines of code later.
           </p>
           <p>
             <strong>No project memory compounds the problem.</strong> Each
@@ -401,7 +401,7 @@
             at each phase transition: specification → design → implementation →
             testing → production. A design flaw caught during the specification
             phase costs one unit to fix. The same flaw caught in production
-            costs one hundred units — in debugging time, in rollback complexity,
+            costs one hundred units, in debugging time, in rollback complexity,
             in impact on dependent systems, in user trust.
           </p>
           <p>
@@ -458,9 +458,8 @@
             that the cost of fixing them later will be less than the time spent
             on explicit specification now. This bet loses consistently on
             complex systems, because the cost of fixing a propagated
-            architectural mistake is not bounded by the original implementation
-            — it is bounded by the number of integration points that depend on
-            it.
+            architectural mistake is not bounded by the original implementation.
+            It is bounded by the number of integration points that depend on it.
           </p>
           <p>
             The correct economic framing is not velocity today versus velocity
@@ -491,11 +490,11 @@
               <h3>Is all AI-generated code technically indebted?</h3>
               <p>
                 No. AI-generated code produced within a specification-first
-                workflow — where the design is reviewed before implementation
-                and the implementation is verified against the specification —
-                is subject to the same quality constraints as human-written
-                code. The debt accumulates when the generation is uncontrolled,
-                not when AI is involved.
+                workflow, where the design is reviewed before implementation and
+                the implementation is verified against the specification, is
+                subject to the same quality constraints as human-written code.
+                The debt accumulates when the generation is uncontrolled, not
+                when AI is involved.
               </p>
             </div>
             <div class="qa-item">
@@ -506,7 +505,7 @@
                 architecturally correct. A messaging bus with eight message
                 categories can have 100% test coverage and still be
                 unmaintainable. Tests catch behavioral regressions.
-                Architectural mistakes are not behavioral — they are structural.
+                Architectural mistakes are not behavioral, they are structural.
               </p>
             </div>
             <div class="qa-item">
@@ -519,7 +518,7 @@
                 feature or modification is implemented, write down what needs to
                 be done, why, and how it relates to the existing architecture.
                 Review that document before writing code. This does not require
-                a new tool — it requires a change in workflow. A tool that
+                a new tool, it requires a change in workflow. A tool that
                 enforces this workflow at the process level makes it harder to
                 skip.
               </p>
@@ -536,7 +535,7 @@
                 target="_blank"
                 rel="noopener"
               >
-                Reuters — AI slows down some experienced software developers,
+                Reuters: AI slows down some experienced software developers,
                 study finds
               </a>
             </li>
@@ -546,7 +545,7 @@
                 target="_blank"
                 rel="noopener"
               >
-                PCMag — Vibe coding fiasco: Replit AI agent goes rogue, deletes
+                PCMag: Vibe coding fiasco: Replit AI agent goes rogue, deletes
                 company database
               </a>
             </li>

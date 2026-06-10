@@ -377,18 +377,18 @@
           <p class="section-intro">
             AICode requires a written specification before any code is
             generated. The developer reviews and approves the design in writing.
-            The AI then audits the spec against the actual codebase — catching
+            The AI then audits the spec against the actual codebase, catching
             design conflicts before they become code. Code is generated into a
             sandbox. The developer accepts changes file by file. Nothing is
             applied without explicit approval.
           </p>
           <p>
-            The 5D codebase index — combining lexical search, vector search, AST
-            and symbol resolution, project map, and Git history — gives the
-            model a persistent, structural understanding of the project. It
-            knows what exists, where it lives, and how it connects. This
-            eliminates the class of hallucinations where the model invents APIs
-            or duplicates modules that already exist elsewhere in the codebase.
+            The 5D codebase index, combining lexical search, vector search, AST
+            and symbol resolution, project map, and Git history, gives the model
+            a persistent, structural understanding of the project. It knows what
+            exists, where it lives, and how it connects. This eliminates the
+            class of hallucinations where the model invents APIs or duplicates
+            modules that already exist elsewhere in the codebase.
           </p>
           <p>
             The index is computed and stored locally. No code leaves the
@@ -417,8 +417,8 @@
                 </tr>
                 <tr>
                   <td>Project memory</td>
-                  <td>None — each prompt is isolated</td>
-                  <td>5D index — persistent across sessions</td>
+                  <td>None, each prompt is isolated</td>
+                  <td>5D index, persistent across sessions</td>
                 </tr>
                 <tr>
                   <td>Specification</td>
@@ -466,9 +466,9 @@
               <h3>Does Cursor send my code to its servers?</h3>
               <p>
                 Yes. Cursor processes code context on its own infrastructure.
-                For enterprise teams with compliance requirements — RGPD, OIV
-                classification, financial regulation — this is a structural
-                problem, not a configuration option.
+                For enterprise teams with compliance requirements, including
+                RGPD, OIV classification, and financial regulation, this is a
+                structural problem, not a configuration option.
               </p>
             </div>
             <div class="qa-item">
