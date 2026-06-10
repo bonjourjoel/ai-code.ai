@@ -1224,7 +1224,8 @@ footer {
 }
 .footer-inner {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  /* Keep the SEO links crawlable from the home page without forcing a separate footer layout. */
+  grid-template-columns: minmax(0, 1.5fr) repeat(4, minmax(0, 1fr));
   gap: 2.5rem;
 }
 .footer-brand p {
@@ -1405,7 +1406,7 @@ footer {
     grid-template-columns: 1fr 1fr;
   }
   .footer-inner {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 @media (max-width: 600px) {
@@ -1446,7 +1447,7 @@ footer {
     padding: 1.5rem;
   }
   .footer-inner {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
