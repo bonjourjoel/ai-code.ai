@@ -445,16 +445,6 @@ nav {
   font-weight: 400;
 }
 
-/* Surface the trust model in the first viewport instead of forcing visitors to scroll to the sovereignty section. */
-.hero-trust {
-  margin-top: 1rem;
-  max-width: 760px;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.65;
-  color: var(--text);
-}
-
 .hero-ctas {
   display: flex;
   flex-wrap: wrap;
