@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Public canonical HTML pages only. Keep this list aligned with deployed routes. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://ai-code.ai/</loc>
+  </url>
+  <url>
+    <loc>https://ai-code.ai/fr/</loc>
+  </url>
+  <url>
+    <loc>https://ai-code.ai/data-sovereignty</loc>
+  </url>
+  <url>
+    <loc>https://ai-code.ai/legacy</loc>
+  </url>
+  <url>
+    <loc>https://ai-code.ai/technical-debt</loc>
+  </url>
+  <url>
+    <loc>https://ai-code.ai/vs-claude-code</loc>
+  </url>
+  <url>
+    <loc>https://ai-code.ai/vs-copilot</loc>
+  </url>
+  <url>
+    <loc>https://ai-code.ai/vs-cursor</loc>
+  </url>
+</urlset>

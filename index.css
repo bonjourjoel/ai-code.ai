@@ -63,11 +63,12 @@ body::before {
 }
 
 /* ========== TYPOGRAPHY ========== */
+/* Keep the marketing site on a strict two-font system: one sans family for all UI and marketing copy, and one monospace family for technical accents. */
 h1,
 h2,
 h3,
 h4 {
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -188,7 +189,7 @@ code,
   gap: 0.5rem;
   padding: 0.85rem 1.8rem;
   border-radius: 3px;
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: 0.01em;
@@ -282,7 +283,7 @@ nav {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-weight: 800;
   font-size: 1.15rem;
   letter-spacing: -0.01em;
@@ -444,6 +445,16 @@ nav {
   font-weight: 400;
 }
 
+/* Surface the trust model in the first viewport instead of forcing visitors to scroll to the sovereignty section. */
+.hero-trust {
+  margin-top: 1rem;
+  max-width: 760px;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.65;
+  color: var(--text);
+}
+
 .hero-ctas {
   display: flex;
   flex-wrap: wrap;
@@ -467,7 +478,7 @@ nav {
 
 .hero-stat strong {
   display: block;
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-size: 1.6rem;
   font-weight: 800;
   color: var(--orange);
@@ -587,7 +598,7 @@ nav {
 }
 
 .problem-quote p {
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-size: 1.05rem;
   font-weight: 600;
   line-height: 1.5;
@@ -774,7 +785,7 @@ nav {
 }
 
 .wf-step h4 {
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
@@ -1047,7 +1058,7 @@ nav {
 }
 
 .video-card-meta h4 {
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
 }
@@ -1104,7 +1115,7 @@ nav {
 }
 
 .setup-step h4 {
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
@@ -1164,7 +1175,7 @@ nav {
 }
 
 .item-card h4 {
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
@@ -1221,7 +1232,7 @@ nav {
 }
 
 .cred-item h4 {
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   margin-bottom: 0.3rem;
@@ -1250,7 +1261,7 @@ nav {
 
 .proof-num strong {
   display: block;
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-size: 2.2rem;
   font-weight: 800;
   color: var(--orange);
@@ -1321,7 +1332,7 @@ nav {
 }
 
 .pricing-price strong {
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-size: 1.7rem;
   font-weight: 800;
   color: var(--orange);
@@ -1408,7 +1419,7 @@ footer {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-weight: 800;
   font-size: 1.1rem;
   letter-spacing: -0.01em;
@@ -1427,7 +1438,7 @@ footer {
 }
 
 .footer-col h5 {
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -1505,7 +1516,7 @@ footer {
 .compare-table th {
   padding: 0.85rem 1.25rem;
   text-align: left;
-  font-family: "Syne", sans-serif;
+  font-family: "Figtree", sans-serif;
   font-weight: 700;
   font-size: 0.8rem;
   text-transform: uppercase;
