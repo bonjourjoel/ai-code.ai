@@ -9,7 +9,7 @@ specification and human approval workflow before any code touches disk.
 - Name: AICode
 - Version: 1.8.0
 - License: Freemium
-- Developer: Joël Abenhaïm, AI Sovereign Labs SASU (Paris, France)
+- Developer: Joël Abenhaïm, AI Sovereign Labs SAS (Paris, France)
 - Contact: joel@aisovereignlabs.ai
 
 ## Key facts
@@ -21,12 +21,12 @@ specification and human approval workflow before any code touches disk.
 
 ## Pages
 - Home: https://ai-code.ai
-- AICode vs Cursor: https://ai-code.ai/vs-cursor
-- AICode vs GitHub Copilot: https://ai-code.ai/vs-copilot
-- AICode vs Claude Code: https://ai-code.ai/vs-claude-code
-- Legacy Enterprise Software: https://ai-code.ai/legacy
-- Data Sovereignty: https://ai-code.ai/data-sovereignty
-- Technical Debt: https://ai-code.ai/technical-debt
+- AICode vs Cursor: https://ai-code.ai/topics/vs-cursor
+- AICode vs GitHub Copilot: https://ai-code.ai/topics/vs-copilot
+- AICode vs Claude Code: https://ai-code.ai/topics/vs-claude-code
+- Legacy Enterprise Software: https://ai-code.ai/topics/legacy
+- Data Sovereignty: https://ai-code.ai/topics/data-sovereignty
+- Technical Debt: https://ai-code.ai/topics/technical-debt
 
 ## Pricing
 - Free: individual developers, organizations under 10 employees

@@ -36,7 +36,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
     <link rel="stylesheet" href="/index.css" />
     <script defer src="/index.js"></script>
@@ -51,11 +51,11 @@
           class="logo-svg"
         >
           <path
-            fill="#e78229"
+            fill="currentColor"
             d="M1,90.4 C4.3,86.6 8.1,83.5 10.9,79.7 C18.8,69.5 21.2,57 23.9,44.8 C26.6,32.9 28.6,20.8 31.2,8.8 C31.6,6.6 32.4,3.8 35.6,4 C39.2,4.3 39.4,7.3 40,9.9 C43.7,26.6 47.3,43.3 51,59.9 C53.2,69.9 58.3,78.4 64.8,86.1 C66.2,87.8 68.8,89.8 70.6,89.6 C75.2,89.1 79.8,87.2 80.8,82.1 C82.3,75.1 83,68 84,60.9 C84.1,59.8 83.7,58.2 84.3,57.5 C85.7,55.8 87.6,53.4 89.4,53.3 C92.2,53.2 92.3,56.2 92,58.5 C90.7,67.3 89.4,76.1 88,84.9 C86.8,92.5 81.1,95.2 74.5,97 C68.3,98.6 63.5,97.3 59,91.8 C51.2,82.4 45.6,72.2 42.8,60.2 C38,60.2 33.2,60.2 28.1,60.2 C25.7,73.6 18.2,84.4 9.8,94.6 C7.5,97.5 4.6,97.5 1.3,95.7 L1,90.4Z M37.3,52 C34.8,52 33.1,52 30.8,52 C32.3,44 33.8,36.3 35.4,28.1 C37,35.5 38.6,42.3 39.8,49.3 C39.98,50 38.2,51.1 37.3,52Z"
           />
           <path
-            fill="#e78229"
+            fill="currentColor"
             d="M101,42.6 C100.1,43.7 98.8,44.3 98.4,45.2 C95.6,51.4 87.4,51.9 83.1,50.5 C76.9,48.5 74,42.8 75,35.7 C75.8,30.2 80.8,26.4 86.6,25.9 C93.6,25.4 97.3,29.4 100.7,34.3 L101,42.6Z M86.7,34 C83.3,34.6 82.3,37.2 83.2,39.8 C83.7,41.2 86.3,42.8 87.9,42.7 C89.3,42.6 91.4,40.6 91.8,39 C92.6,36 90.9,34 86.7,34Z"
           />
         </svg>
@@ -122,7 +122,7 @@
             <em>avant</em> qu'elles n'atteignent votre base de code.
           </p>
 
-          <p class="hero-sub reveal reveal-delay-2">
+          <p class="hero-sub hero-sub-secure reveal reveal-delay-2">
             Votre base de code complète ne quitte jamais votre machine. Seuls des extraits de contexte
             ciblés atteignent votre fournisseur LLM privé.
           </p>
@@ -172,12 +172,20 @@
         </div>
 
         <div class="hero-workflow reveal reveal-delay-5">
-          <img
-            src="/docs/aicode-workflow-hr.webp"
-            alt="Animation du workflow AICode : Idéer, Spécifier, Raffiner, Coder, Vérifier"
-            class="img-workflow-native"
-            loading="lazy"
-          />
+          <div class="workflow-window">
+            <div class="ww-bar">
+              <span class="ww-dot"></span><span class="ww-dot"></span
+              ><span class="ww-dot"></span>
+              <span class="ww-title">AICode</span>
+              <span class="ww-status">online</span>
+            </div>
+            <img
+              src="/docs/aicode-workflow-hr.webp"
+              alt="Animation du workflow AICode : Idéer, Spécifier, Raffiner, Coder, Vérifier"
+              class="img-workflow-native"
+              loading="lazy"
+            />
+          </div>
         </div>
         <p class="workflow-caption reveal">
           Idéer → Spécifier → Raffiner → Coder → Vérifier. Une session authentique,
@@ -230,7 +238,7 @@
                 <path
                   d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
                   fill="none"
-                  stroke="var(--orange)"
+                  stroke="var(--accent)"
                   stroke-width="0.6"
                   stroke-linejoin="round"
                 />
@@ -267,7 +275,7 @@
                 <path
                   d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
                   fill="none"
-                  stroke="var(--orange)"
+                  stroke="var(--accent)"
                   stroke-width="0.6"
                   stroke-linejoin="round"
                 />
@@ -304,7 +312,7 @@
                 <path
                   d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
                   fill="none"
-                  stroke="var(--orange)"
+                  stroke="var(--accent)"
                   stroke-width="0.6"
                   stroke-linejoin="round"
                 />
@@ -340,7 +348,7 @@
                 <path
                   d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
                   fill="none"
-                  stroke="var(--orange)"
+                  stroke="var(--accent)"
                   stroke-width="0.6"
                   stroke-linejoin="round"
                 />
@@ -382,7 +390,7 @@
                 <path
                   d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
                   fill="none"
-                  stroke="var(--orange)"
+                  stroke="var(--accent)"
                   stroke-width="0.6"
                   stroke-linejoin="round"
                 />
@@ -440,7 +448,22 @@
         <div class="press-card reveal reveal-delay-2">
           <div class="press-title">-- ARTICLE DE PRESSE EXTERNE ASSOCIÉ --</div>
           <div class="press-header">
-            <span class="press-icon">📰</span>
+            <span class="press-icon"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 4h13a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4Z"
+                />
+                <path d="M18 8h2a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2" />
+                <path d="M7 8h7M7 12h7M7 16h4" /></svg
+            ></span>
             <a
               href="https://www.reuters.com/business/ai-slows-down-some-experienced-software-developers-study-finds-2025-07-10"
               target="_blank"
@@ -553,7 +576,7 @@
         </p>
 
         <div class="workflow-steps">
-          <div class="wf-step reveal reveal-delay-1">
+          <div class="wf-step reveal reveal-slide">
             <div class="wf-number">01</div>
             <h4>Idéer</h4>
             <p>
@@ -561,7 +584,7 @@
               convergent vers une compréhension commune et précise de la tâche.
             </p>
           </div>
-          <div class="wf-step reveal reveal-delay-2">
+          <div class="wf-step reveal reveal-slide">
             <div class="wf-number">02</div>
             <h4>Spécifier</h4>
             <p>
@@ -569,7 +592,7 @@
               Vous la lisez, corrigez les malentendus et verrouillez la conception.
             </p>
           </div>
-          <div class="wf-step reveal reveal-delay-3">
+          <div class="wf-step reveal reveal-slide">
             <div class="wf-number">03</div>
             <h4>Raffiner</h4>
             <p>
@@ -578,7 +601,7 @@
               avant qu'une seule ligne ne soit écrite.
             </p>
           </div>
-          <div class="wf-step reveal reveal-delay-4">
+          <div class="wf-step reveal reveal-slide">
             <div class="wf-number">04</div>
             <h4>Coder</h4>
             <p>
@@ -587,7 +610,7 @@
               disque sans votre approbation.
             </p>
           </div>
-          <div class="wf-step reveal reveal-delay-5">
+          <div class="wf-step reveal reveal-slide">
             <div class="wf-number">05</div>
             <h4>Vérifier</h4>
             <p>
@@ -657,7 +680,20 @@
 
         <div class="features-grid">
           <div class="feat-card reveal reveal-delay-1">
-            <div class="feat-icon">🧠</div>
+            <div class="feat-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 3 3 8l9 5 9-5-9-5Z" />
+                <path d="m3 13 9 5 9-5" />
+              </svg>
+            </div>
             <h3>Index 5D de code</h3>
             <p>
               Une pile d'indexation multidimensionnelle surpuissante qui recherche votre
@@ -670,7 +706,20 @@
             >
           </div>
           <div class="feat-card reveal reveal-delay-2">
-            <div class="feat-icon">📝</div>
+            <div class="feat-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="5" y="3" width="14" height="18" rx="2" />
+                <path d="M9 8h6M9 12h6M9 16h4" />
+              </svg>
+            </div>
             <h3>Spécifications structurées</h3>
             <p>
               Avant qu'un code ne soit produit, AICode génère une spécification complète
@@ -681,7 +730,20 @@
             <span class="feat-tag">revue de spec · sans code surprise</span>
           </div>
           <div class="feat-card reveal reveal-delay-3">
-            <div class="feat-icon">🔁</div>
+            <div class="feat-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+                <path d="M21 4v5h-5" />
+              </svg>
+            </div>
             <h3>Boucles Raffiner + Vérifier</h3>
             <p>
               AICode effectue des contrôles d'intégrité IA sur votre spécification avant
@@ -692,7 +754,19 @@
             <span class="feat-tag">audits avant code + après code</span>
           </div>
           <div class="feat-card reveal reveal-delay-1">
-            <div class="feat-icon">🛡️</div>
+            <div class="feat-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+              </svg>
+            </div>
             <h3>Workflow de patch sécurisé</h3>
             <p>
               Toutes les modifications de code atterrissent d'abord dans un espace de travail
@@ -703,7 +777,20 @@
             <span class="feat-tag">diff visuel · contrôle humain</span>
           </div>
           <div class="feat-card reveal reveal-delay-1">
-            <div class="feat-icon">⚙️</div>
+            <div class="feat-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3" />
+                <path d="M1 14h6M9 8h6M17 16h6" />
+              </svg>
+            </div>
             <h3>Instructions système spécialisées</h3>
             <p>
               AICode ne donne pas au modèle une simple interface de chat. Il fait tourner
@@ -716,7 +803,19 @@
             >
           </div>
           <div class="feat-card reveal reveal-delay-2">
-            <div class="feat-icon">🐞</div>
+            <div class="feat-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+              </svg>
+            </div>
             <h3>Débogueur IA puissant</h3>
             <p>
               Deux modes : debug basé sur l'instrumentation qui trouve et explique
@@ -729,7 +828,20 @@
             >
           </div>
           <div class="feat-card reveal reveal-delay-3">
-            <div class="feat-icon">🔒</div>
+            <div class="feat-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="4" y="10.5" width="16" height="11" rx="2" />
+                <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
+              </svg>
+            </div>
             <h3>Offline-first / BYOK</h3>
             <p>
               L'indexation est locale. L'historique de chat est local. Seuls les extraits
@@ -743,7 +855,20 @@
             >
           </div>
           <div class="feat-card reveal reveal-delay-2">
-            <div class="feat-icon">🔍</div>
+            <div class="feat-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+            </div>
             <h3>Revue de code (PRs)</h3>
             <p>
               AICode peut revoir les pull requests chargées depuis votre dépôt Git local,
@@ -753,7 +878,22 @@
             <span class="feat-tag">MCP · GitHub · GitLab · Jira</span>
           </div>
           <div class="feat-card reveal reveal-delay-3">
-            <div class="feat-icon">🧩</div>
+            <div class="feat-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="14" y="14" width="7" height="7" rx="1" />
+              </svg>
+            </div>
             <h3>Standard MCP / Skills</h3>
             <p>
               Connectez n'importe quel service local ou cloud supportant le Model Context
@@ -1026,7 +1166,21 @@
 
         <div class="item-grid">
           <div class="item-card reveal reveal-delay-1">
-            <div class="item-icon">💾</div>
+            <div class="item-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <ellipse cx="12" cy="6" rx="8" ry="3" />
+                <path d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6" />
+                <path d="M4 12v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" />
+              </svg>
+            </div>
             <h4>Indexation locale</h4>
             <p>
               L'index 5D complet, incluant les embeddings vectoriels, est
@@ -1034,7 +1188,20 @@
             </p>
           </div>
           <div class="item-card reveal reveal-delay-2">
-            <div class="item-icon">🔑</div>
+            <div class="item-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="8" cy="8" r="4.5" />
+                <path d="m11.2 11.2 9.8 9.8M16.5 16.5 19 14" />
+              </svg>
+            </div>
             <h4>Apportez votre propre clé</h4>
             <p>
               Vous vous connectez directement à OpenAI ou à votre tenant Azure privé avec
@@ -1043,7 +1210,20 @@
             </p>
           </div>
           <div class="item-card reveal reveal-delay-3">
-            <div class="item-icon">✂️</div>
+            <div class="item-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M6 2v14a2 2 0 0 0 2 2h14" />
+                <path d="M18 22V8a2 2 0 0 0-2-2H2" />
+              </svg>
+            </div>
             <h4>Envoi de contexte chirurgical</h4>
             <p>
               Seuls les extraits pertinents requis pour la tâche en cours sont envoyés
@@ -1052,7 +1232,20 @@
             </p>
           </div>
           <div class="item-card reveal reveal-delay-4">
-            <div class="item-icon">🏢</div>
+            <div class="item-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="4" y="3" width="16" height="18" rx="1" />
+                <path d="M9 8h.01M15 8h.01M9 12h.01M15 12h.01M9 16h6" />
+              </svg>
+            </div>
             <h4>Prêt pour l'entreprise</h4>
             <p>
               La compatibilité cloud Azure privé satisfait les politiques de données
@@ -1064,7 +1257,22 @@
         <div class="press-card reveal reveal-delay-2">
           <div class="press-title">-- ARTICLE DE PRESSE EXTERNE ASSOCIÉ --</div>
           <div class="press-header">
-            <span class="press-icon">📰</span>
+            <span class="press-icon"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 4h13a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4Z"
+                />
+                <path d="M18 8h2a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2" />
+                <path d="M7 8h7M7 12h7M7 16h4" /></svg
+            ></span>
             <a
               href="https://www.tradingkey.com/analysis/stocks/us-stocks/261808564-spacex-ipo-elon-musk-cursor-60-billion-tradingkey"
               target="_blank"
@@ -1096,7 +1304,20 @@
 
         <div class="item-grid">
           <div class="item-card reveal reveal-delay-1">
-            <div class="item-icon">🚫</div>
+            <div class="item-icon item-icon-block">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="m5.6 5.6 12.8 12.8" />
+              </svg>
+            </div>
             <h4>Hors du projet</h4>
             <p>
               Pas d'accès aux fichiers hors de la racine du projet. Les entrées .gitignore
@@ -1104,7 +1325,20 @@
             </p>
           </div>
           <div class="item-card reveal reveal-delay-2">
-            <div class="item-icon">🚫</div>
+            <div class="item-icon item-icon-block">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="m5.6 5.6 12.8 12.8" />
+              </svg>
+            </div>
             <h4>Écritures disque</h4>
             <p>
               Ne peut écrire un seul caractère dans aucun fichier.
@@ -1112,19 +1346,57 @@
             </p>
           </div>
           <div class="item-card reveal reveal-delay-3">
-            <div class="item-icon">🚫</div>
+            <div class="item-icon item-icon-block">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="m5.6 5.6 12.8 12.8" />
+              </svg>
+            </div>
             <h4>Écritures Git</h4>
             <p>Aucun commit, aucun staging, aucune commande d'écriture de quelque sorte.</p>
           </div>
           <div class="item-card reveal reveal-delay-4">
-            <div class="item-icon">🚫</div>
+            <div class="item-icon item-icon-block">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="m5.6 5.6 12.8 12.8" />
+              </svg>
+            </div>
             <h4>Exécution shell</h4>
             <p>Aucune commande exécutée silencieusement. Pas même <code>ls</code>.</p>
           </div>
         </div>
         <div class="item-grid item-grid-gap">
           <div class="item-card reveal reveal-delay-1">
-            <div class="item-icon">✓</div>
+            <div class="item-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </div>
             <h4>Dans le projet</h4>
             <p>
               Accès en lecture complet aux fichiers du projet, respectant toutes les règles
@@ -1132,7 +1404,19 @@
             </p>
           </div>
           <div class="item-card reveal reveal-delay-2">
-            <div class="item-icon">✓</div>
+            <div class="item-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </div>
             <h4>Propositions de patches</h4>
             <p>
               Chaque modification arrive comme un diff révisable. Vous acceptez fichier par fichier,
@@ -1140,7 +1424,19 @@
             </p>
           </div>
           <div class="item-card reveal reveal-delay-3">
-            <div class="item-icon">✓</div>
+            <div class="item-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </div>
             <h4>Git en lecture seule</h4>
             <p>
               Navigation complète dans l'historique et traçage des régressions.
@@ -1148,7 +1444,19 @@
             </p>
           </div>
           <div class="item-card reveal reveal-delay-4">
-            <div class="item-icon">✓</div>
+            <div class="item-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </div>
             <h4>Propositions shell</h4>
             <p>
               ls est un outil natif d'AICode, pas une commande shell. Les commandes
@@ -1161,7 +1469,22 @@
         <div class="press-card reveal reveal-delay-2">
           <div class="press-title">-- ARTICLE DE PRESSE EXTERNE ASSOCIÉ --</div>
           <div class="press-header">
-            <span class="press-icon">📰</span>
+            <span class="press-icon"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 4h13a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4Z"
+                />
+                <path d="M18 8h2a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2" />
+                <path d="M7 8h7M7 12h7M7 16h4" /></svg
+            ></span>
             <a
               href="https://www.pcmag.com/news/vibe-coding-fiasco-replite-ai-agent-goes-rogue-deletes-company-database"
               target="_blank"
@@ -1203,7 +1526,22 @@
           <div class="proof-creds reveal reveal-delay-2">
             <h3>Le bilan</h3>
             <div class="cred-item">
-              <div class="cred-icon">🎮</div>
+              <div class="cred-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="2" y="6" width="20" height="12" rx="6" />
+                  <path d="M6 12h4M8 10v4" />
+                  <circle cx="15.5" cy="11" r="1" />
+                  <circle cx="17.5" cy="13.5" r="1" />
+                </svg>
+              </div>
               <div>
                 <h4>Keyja.com / Player22 : 10 millions de téléchargements</h4>
                 <p>
@@ -1216,7 +1554,20 @@
               </div>
             </div>
             <div class="cred-item">
-              <div class="cred-icon">🏛️</div>
+              <div class="cred-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M22 9 12 5 2 9l10 4 10-4Z" />
+                  <path d="M6 11v5c0 1 2.7 2.5 6 2.5s6-1.5 6-2.5v-5" />
+                </svg>
+              </div>
               <div>
                 <h4>Master en informatique, major de promotion</h4>
                 <p>
@@ -1227,7 +1578,22 @@
               </div>
             </div>
             <div class="cred-item">
-              <div class="cred-icon">⚗️</div>
+              <div class="cred-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M9 3h6M10 3v6L5 18a2 2 0 0 0 1.8 3h10.4A2 2 0 0 0 19 18l-5-9V3"
+                  />
+                  <path d="M7.5 15h9" />
+                </svg>
+              </div>
               <div>
                 <h4>AICode est sa propre preuve de concept</h4>
                 <p>
@@ -1239,7 +1605,22 @@
               </div>
             </div>
             <div class="cred-item">
-              <div class="cred-icon">📐</div>
+              <div class="cred-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"
+                  />
+                  <path d="M14 3v5h5M9 13h6M9 17h6" />
+                </svg>
+              </div>
               <div>
                 <h4>Manifeste d'assurance qualité logicielle</h4>
                 <p>
@@ -1426,11 +1807,11 @@
             <div class="footer-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <path
-                  fill="#e78229"
+                  fill="currentColor"
                   d="M1,90.4 C4.3,86.6 8.1,83.5 10.9,79.7 C18.8,69.5 21.2,57 23.9,44.8 C26.6,32.9 28.6,20.8 31.2,8.8 C31.6,6.6 32.4,3.8 35.6,4 C39.2,4.3 39.4,7.3 40,9.9 C43.7,26.6 47.3,43.3 51,59.9 C53.2,69.9 58.3,78.4 64.8,86.1 C66.2,87.8 68.8,89.8 70.6,89.6 C75.2,89.1 79.8,87.2 80.8,82.1 C82.3,75.1 83,68 84,60.9 C84.1,59.8 83.7,58.2 84.3,57.5 C85.7,55.8 87.6,53.4 89.4,53.3 C92.2,53.2 92.3,56.2 92,58.5 C90.7,67.3 89.4,76.1 88,84.9 C86.8,92.5 81.1,95.2 74.5,97 C68.3,98.6 63.5,97.3 59,91.8 C51.2,82.4 45.6,72.2 42.8,60.2 C38,60.2 33.2,60.2 28.1,60.2 C25.7,73.6 18.2,84.4 9.8,94.6 C7.5,97.5 4.6,97.5 1.3,95.7 L1,90.4Z M37.3,52 C34.8,52 33.1,52 30.8,52 C32.3,44 33.8,36.3 35.4,28.1 C37,35.5 38.6,42.3 39.8,49.3 C39.98,50 38.2,51.1 37.3,52Z"
                 />
                 <path
-                  fill="#e78229"
+                  fill="currentColor"
                   d="M101,42.6 C100.1,43.7 98.8,44.3 98.4,45.2 C95.6,51.4 87.4,51.9 83.1,50.5 C76.9,48.5 74,42.8 75,35.7 C75.8,30.2 80.8,26.4 86.6,25.9 C93.6,25.4 97.3,29.4 100.7,34.3 L101,42.6Z M86.7,34 C83.3,34.6 82.3,37.2 83.2,39.8 C83.7,41.2 86.3,42.8 87.9,42.7 C89.3,42.6 91.4,40.6 91.8,39 C92.6,36 90.9,34 86.7,34Z"
                 />
               </svg>
@@ -1530,30 +1911,32 @@
             <h5>Topic pages</h5>
             <ul>
               <li>
-                <a href="https://ai-code.ai/vs-cursor">AICode vs Cursor</a>
+                <a href="https://ai-code.ai/topics/vs-cursor"
+                  >AICode vs Cursor</a
+                >
               </li>
               <li>
-                <a href="https://ai-code.ai/vs-copilot"
+                <a href="https://ai-code.ai/topics/vs-copilot"
                   >AICode vs GitHub Copilot</a
                 >
               </li>
               <li>
-                <a href="https://ai-code.ai/vs-claude-code"
+                <a href="https://ai-code.ai/topics/vs-claude-code"
                   >AICode vs Claude Code</a
                 >
               </li>
               <li>
-                <a href="https://ai-code.ai/legacy"
+                <a href="https://ai-code.ai/topics/legacy"
                   >Legacy Enterprise Software</a
                 >
               </li>
               <li>
-                <a href="https://ai-code.ai/data-sovereignty"
+                <a href="https://ai-code.ai/topics/data-sovereignty"
                   >Data Sovereignty</a
                 >
               </li>
               <li>
-                <a href="https://ai-code.ai/technical-debt"
+                <a href="https://ai-code.ai/topics/technical-debt"
                   >Technical Debt and AI</a
                 >
               </li>

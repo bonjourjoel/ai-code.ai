@@ -1,17 +1,17 @@
 AICODE PROPRIETARY & BUSINESS LICENSE
-Copyright (c) 2026 AI Sovereign Labs (AI Sovereign Labs SASU, Paris, France).
+Copyright (c) 2026 AI Sovereign Labs (AI Sovereign Labs SAS, Paris, France).
 All rights reserved.
 
 This License is entered into between the Licensee and AI Sovereign Labs
-SASU, a French simplified joint-stock company registered in Paris, France.
+SAS, a French simplified joint-stock company registered in Paris, France.
 No personal liability is assumed by any individual associated with
-AI Sovereign Labs SASU beyond the assets of the company.
+AI Sovereign Labs SAS beyond the assets of the company.
 
 1. OWNERSHIP AND INTELLECTUAL PROPERTY
 
 The Software (AICode) and its source code, including but not limited to the
 "5D Indexing" algorithms, the orchestration logic, and specialized system
-instructions, are the exclusive property of AI Sovereign Labs SASU (Paris, France).
+instructions, are the exclusive property of AI Sovereign Labs SAS (Paris, France).
 The Software is protected by international copyright laws and French INPI
 eSoleau deposit n° DSO2026012803.
 
@@ -22,7 +22,7 @@ provided by the Licensee or any Third Party relating to the Software shall
 not grant the Licensee any ownership or intellectual property rights over
 the Software or its evolutions. All such improvements, even if requested
 or funded by the Licensee, shall remain the sole and exclusive property of
-AI Sovereign Labs SASU. The Licensee hereby assigns to AI Sovereign Labs SASU,
+AI Sovereign Labs SAS. The Licensee hereby assigns to AI Sovereign Labs SAS,
 without additional compensation, all rights, titles, and interests in any
 such modifications or feedback.
 

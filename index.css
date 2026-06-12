@@ -1,3 +1,9 @@
+/* =====================================================================
+   AICode — index.css
+   Visual system "B": dark #0b0b0b · cool blue accent · Manrope + JetBrains Mono
+   NOTE: cosmetic restyle only. All class/id hooks used by index.js are kept.
+   ===================================================================== */
+
 /* ========== RESET & BASE ========== */
 *,
 *::before,
@@ -14,8 +20,8 @@ html {
 
 body {
   background: #0b0b0b;
-  color: #e8e8e2;
-  font-family: "Figtree", sans-serif;
+  color: #f2f3f5;
+  font-family: "Manrope", sans-serif;
   font-weight: 400;
   line-height: 1.65;
   overflow-x: hidden;
@@ -23,18 +29,29 @@ body {
 
 /* ========== CSS VARIABLES ========== */
 :root {
-  --orange: #e78229;
-  --orange-dim: #b8621d;
-  --orange-glow: rgba(231, 130, 41, 0.18);
+  /* Cool blue accent replaces the former orange */
+  --accent: #8aa9ff;
+  --accent-dim: #6e8fe0;
+  --accent-soft: #aebfff;
+  --accent-glow: rgba(138, 169, 255, 0.16);
+  --accent-tint: rgba(138, 169, 255, 0.08);
+
   --bg: #0b0b0b;
-  --bg2: #111111;
-  --bg3: #181818;
-  --bg4: #1f1f1f;
-  --border: rgba(255, 255, 255, 0.07);
-  --border-bright: rgba(231, 130, 41, 0.35);
-  --text: #e8e8e2;
-  --text-dim: #999990;
-  --text-muted: #5a5a52;
+  --bg2: #0f0f11;
+  --bg3: #141417;
+  --bg4: #1b1b1f;
+
+  --border: rgba(255, 255, 255, 0.08);
+  --border-soft: rgba(255, 255, 255, 0.06);
+  --border-bright: rgba(138, 169, 255, 0.34);
+
+  --text: #f2f3f5;
+  --text-dim: #9b9da4;
+  --text-muted: #6e7077;
+
+  --bad: #d98a8a;
+  --bad-tint: rgba(217, 138, 138, 0.12);
+  --bad-border: rgba(217, 138, 138, 0.3);
 }
 
 /* ========== SCROLLBAR ========== */
@@ -47,29 +64,18 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--orange-dim);
+  background: var(--accent-dim);
   border-radius: 2px;
 }
 
-/* ========== NOISE TEXTURE OVERLAY ========== */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 1000;
-  opacity: 0.6;
-}
-
 /* ========== TYPOGRAPHY ========== */
-/* Keep the marketing site on a strict two-font system: one sans family for all UI and marketing copy, and one monospace family for technical accents. */
+/* Two-font system: Manrope for all UI/marketing copy, JetBrains Mono for technical accents. */
 h1,
 h2,
 h3,
 h4 {
-  font-family: "Figtree", sans-serif;
-  font-weight: 800;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
@@ -81,7 +87,7 @@ h2 {
 
 h3 {
   font-size: clamp(1.1rem, 2vw, 1.5rem);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 p {
@@ -91,6 +97,11 @@ p {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+em {
+  font-style: italic;
+  color: var(--text);
 }
 
 code,
@@ -128,12 +139,14 @@ code,
 }
 
 /* ========== SCROLL REVEAL ========== */
+/* JS (index.js) only toggles .visible; the motion lives entirely here.
+   Kept deliberately calm: a short rise + fade, gentle stagger (no "christmas tree"). */
 .reveal {
   opacity: 0;
-  transform: translateY(32px);
+  transform: translateY(16px);
   transition:
-    opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
-    transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .reveal.visible {
@@ -141,34 +154,69 @@ code,
   transform: none;
 }
 
+/* Variant: pure fade, no movement — for headings/labels so they don't all "jump" */
+.reveal-fade {
+  transform: none;
+}
+
+/* Variant: a touch more travel — for media/cards that benefit from a soft lift */
+.reveal-rise {
+  transform: translateY(26px);
+}
+
+/* Variant: slide in from the right — used by the workflow steps, which enter
+   one after another from the right of the content zone toward their place.
+   (body has overflow-x:hidden, so the off-screen start never adds a scrollbar.) */
+.reveal-slide {
+  opacity: 0;
+  transform: translateX(110px);
+}
+
+.reveal-slide.visible {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 0.5s ease,
+    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Reduced, tighter stagger */
 .reveal-delay-1 {
-  transition-delay: 0.1s;
+  transition-delay: 0.05s;
 }
 
 .reveal-delay-2 {
-  transition-delay: 0.22s;
+  transition-delay: 0.1s;
 }
 
 .reveal-delay-3 {
-  transition-delay: 0.34s;
+  transition-delay: 0.16s;
 }
 
 .reveal-delay-4 {
-  transition-delay: 0.46s;
+  transition-delay: 0.22s;
 }
 
 .reveal-delay-5 {
-  transition-delay: 0.58s;
+  transition-delay: 0.28s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ========== PILL LABEL ========== */
 .label {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  background: rgba(231, 130, 41, 0.1);
-  border: 1px solid rgba(231, 130, 41, 0.3);
-  color: var(--orange);
+  gap: 0.45rem;
+  background: var(--accent-tint);
+  border: 1px solid var(--border-bright);
+  color: var(--accent);
   font-family: "JetBrains Mono", monospace;
   font-size: 0.7rem;
   letter-spacing: 0.1em;
@@ -183,19 +231,24 @@ code,
 }
 
 /* ========== BUTTONS ========== */
+/* Every button keeps a visible outline (minimum) per art direction. */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.85rem 1.8rem;
-  border-radius: 3px;
-  font-family: "Figtree", sans-serif;
-  font-weight: 700;
+  border-radius: 6px;
+  font-family: "Manrope", sans-serif;
+  font-weight: 600;
   font-size: 0.95rem;
   letter-spacing: 0.01em;
   cursor: pointer;
-  transition: all 0.22s;
-  border: none;
+  transition:
+    background 0.22s,
+    border-color 0.22s,
+    color 0.22s,
+    transform 0.22s;
+  border: 1px solid transparent;
 }
 
 .btn-full {
@@ -204,14 +257,14 @@ code,
 }
 
 .btn-primary {
-  background: var(--orange);
-  color: #0b0b0b;
+  background: var(--accent);
+  color: #08122c;
+  border: 1px solid rgba(255, 255, 255, 0.22);
 }
 
 .btn-primary:hover {
-  background: #f0922e;
+  background: var(--accent-soft);
   transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(231, 130, 41, 0.35);
 }
 
 .btn-outline {
@@ -221,25 +274,26 @@ code,
 }
 
 .btn-outline:hover {
-  border-color: var(--orange);
-  color: var(--orange);
+  border-color: var(--accent);
+  color: var(--accent);
   transform: translateY(-1px);
 }
 
+/* Ghost now carries a minimal outline too */
 .btn-ghost {
   background: transparent;
-  color: var(--orange);
-  border: none;
-  padding-left: 0;
+  color: var(--accent);
+  border: 1px solid var(--border);
 }
 
 .btn-ghost:hover {
-  color: #f0922e;
-  text-decoration: underline;
+  border-color: var(--accent);
+  color: var(--accent-soft);
 }
 
 .btn-ghost-sm {
   font-size: 0.85rem;
+  padding: 0.6rem 1.2rem;
 }
 
 .btn-primary-lg {
@@ -256,11 +310,8 @@ code,
   margin-top: 1rem;
 }
 
-.btn-ml {
-  margin-left: 1rem;
-}
-
 /* ========== NAVIGATION ========== */
+/* index.js sets nav background to rgba(11,11,11,…) on scroll — matches --bg exactly. */
 nav {
   position: fixed;
   top: 0;
@@ -283,15 +334,18 @@ nav {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: "Figtree", sans-serif;
-  font-weight: 800;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
   font-size: 1.15rem;
   letter-spacing: -0.01em;
+  color: var(--text);
 }
 
-.nav-logo svg {
+.nav-logo svg,
+.logo-svg {
   width: 28px;
   height: 28px;
+  color: #e78229; /* brand orange logo mark */
 }
 
 .nav-links {
@@ -325,54 +379,138 @@ nav {
   gap: 0.5rem;
 }
 
+/* ========== LANG SWITCHER ========== */
+.lang-switcher select {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 4px 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lang-switcher select:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.lang-switcher select option {
+  background: var(--bg2);
+  color: var(--text);
+}
+
+/* ========== CALLOUT (dotted overshoot rule + icon) ========== */
+/* CSS-only: a dotted vertical rule that OVERSHOOTS the text (top & bottom),
+   plus a small icon to its right. Applied to the quote boxes and the hero
+   security line. No extra markup, no inline styles. */
+.problem-quote::before,
+.features-pullquote::before {
+  content: "";
+  position: absolute;
+  left: 1.55rem;
+  top: 1rem;
+  bottom: 1rem;
+  border-left: 2px dotted var(--accent);
+}
+
+.problem-quote::after,
+.features-pullquote::after {
+  content: "";
+  position: absolute;
+  left: 1.95rem;
+  top: 1.5rem;
+  width: 20px;
+  height: 20px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238aa9ff'%3E%3Cpath d='M10 7H6a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h2v1a2 2 0 0 1-2 2v2a4 4 0 0 0 4-4V8a1 1 0 0 0-1-1zm9 0h-4a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h2v1a2 2 0 0 1-2 2v2a4 4 0 0 0 4-4V8a1 1 0 0 0-1-1z'/%3E%3C/svg%3E")
+    no-repeat center / contain;
+}
+
+/* Hero security line — same treatment, but on a bare <p> (no box padding). */
+/* No dotted rule: lock icon on the LEFT, text to its right (not below). */
+.hero-sub-secure {
+  position: relative;
+  margin-top: 1.5rem;
+  padding-left: 2.5rem;
+  font-size: 1.05rem;
+  color: var(--text);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.hero-sub-secure::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.2rem;
+  width: 22px;
+  height: 22px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238aa9ff' stroke-width='1.7'%3E%3Crect x='4' y='10.5' width='16' height='11' rx='2'/%3E%3Cpath d='M8 10.5V7a4 4 0 0 1 8 0v3.5'/%3E%3C/svg%3E")
+    no-repeat left center / contain;
+}
+
+/* ========== DIVIDER ========== */
+.divider {
+  width: 48px;
+  height: 2px;
+  background: var(--accent);
+  margin: 1.5rem 0;
+  border-radius: 2px;
+}
+
 /* ========== PRESS MENTIONS ========== */
 .press-card {
-  background: linear-gradient(
-    90deg,
-    rgba(231, 130, 41, 0.2) 0%,
-    var(--bg3) 100%
-  );
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-left: 2px dotted var(--accent);
   border-radius: 6px;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 1.75rem;
   margin: 2.5rem 0 0.5rem 0;
-  /* Reduced margin below (0.5rem instead of 2.5rem) to compensate the 40px of shadow */
-  box-shadow: 0 12px 40px rgba(231, 130, 41, 0.15);
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
 
 .press-title {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.7rem;
-  font-weight: bold;
-  color: var(--text-dim);
+  font-weight: 500;
+  color: var(--text-muted);
   letter-spacing: 0.1em;
-  margin-bottom: 0.5rem;
 }
 
 .press-header {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.55rem;
 }
 
 .press-icon {
-  font-size: 1.2rem;
+  flex-shrink: 0;
+  color: var(--accent);
+  display: inline-flex;
+}
+
+.press-icon svg {
+  width: 18px;
+  height: 18px;
 }
 
 .press-url {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.8rem;
-  color: var(--orange);
-  text-decoration: none;
+  color: var(--accent);
   word-break: break-all;
 }
 
 .press-url:hover {
   text-decoration: underline;
-  color: #fff;
+  color: var(--accent-soft);
 }
 
 .press-excerpt {
@@ -380,16 +518,6 @@ nav {
   font-size: 0.95rem;
   color: var(--text);
   line-height: 1.6;
-}
-
-/* ========== ANIMATED WORKFLOW IMAGE ========== */
-.img-workflow-native {
-  display: block;
-  width: 1280px;
-  max-width: 100%;
-  height: auto;
-  margin: 0 auto;
-  border-radius: 4px;
 }
 
 /* ========== HERO ========== */
@@ -403,24 +531,32 @@ nav {
 .hero-grid-bg {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(231, 130, 41, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(231, 130, 41, 0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent);
+  background-image: radial-gradient(
+    rgba(138, 169, 255, 0.05) 1px,
+    transparent 1px
+  );
+  background-size: 5px 5px;
+  mask-image: radial-gradient(ellipse 80% 55% at 50% 0%, black, transparent);
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 55% at 50% 0%,
+    black,
+    transparent
+  );
+  pointer-events: none;
+  opacity: 0.6;
 }
 
 .hero-glow {
   position: absolute;
-  top: -120px;
+  top: -140px;
   left: 50%;
   transform: translateX(-50%);
-  width: 700px;
-  height: 500px;
+  width: 760px;
+  height: 520px;
   background: radial-gradient(
     ellipse,
-    rgba(231, 130, 41, 0.12) 0%,
-    transparent 70%
+    rgba(138, 169, 255, 0.1) 0%,
+    transparent 68%
   );
   pointer-events: none;
 }
@@ -434,8 +570,46 @@ nav {
   max-width: 820px;
 }
 
-.hero-headline .accent {
-  color: var(--orange);
+.hero-tagline-line1 {
+  display: block;
+  color: var(--text);
+}
+
+.hero-tagline-line2 {
+  display: block;
+  margin-top: 0.6rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: clamp(1rem, 2vw, 1.65rem);
+  font-weight: 500;
+  color: var(--accent);
+  letter-spacing: -0.01em;
+  min-height: 2rem;
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--accent);
+  margin-left: 3px;
+  vertical-align: text-bottom;
+  animation: cur-blink 0.7s step-end infinite;
+}
+
+.typing-cursor.done {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.5s 0.4s;
+}
+
+@keyframes cur-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .hero-sub {
@@ -444,6 +618,8 @@ nav {
   color: var(--text-dim);
   font-weight: 400;
 }
+
+/* (Hero security line styling lives in the CALLOUT section above.) */
 
 .hero-ctas {
   display: flex;
@@ -468,10 +644,10 @@ nav {
 
 .hero-stat strong {
   display: block;
-  font-family: "Figtree", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 1.6rem;
-  font-weight: 800;
-  color: var(--orange);
+  font-weight: 700;
+  color: var(--accent);
 }
 
 .hero-stat span {
@@ -483,22 +659,77 @@ nav {
   letter-spacing: 0.08em;
 }
 
+/* ========== WORKFLOW WINDOW (only around the animated image) ========== */
 .hero-workflow {
   margin-top: 4rem;
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  background: var(--bg2);
-  position: relative;
 }
 
-.workflow-caption {
-  text-align: center;
-  font-size: 0.78rem;
+.workflow-window {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg2);
+}
+
+.ww-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
   font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
   color: var(--text-muted);
-  margin-top: 0.8rem;
-  letter-spacing: 0.06em;
+}
+
+.ww-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #2a2a2e;
+}
+
+.ww-title {
+  margin-left: 0.4rem;
+  color: var(--text-dim);
+}
+
+.ww-status {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--accent);
+}
+
+.ww-status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.img-workflow-native {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Dev-comment caption: blue, left-aligned, mono, with a // prefix (not translated). */
+.workflow-caption {
+  text-align: left;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  color: var(--accent-dim);
+  margin-top: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+.workflow-caption::before {
+  content: "// ";
+  color: var(--accent);
 }
 
 /* ========== PROBLEM TABLE ========== */
@@ -506,7 +737,7 @@ nav {
   display: flex;
   flex-direction: column;
   margin-top: 3.5rem;
-  border-bottom: 3px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 .problem-row {
@@ -518,7 +749,7 @@ nav {
 }
 
 .problem-row:not(:last-child) {
-  border-bottom: 3px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 .problem-header {
@@ -539,7 +770,8 @@ nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.8;
+  color: var(--accent);
+  opacity: 0.85;
 }
 
 .problem-item {
@@ -563,15 +795,15 @@ nav {
 }
 
 .icon-bad {
-  background: rgba(220, 60, 60, 0.15);
-  color: #dc3c3c;
-  border: 1px solid rgba(220, 60, 60, 0.3);
+  background: var(--bad-tint);
+  color: var(--bad);
+  border: 1px solid var(--bad-border);
 }
 
 .icon-good {
-  background: rgba(231, 130, 41, 0.15);
-  color: var(--orange);
-  border: 1px solid rgba(231, 130, 41, 0.3);
+  background: var(--accent-tint);
+  color: var(--accent);
+  border: 1px solid var(--border-bright);
 }
 
 .problem-item p {
@@ -579,41 +811,22 @@ nav {
   color: var(--text-dim);
 }
 
+/* Quote callout (hero + problem section) */
 .problem-quote {
+  position: relative;
   margin-top: 3rem;
-  padding: 1.5rem 2rem;
-  border-left: 3px solid var(--orange);
+  padding: 1.4rem 1.75rem 1.4rem 3.5rem;
   background: var(--bg2);
-  border-radius: 0 4px 4px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
 }
 
 .problem-quote p {
-  font-family: "Figtree", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 1.05rem;
-  font-weight: 600;
-  line-height: 1.5;
-}
-
-.problem-quote .q-author {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.75rem;
-  color: var(--orange);
-  margin-top: 0.75rem;
-}
-
-/* Wrapper for the compare table block */
-.compare-block {
-  margin-top: 3.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.compare-block-title {
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
-}
-
-.compare-overflow {
-  overflow-x: auto;
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--text);
 }
 
 /* True story */
@@ -629,8 +842,8 @@ nav {
 .problem-story {
   background: var(--bg3);
   padding: 2rem;
-  border-radius: 4px;
-  border: 1px dashed var(--border-bright);
+  border-radius: 6px;
+  border: 1px solid var(--border);
 }
 
 .problem-story p {
@@ -655,7 +868,7 @@ nav {
 .eco-card {
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
   transition:
     border-color 0.3s,
@@ -682,20 +895,6 @@ nav {
   display: block;
 }
 
-/* Fallback styling for when images (docs/*.webp) are missing */
-.eco-img::after {
-  content: "Image Placeholder";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  z-index: -1;
-}
-
 .eco-content {
   padding: 2rem 1.75rem;
   flex-grow: 1;
@@ -713,7 +912,7 @@ nav {
   line-height: 1.6;
 }
 
-/* ========== WORKFLOW ========== */
+/* ========== WORKFLOW (methodology) ========== */
 .section-intro-dim {
   color: var(--text-dim);
 }
@@ -737,7 +936,7 @@ nav {
   background: linear-gradient(
     90deg,
     transparent,
-    var(--orange-dim),
+    var(--accent-dim),
     transparent
   );
   z-index: 0;
@@ -748,6 +947,23 @@ nav {
   padding: 0 1rem;
   position: relative;
   z-index: 1;
+}
+
+/* Sequential slide-in: each step arrives a beat after the previous one. */
+.workflow-steps .wf-step:nth-child(1) {
+  transition-delay: 0s;
+}
+.workflow-steps .wf-step:nth-child(2) {
+  transition-delay: 0.14s;
+}
+.workflow-steps .wf-step:nth-child(3) {
+  transition-delay: 0.28s;
+}
+.workflow-steps .wf-step:nth-child(4) {
+  transition-delay: 0.42s;
+}
+.workflow-steps .wf-step:nth-child(5) {
+  transition-delay: 0.56s;
 }
 
 .wf-number {
@@ -763,19 +979,18 @@ nav {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--orange);
+  color: var(--accent);
   letter-spacing: 0.05em;
   transition: all 0.3s;
 }
 
 .wf-step:hover .wf-number {
-  background: var(--orange-glow);
-  border-color: var(--orange);
-  box-shadow: 0 0 18px var(--orange-glow);
+  background: var(--accent-glow);
+  border-color: var(--accent);
 }
 
 .wf-step h4 {
-  font-family: "Figtree", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 0.9rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
@@ -787,13 +1002,6 @@ nav {
   font-size: 0.82rem;
   color: var(--text-dim);
   line-height: 1.5;
-}
-
-.workflow-visual {
-  margin-top: 4rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  overflow: hidden;
 }
 
 /* ========== FRICTIONLESS UX ========== */
@@ -820,30 +1028,14 @@ nav {
 
 .frictionless-img {
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
   background: var(--bg2);
-  position: relative;
 }
 
 .frictionless-img img {
   width: 100%;
   display: block;
-  position: relative;
-  z-index: 1;
-}
-
-.frictionless-img::after {
-  content: "Image Placeholder";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  z-index: 0;
 }
 
 /* ========== FEATURES ========== */
@@ -852,12 +1044,14 @@ nav {
   color: var(--text-dim);
 }
 
-/* Inline pull-quote block inside features */
+/* Pull-quote callout inside features */
 .features-pullquote {
+  position: relative;
   margin: 2.5rem 0;
-  padding: 1.5rem 2rem;
-  border-left: 3px solid var(--orange);
+  padding: 1.4rem 1.75rem 1.4rem 3.5rem;
   background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
 }
 
 .features-pullquote p {
@@ -870,11 +1064,11 @@ nav {
 .features-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5px;
+  gap: 1px;
   margin-top: 3.5rem;
   background: var(--border);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -891,16 +1085,21 @@ nav {
 }
 
 .feat-icon {
-  width: 40px;
-  height: 40px;
-  background: var(--orange-glow);
-  border: 1px solid rgba(231, 130, 41, 0.25);
-  border-radius: 4px;
+  width: 42px;
+  height: 42px;
+  background: var(--accent-tint);
+  border: 1px solid var(--border-bright);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.2rem;
-  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.feat-icon svg {
+  width: 20px;
+  height: 20px;
 }
 
 .feat-card h3 {
@@ -921,12 +1120,12 @@ nav {
   padding-top: 1rem;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.68rem;
-  color: var(--orange);
+  color: var(--accent);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-/* ========== WHO IT'S FOR ========== */
+/* ========== WHO IT'S FOR / PERSONAS (also reused by pricing) ========== */
 .personas-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -939,7 +1138,7 @@ nav {
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 2rem;
   background: var(--bg);
   position: relative;
@@ -956,7 +1155,7 @@ nav {
   left: 0;
   right: 0;
   height: 2px;
-  background: var(--orange);
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s;
@@ -974,7 +1173,7 @@ nav {
 .persona-role {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.7rem;
-  color: var(--orange);
+  color: var(--accent);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom: 0.75rem;
@@ -985,16 +1184,15 @@ nav {
   color: var(--text-dim);
 }
 
-/* Bubble */
 .persona-bubble {
   margin: 0.75rem 0 3rem 0;
   position: relative;
-  background: rgba(220, 60, 60, 0.1);
-  border: 1px solid rgba(220, 60, 60, 0.25);
+  background: var(--bad-tint);
+  border: 1px solid var(--bad-border);
   border-radius: 12px;
   padding: 1rem;
   font-size: 1rem;
-  color: #c08080;
+  color: #c7a3a3;
   font-style: italic;
 }
 
@@ -1017,7 +1215,7 @@ nav {
 
 .video-card {
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
   transition: border-color 0.3s;
 }
@@ -1028,7 +1226,7 @@ nav {
 
 .video-card iframe {
   width: 100%;
-  aspect-ratio: 16/9;
+  aspect-ratio: 16 / 9;
   display: block;
   border: none;
 }
@@ -1041,14 +1239,14 @@ nav {
 .video-card-meta .v-label {
   font-family: "JetBrains Mono", monospace;
   font-size: 0.68rem;
-  color: var(--orange);
+  color: var(--accent);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom: 0.4rem;
 }
 
 .video-card-meta h4 {
-  font-family: "Figtree", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
 }
@@ -1093,19 +1291,19 @@ nav {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: var(--orange-glow);
-  border: 1px solid rgba(231, 130, 41, 0.4);
+  background: var(--accent-tint);
+  border: 1px solid var(--border-bright);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: "JetBrains Mono", monospace;
   font-size: 0.8rem;
   font-weight: 500;
-  color: var(--orange);
+  color: var(--accent);
 }
 
 .setup-step h4 {
-  font-family: "Figtree", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
@@ -1118,7 +1316,7 @@ nav {
 
 .setup-img {
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -1134,7 +1332,7 @@ nav {
   color: var(--text-muted);
 }
 
-/* ========== SOVEREIGNTY ========== */
+/* ========== SOVEREIGNTY / EXECUTION MODEL (item grid) ========== */
 .item-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -1142,14 +1340,13 @@ nav {
   margin-top: 3rem;
 }
 
-/* Second item-grid row in execution model (1.5px gap instead of 3rem) */
 .item-grid-gap {
-  margin-top: 1.5px;
+  margin-top: 1.5rem;
 }
 
 .item-card {
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 1.75rem;
   background: var(--bg);
   transition: border-color 0.3s;
@@ -1160,12 +1357,32 @@ nav {
 }
 
 .item-card .item-icon {
-  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--accent-tint);
+  border: 1px solid var(--border-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
   margin-bottom: 1rem;
 }
 
+.item-card .item-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+/* "Blocked" capability icons (execution model — no-access row) */
+.item-card .item-icon-block {
+  background: var(--bad-tint);
+  border-color: var(--bad-border);
+  color: var(--bad);
+}
+
 .item-card h4 {
-  font-family: "Figtree", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
@@ -1198,7 +1415,6 @@ nav {
   border-bottom: 1px solid var(--border);
 }
 
-/* Let the text column shrink correctly inside the flex row on narrow screens. */
 .cred-item > :last-child {
   min-width: 0;
   flex: 1 1 auto;
@@ -1214,15 +1430,20 @@ nav {
   height: 44px;
   background: var(--bg3);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+.cred-icon svg {
+  width: 20px;
+  height: 20px;
 }
 
 .cred-item h4 {
-  font-family: "Figtree", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   margin-bottom: 0.3rem;
@@ -1236,10 +1457,10 @@ nav {
 .proof-numbers {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5px;
+  gap: 1px;
   background: var(--border);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -1251,10 +1472,10 @@ nav {
 
 .proof-num strong {
   display: block;
-  font-family: "Figtree", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 2.2rem;
-  font-weight: 800;
-  color: var(--orange);
+  font-weight: 700;
+  color: var(--accent);
   line-height: 1;
   margin-bottom: 0.5rem;
 }
@@ -1270,7 +1491,7 @@ nav {
   margin-top: 2rem;
   padding: 1.5rem;
   border: 1px solid var(--border-bright);
-  border-radius: 6px;
+  border-radius: 8px;
   background: var(--bg2);
 }
 
@@ -1280,13 +1501,12 @@ nav {
   margin-bottom: 0.75rem;
 }
 
-/* Engineering philosophy block (proof right column) */
 .proof-philosophy {
   margin-top: 2rem;
   padding: 2rem;
   background: var(--bg3);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .proof-philosophy .label {
@@ -1309,23 +1529,34 @@ nav {
 .proof-philosophy-author {
   font-size: 0.78rem;
   font-family: "JetBrains Mono", monospace;
-  color: var(--orange);
+  color: var(--accent);
 }
 
 /* ========== PRICING ========== */
+/* Only two plans — keep them as two full-width columns (never an empty third). */
+#pricing .personas-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 600px) {
+  #pricing .personas-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .pricing-price {
   margin: auto 0 1.5rem 0;
   padding: 1rem;
   background: var(--bg2);
-  border-radius: 4px;
+  border-radius: 6px;
   border: 1px solid var(--border);
 }
 
 .pricing-price strong {
-  font-family: "Figtree", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 1.7rem;
-  font-weight: 800;
-  color: var(--orange);
+  font-weight: 700;
+  color: var(--accent);
   display: block;
 }
 
@@ -1353,13 +1584,12 @@ nav {
   height: 500px;
   background: radial-gradient(
     ellipse,
-    rgba(231, 130, 41, 0.1) 0%,
+    rgba(138, 169, 255, 0.09) 0%,
     transparent 70%
   );
   pointer-events: none;
 }
 
-/* Container inside #download needs relative positioning + z-index */
 .download-container {
   position: relative;
   z-index: 2;
@@ -1384,6 +1614,10 @@ nav {
   color: var(--text-muted);
 }
 
+.accent-orange {
+  color: var(--accent);
+}
+
 /* ========== FOOTER ========== */
 footer {
   background: var(--bg2);
@@ -1404,20 +1638,21 @@ footer {
   max-width: 280px;
 }
 
-/* Footer logo: same layout as .nav-logo but 24px svg + 1.1rem text */
 .footer-logo {
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  font-family: "Figtree", sans-serif;
-  font-weight: 800;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
   font-size: 1.1rem;
   letter-spacing: -0.01em;
+  color: var(--text);
 }
 
 .footer-logo svg {
   width: 24px;
   height: 24px;
+  color: #e78229; /* brand orange logo mark */
 }
 
 .footer-copyright {
@@ -1428,7 +1663,7 @@ footer {
 }
 
 .footer-col h5 {
-  font-family: "Figtree", sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -1452,7 +1687,7 @@ footer {
 }
 
 .footer-col a:hover {
-  color: var(--orange);
+  color: var(--accent);
 }
 
 .footer-bottom {
@@ -1481,82 +1716,12 @@ footer {
   color: var(--text-dim);
 }
 
-/* ========== INLINE SVG LOGO SIZING ========== */
-.logo-svg {
-  width: 28px;
-  height: 28px;
+.footer-legal-link:hover {
+  color: var(--accent);
 }
 
-/* ========== SEPARATOR ========== */
-.divider {
-  width: 48px;
-  height: 2px;
-  background: var(--orange);
-  margin: 1.5rem 0;
-}
-
-/* ========== COMPARISON TABLE ========== */
-.compare-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 2.5rem;
-  font-size: 0.88rem;
-}
-
-.compare-table th {
-  padding: 0.85rem 1.25rem;
-  text-align: left;
-  font-family: "Figtree", sans-serif;
-  font-weight: 700;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  border-bottom: 1px solid var(--border);
-}
-
-.compare-table th:first-child {
-  color: var(--text-muted);
-}
-
-.compare-table th.th-bad {
-  color: #c08080;
-}
-
-.compare-table th.th-good {
-  color: var(--orange);
-}
-
-.compare-table td {
-  padding: 0.85rem 1.25rem;
-  border-bottom: 1px solid var(--border);
-  color: var(--text-dim);
-  vertical-align: top;
-}
-
-.compare-table td:first-child {
-  color: var(--text);
-  font-weight: 500;
-}
-
-.compare-table tr:last-child td {
-  border-bottom: none;
-}
-
-.compare-table .bad {
-  color: #c08080;
-}
-
-.compare-table .good {
-  color: var(--orange);
-}
-
-.compare-table tr:hover td {
-  background: var(--bg3);
-}
-
-/* ========== MOBILE ========== */
+/* ========== MOBILE (breakpoints identical to source) ========== */
 @media (max-width: 900px) {
-  /* The hero stats become a 2×2 grid before translated labels start colliding. */
   .hero-stat-row {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1612,7 +1777,6 @@ footer {
 }
 
 @media (max-width: 600px) {
-  /* Tighten dense proof and hero blocks on the smallest phone widths. */
   .hero-stat-row {
     gap: 1.25rem 0.85rem;
   }
@@ -1662,75 +1826,4 @@ footer {
   .footer-inner {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-
-/* ========== TAGLINE TYPING EFFECT ========== */
-.hero-tagline-line1 {
-  display: block;
-  color: var(--text);
-}
-
-.hero-tagline-line2 {
-  display: block;
-  margin-top: 0.6rem;
-  font-family: "JetBrains Mono", monospace;
-  font-size: clamp(1rem, 2vw, 1.65rem);
-  font-weight: 500;
-  color: var(--orange);
-  letter-spacing: -0.01em;
-  min-height: 2rem;
-}
-
-.typing-cursor {
-  display: inline-block;
-  width: 2px;
-  height: 1em;
-  background: var(--orange);
-  margin-left: 3px;
-  vertical-align: text-bottom;
-  animation: cur-blink 0.7s step-end infinite;
-}
-
-.typing-cursor.done {
-  animation: none;
-  opacity: 0;
-  transition: opacity 0.5s 0.4s;
-}
-
-@keyframes cur-blink {
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0;
-  }
-}
-
-/* ========== HIGHLIGHT ACCENT IN HEADINGS ========== */
-.accent-orange {
-  color: var(--orange);
-}
-
-/* ========== LANG SWITCHER ========== */
-.lang-switcher select {
-  background: transparent;
-  color: var(--text-dim);
-  border: 1px solid var(--border);
-  padding: 4px 8px;
-  font-size: 0.8rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.lang-switcher select:hover {
-  border-color: var(--orange);
-  color: var(--text);
-}
-
-.lang-switcher select option {
-  background: var(--bg2);
-  color: var(--text);
 }

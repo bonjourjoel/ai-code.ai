@@ -8,21 +8,21 @@
     <loc>https://ai-code.ai/fr/</loc>
   </url>
   <url>
-    <loc>https://ai-code.ai/data-sovereignty</loc>
+    <loc>https://ai-code.ai/topics/data-sovereignty</loc>
   </url>
   <url>
-    <loc>https://ai-code.ai/legacy</loc>
+    <loc>https://ai-code.ai/topics/legacy</loc>
   </url>
   <url>
-    <loc>https://ai-code.ai/technical-debt</loc>
+    <loc>https://ai-code.ai/topics/technical-debt</loc>
   </url>
   <url>
-    <loc>https://ai-code.ai/vs-claude-code</loc>
+    <loc>https://ai-code.ai/topics/vs-claude-code</loc>
   </url>
   <url>
-    <loc>https://ai-code.ai/vs-copilot</loc>
+    <loc>https://ai-code.ai/topics/vs-copilot</loc>
   </url>
   <url>
-    <loc>https://ai-code.ai/vs-cursor</loc>
+    <loc>https://ai-code.ai/topics/vs-cursor</loc>
   </url>
 </urlset>
