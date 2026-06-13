@@ -31,3 +31,6 @@ specification and human approval workflow before any code touches disk.
 ## Pricing
 - Free: individual developers, organizations under 10 employees
 - Pro: €30,000/year per tier of 50 users
+
+## External references
+- SaaSHub independent editorial review; App and metadata officially verified and approved on SaasHub : https://www.saashub.com/aicode-ai
