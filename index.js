@@ -441,8 +441,45 @@ function createHeroImageLightbox() {
     image: image,
     activeSourceImage: null,
     animationTimer: null,
+    animationSessionId: 0,
     ghost: null,
   };
+}
+
+/**
+ * Resolves on the next animation frame so layout-dependent measurements can be taken after DOM updates.
+ */
+function waitForNextAnimationFrame() {
+  return new Promise(function (resolve) {
+    window.requestAnimationFrame(function () {
+      resolve();
+    });
+  });
+}
+
+/**
+ * Waits until an image element has a decoded bitmap before relying on its final rendered geometry.
+ */
+function waitForImageReady(image) {
+  if (!image) {
+    return Promise.resolve();
+  }
+
+  // If the browser already has a decoded bitmap, geometry is stable enough to measure immediately.
+  if (image.complete && image.naturalWidth > 0) {
+    return Promise.resolve();
+  }
+
+  if (typeof image.decode === "function") {
+    return image.decode().catch(function () {
+      return undefined;
+    });
+  }
+
+  return new Promise(function (resolve) {
+    image.addEventListener("load", resolve, { once: true });
+    image.addEventListener("error", resolve, { once: true });
+  });
 }
 
 /**
@@ -516,20 +553,19 @@ function buildHeroImageLightboxSourceFrameRect(sourceRect, metrics) {
 /**
  * Creates the animated ghost frame that visually travels between the card screenshot and the fullscreen slot.
  */
-function createHeroImageLightboxGhost(imageUrl, imageAlt, fromRect) {
+function createHeroImageLightboxGhost(sourceImage, fromRect) {
   var ghost = document.createElement("div");
-  var ghostImage = document.createElement("img");
+  var ghostImage = sourceImage.cloneNode(false);
   var ghostClose = document.createElement("span");
 
   // The ghost reproduces the fullscreen frame shell so the border and close control
   // are already visible while the zoom is travelling from the card.
   ghost.className = "image-lightbox-ghost";
 
-  // Mirror the clicked screenshot in the travelling shell to keep the zoom continuous.
+  // Clone an already loaded image node so the travelling shell reuses a ready bitmap instead
+  // of racing a fresh network/decode path during the zoom animation.
   ghostImage.className = "image-lightbox-ghost-image";
-  ghostImage.src = imageUrl;
-  ghostImage.alt = imageAlt || "";
-  ghostImage.decoding = "async";
+  ghostImage.alt = sourceImage.alt || "";
 
   // The close glyph is visual only on the ghost: the overlay still handles every click.
   ghostClose.className = "image-lightbox-ghost-close";
@@ -563,14 +599,16 @@ function resetHeroImageLightbox(lightbox) {
 /**
  * Opens the shared overlay by animating a ghost from the clicked card image to the fullscreen slot.
  */
-function openHeroImageLightbox(lightbox, sourceImage) {
+async function openHeroImageLightbox(lightbox, sourceImage) {
   if (!lightbox || !sourceImage) return;
 
   var sourceRect = sourceImage.getBoundingClientRect();
   var imageUrl = sourceImage.currentSrc || sourceImage.src;
+  var sessionId = lightbox.animationSessionId + 1;
 
   // Reset any previous animation state before starting a fresh zoom from the clicked thumbnail.
   cancelHeroImageLightboxAnimation(lightbox);
+  lightbox.animationSessionId = sessionId;
   lightbox.activeSourceImage = sourceImage;
   lightbox.image.src = imageUrl;
   lightbox.image.alt = sourceImage.alt || "";
@@ -583,57 +621,70 @@ function openHeroImageLightbox(lightbox, sourceImage) {
   lightbox.overlay.setAttribute("aria-hidden", "false");
   document.body.classList.add("has-image-lightbox");
 
-  // Wait for the overlay layout, then animate a full frame shell toward the real fullscreen slot.
-  window.requestAnimationFrame(function () {
-    var frameMetrics = getHeroImageLightboxFrameMetrics(lightbox);
-    var sourceFrameRect = buildHeroImageLightboxSourceFrameRect(
-      sourceRect,
-      frameMetrics,
-    );
-    var targetRect = lightbox.frame.getBoundingClientRect();
-    var ghost = createHeroImageLightboxGhost(
-      imageUrl,
-      sourceImage.alt,
-      sourceFrameRect,
-    );
+  // Wait until the fullscreen image is decoded and the overlay layout has settled before
+  // measuring the target frame. This removes the intermittent zero-height / no-image race.
+  await waitForImageReady(lightbox.image);
+  await waitForNextAnimationFrame();
+  await waitForNextAnimationFrame();
 
-    lightbox.ghost = ghost;
-    document.body.appendChild(ghost);
+  if (sessionId !== lightbox.animationSessionId || lightbox.overlay.hidden) {
+    return;
+  }
 
-    // Fade in the shell immediately and start the real zoom on the next frame so the browser
-    // captures the thumbnail-aligned geometry before we move the whole framed preview.
-    window.requestAnimationFrame(function () {
-      ghost.style.transition =
-        "top " +
-        HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
-        "ms " +
-        HERO_IMAGE_LIGHTBOX_EASING +
-        ", left " +
-        HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
-        "ms " +
-        HERO_IMAGE_LIGHTBOX_EASING +
-        ", width " +
-        HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
-        "ms " +
-        HERO_IMAGE_LIGHTBOX_EASING +
-        ", height " +
-        HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
-        "ms " +
-        HERO_IMAGE_LIGHTBOX_EASING +
-        ", opacity 0.18s ease";
-      ghost.classList.add("is-visible");
-      ghost.classList.remove("is-chrome-hidden");
-      applyHeroImageLightboxGhostRect(ghost, targetRect);
-    });
+  var frameMetrics = getHeroImageLightboxFrameMetrics(lightbox);
+  var sourceFrameRect = buildHeroImageLightboxSourceFrameRect(
+    sourceRect,
+    frameMetrics,
+  );
+  var targetRect = lightbox.frame.getBoundingClientRect();
+  var ghost = createHeroImageLightboxGhost(sourceImage, sourceFrameRect);
 
-    lightbox.animationTimer = window.setTimeout(function () {
-      // Reveal the real fullscreen frame only after the ghost arrives so the zoom remains continuous.
-      lightbox.image.classList.add("is-visible");
-      lightbox.overlay.classList.remove("is-measuring");
-      lightbox.animationTimer = null;
-      removeHeroImageLightboxGhost(lightbox);
-    }, HERO_IMAGE_LIGHTBOX_ANIMATION_MS);
-  });
+  lightbox.ghost = ghost;
+  document.body.appendChild(ghost);
+
+  // Fade in the shell immediately and start the real zoom on the next frame so the browser
+  // captures the thumbnail-aligned geometry before we move the whole framed preview.
+  await waitForNextAnimationFrame();
+
+  if (sessionId !== lightbox.animationSessionId || lightbox.overlay.hidden) {
+    removeHeroImageLightboxGhost(lightbox);
+    return;
+  }
+
+  ghost.style.transition =
+    "top " +
+    HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
+    "ms " +
+    HERO_IMAGE_LIGHTBOX_EASING +
+    ", left " +
+    HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
+    "ms " +
+    HERO_IMAGE_LIGHTBOX_EASING +
+    ", width " +
+    HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
+    "ms " +
+    HERO_IMAGE_LIGHTBOX_EASING +
+    ", height " +
+    HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
+    "ms " +
+    HERO_IMAGE_LIGHTBOX_EASING +
+    ", opacity 0.18s ease";
+  ghost.classList.add("is-visible");
+  ghost.classList.remove("is-chrome-hidden");
+  applyHeroImageLightboxGhostRect(ghost, targetRect);
+
+  lightbox.animationTimer = window.setTimeout(function () {
+    // Ignore stale completion callbacks if a newer open/close cycle started meanwhile.
+    if (sessionId !== lightbox.animationSessionId) {
+      return;
+    }
+
+    // Reveal the real fullscreen frame only after the ghost arrives so the zoom remains continuous.
+    lightbox.image.classList.add("is-visible");
+    lightbox.overlay.classList.remove("is-measuring");
+    lightbox.animationTimer = null;
+    removeHeroImageLightboxGhost(lightbox);
+  }, HERO_IMAGE_LIGHTBOX_ANIMATION_MS);
 }
 
 /**
@@ -643,6 +694,7 @@ function closeHeroImageLightbox(lightbox) {
   if (!lightbox || lightbox.overlay.hidden) return;
 
   var sourceImage = lightbox.activeSourceImage;
+  var sessionId = lightbox.animationSessionId + 1;
   var canAnimateBack =
     sourceImage &&
     sourceImage.isConnected &&
@@ -651,6 +703,7 @@ function closeHeroImageLightbox(lightbox) {
 
   // Stop any pending open animation so the closing zoom uses the current visible geometry.
   cancelHeroImageLightboxAnimation(lightbox);
+  lightbox.animationSessionId = sessionId;
 
   // If the source thumbnail is no longer measurable, fall back to an immediate teardown.
   if (!canAnimateBack) {
@@ -664,12 +717,7 @@ function closeHeroImageLightbox(lightbox) {
     sourceImage.getBoundingClientRect(),
     frameMetrics,
   );
-  var imageUrl = lightbox.image.currentSrc || lightbox.image.src;
-  var ghost = createHeroImageLightboxGhost(
-    imageUrl,
-    lightbox.image.alt,
-    fromRect,
-  );
+  var ghost = createHeroImageLightboxGhost(lightbox.image, fromRect);
 
   // Hide the real fullscreen content instantly so only the framed ghost remains visible during zoom-out.
   lightbox.overlay.classList.add("is-closing");
@@ -706,6 +754,10 @@ function closeHeroImageLightbox(lightbox) {
   });
 
   lightbox.animationTimer = window.setTimeout(function () {
+    if (sessionId !== lightbox.animationSessionId) {
+      return;
+    }
+
     // Tear everything down only after the ghost lands back on the card screenshot.
     lightbox.animationTimer = null;
     resetHeroImageLightbox(lightbox);
