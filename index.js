@@ -97,6 +97,134 @@ function handlePricingClick(event, plan) {
   );
 })();
 
+// ---- Hero screenshot lightbox ----
+const HERO_IMAGE_LIGHTBOX_ANIMATION_MS = 180;
+
+/**
+ * Returns the UI labels for the shared lightbox based on the current document language.
+ */
+function getHeroImageLightboxLabels() {
+  var isFrench = document.documentElement.lang === "fr";
+
+  return {
+    close: isFrench
+      ? "Fermer l'aperçu du screenshot"
+      : "Close screenshot preview",
+    dialog: isFrench
+      ? "Aperçu agrandi du screenshot"
+      : "Expanded screenshot preview",
+  };
+}
+
+/**
+ * Builds the single overlay reused by every hero screenshot.
+ */
+function createHeroImageLightbox() {
+  var labels = getHeroImageLightboxLabels();
+  var overlay = document.createElement("div");
+  var frame = document.createElement("div");
+  var closeButton = document.createElement("button");
+  var image = document.createElement("img");
+
+  // Keep the overlay inert while closed so it does not interfere with page clicks.
+  overlay.className = "image-lightbox";
+  overlay.hidden = true;
+  overlay.setAttribute("aria-hidden", "true");
+
+  // The dialog frame only carries layout and semantics. Clicks still bubble to the overlay
+  // so the whole screen, including the enlarged screenshot area, closes the preview.
+  frame.className = "image-lightbox-frame";
+  frame.setAttribute("role", "dialog");
+  frame.setAttribute("aria-modal", "true");
+  frame.setAttribute("aria-label", labels.dialog);
+
+  // The close control remains visible and explicit, even though every overlay click closes too.
+  closeButton.className = "image-lightbox-close";
+  closeButton.type = "button";
+  closeButton.setAttribute("aria-label", labels.close);
+  closeButton.setAttribute("title", labels.close);
+  closeButton.textContent = "×";
+
+  // The preview image is updated on demand from the clicked hero card.
+  image.className = "image-lightbox-image";
+  image.alt = "";
+
+  frame.appendChild(closeButton);
+  frame.appendChild(image);
+  overlay.appendChild(frame);
+  document.body.appendChild(overlay);
+
+  return {
+    overlay: overlay,
+    image: image,
+    closeTimer: null,
+  };
+}
+
+/**
+ * Opens the shared overlay with the currently clicked hero screenshot.
+ */
+function openHeroImageLightbox(lightbox, sourceImage) {
+  if (!lightbox || !sourceImage) return;
+
+  // Cancel any pending close animation before swapping content.
+  if (lightbox.closeTimer !== null) {
+    window.clearTimeout(lightbox.closeTimer);
+    lightbox.closeTimer = null;
+  }
+
+  // Mirror the visible hero asset so the fullscreen preview always matches the card.
+  lightbox.image.src = sourceImage.currentSrc || sourceImage.src;
+  lightbox.image.alt = sourceImage.alt || "";
+
+  // Reveal the overlay first, then trigger the CSS transition on the next frame.
+  lightbox.overlay.hidden = false;
+  lightbox.overlay.setAttribute("aria-hidden", "false");
+  document.body.classList.add("has-image-lightbox");
+  window.requestAnimationFrame(function () {
+    lightbox.overlay.classList.add("is-open");
+  });
+}
+
+/**
+ * Starts the close transition, then hides the overlay when the animation is finished.
+ */
+function closeHeroImageLightbox(lightbox) {
+  if (!lightbox || lightbox.overlay.hidden) return;
+
+  // Drop the open state immediately so CSS can animate the fade-out/scale-out sequence.
+  lightbox.overlay.classList.remove("is-open");
+  lightbox.overlay.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("has-image-lightbox");
+
+  lightbox.closeTimer = window.setTimeout(function () {
+    // Hide and reset the image only after the animation so reopening stays flicker-free.
+    lightbox.overlay.hidden = true;
+    lightbox.image.removeAttribute("src");
+    lightbox.image.alt = "";
+    lightbox.closeTimer = null;
+  }, HERO_IMAGE_LIGHTBOX_ANIMATION_MS);
+}
+
+// Bind the hero card screenshots to the shared fullscreen overlay.
+(function () {
+  var triggers = document.querySelectorAll(".hero-eco-card .eco-img-button");
+  if (!triggers.length) return;
+
+  var lightbox = createHeroImageLightbox();
+
+  triggers.forEach(function (trigger) {
+    trigger.addEventListener("click", function () {
+      var sourceImage = trigger.querySelector("img");
+      openHeroImageLightbox(lightbox, sourceImage);
+    });
+  });
+
+  lightbox.overlay.addEventListener("click", function () {
+    closeHeroImageLightbox(lightbox);
+  });
+})();
+
 // ---- Lang utils ----
 const SUPPORTED_LANGS = ["en", "fr"];
 const DEFAULT_LANG = "en";

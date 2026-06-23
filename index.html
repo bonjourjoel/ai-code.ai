@@ -124,19 +124,65 @@
             ></span>
           </h1>
           <div class="divider reveal reveal-delay-2"></div>
-          <p class="hero-sub reveal reveal-delay-2">
-            Your legacy code is getting more and more expensive to maintain.
-            After years of turnover, nobody knows how it works anymore. AICode
-            is the only AI coding assistant specifically designed to solve that.
-            It constrains the model to respect your project's global context,
-            and catches AI mistakes
-            <em>before</em> they reach your codebase.
-          </p>
+          <!-- Reuse the ROI card structure in the hero while keeping a fixed media row. -->
+          <div class="economics-grid hero-cards">
+            <div class="eco-card hero-eco-card reveal reveal-delay-1">
+              <div class="eco-img">
+                <!-- Keep the same asset as the card preview so the lightbox opens the exact screenshot shown in the hero. -->
+                <button class="eco-img-button" type="button">
+                  <img
+                    src="/docs/hero-security-en.png"
+                    alt="Security-first architecture with local indexing and private Azure routing"
+                  />
+                </button>
+              </div>
+              <div class="eco-content">
+                <h3>Your data stays with you</h3>
+                <p>
+                  Your code never leaves your infrastructure. Local index,
+                  queries routed to your private Azure tenant.
+                </p>
+              </div>
+            </div>
 
-          <p class="hero-sub hero-sub-secure reveal reveal-delay-2">
-            Your full codebase never leaves your machine. Only surgical context
-            excerpts reach your private LLM provider.
-          </p>
+            <div class="eco-card hero-eco-card reveal reveal-delay-2">
+              <div class="eco-img">
+                <!-- Reuse the inline screenshot source for the large preview to avoid divergent media between card and overlay. -->
+                <button class="eco-img-button" type="button">
+                  <img
+                    src="/docs/hero-index-en.png"
+                    alt="5D index mapping architecture, dependencies, and side effects"
+                  />
+                </button>
+              </div>
+              <div class="eco-content">
+                <h3>Understands the code nobody understands anymore</h3>
+                <p>
+                  The 5D index maps dependencies, global architecture, and side
+                  effects, even without documentation.
+                </p>
+              </div>
+            </div>
+
+            <div class="eco-card hero-eco-card reveal reveal-delay-3">
+              <div class="eco-img">
+                <!-- The clickable wrapper is the affordance for the fullscreen screenshot interaction. -->
+                <button class="eco-img-button" type="button">
+                  <img
+                    src="/docs/hero-refine-en.png"
+                    alt="Specification audit catching architectural issues before coding"
+                  />
+                </button>
+              </div>
+              <div class="eco-content">
+                <h3>Detects errors before the code is written</h3>
+                <p>
+                  AICode automatically audits the specification and corrects
+                  architectural issues before code generation.
+                </p>
+              </div>
+            </div>
+          </div>
 
           <div class="problem-quote reveal">
             <p>

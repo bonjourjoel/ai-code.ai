@@ -345,7 +345,8 @@ nav {
 .logo-svg {
   width: 28px;
   height: 28px;
-  color: #e78229; /* brand orange logo mark */
+  color: #e78229;
+  /* brand orange logo mark */
 }
 
 .nav-links {
@@ -426,29 +427,6 @@ nav {
   height: 20px;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238aa9ff'%3E%3Cpath d='M10 7H6a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h2v1a2 2 0 0 1-2 2v2a4 4 0 0 0 4-4V8a1 1 0 0 0-1-1zm9 0h-4a1 1 0 0 0-1 1v4a1 1 0 0 0 1 1h2v1a2 2 0 0 1-2 2v2a4 4 0 0 0 4-4V8a1 1 0 0 0-1-1z'/%3E%3C/svg%3E")
     no-repeat center / contain;
-}
-
-/* Hero security line — same treatment, but on a bare <p> (no box padding). */
-/* No dotted rule: lock icon on the LEFT, text to its right (not below). */
-.hero-sub-secure {
-  position: relative;
-  margin-top: 1.5rem;
-  padding-left: 2.5rem;
-  font-size: 1.05rem;
-  color: var(--text);
-  font-weight: 500;
-  line-height: 1.6;
-}
-
-.hero-sub-secure::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.2rem;
-  width: 22px;
-  height: 22px;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238aa9ff' stroke-width='1.7'%3E%3Crect x='4' y='10.5' width='16' height='11' rx='2'/%3E%3Cpath d='M8 10.5V7a4 4 0 0 1 8 0v3.5'/%3E%3C/svg%3E")
-    no-repeat left center / contain;
 }
 
 /* ========== DIVIDER ========== */
@@ -607,25 +585,192 @@ nav {
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0;
   }
 }
-
-.hero-sub {
-  margin-top: 1.5rem;
-  font-size: 1.15rem;
-  color: var(--text-dim);
-  font-weight: 400;
-}
-
-/* (Hero security line styling lives in the CALLOUT section above.) */
 
 .hero-ctas {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   margin-top: 2.5rem;
+}
+
+/* Hero cards reuse the ROI card skeleton, but keep a fixed media slot so
+   different image heights do not shift titles or descriptions vertically. */
+.hero-cards {
+  margin-top: 2rem;
+  align-items: stretch;
+}
+
+.hero-eco-card .eco-img {
+  aspect-ratio: 16 / 10;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1.25rem 1.25rem 0;
+}
+
+.hero-eco-card .eco-img-button {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: zoom-in;
+  position: relative;
+}
+
+.hero-eco-card .eco-img-button::before {
+  content: "";
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.85rem;
+  width: 2.65rem;
+  height: 2.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-bright);
+  background: rgba(11, 11, 11, 0.86);
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.hero-eco-card .eco-img-button::after {
+  content: "";
+  position: absolute;
+  right: 1.68rem;
+  bottom: 1.68rem;
+  width: 1rem;
+  height: 1rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238aa9ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='6'/%3E%3Cpath d='m20 20-4.35-4.35'/%3E%3C/svg%3E")
+    no-repeat center / contain;
+  pointer-events: none;
+}
+
+.hero-eco-card .eco-img-button:hover::before,
+.hero-eco-card .eco-img-button:focus-visible::before {
+  transform: scale(1.05);
+  border-color: var(--accent);
+  background: rgba(8, 12, 19, 0.96);
+}
+
+.hero-eco-card .eco-img-button:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 0.3rem;
+  border-radius: 0.75rem;
+}
+
+.hero-eco-card .eco-img-button img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: top center;
+  display: block;
+}
+
+.hero-eco-card .eco-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hero-eco-card .eco-content h3 {
+  min-height: 2.4em;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0;
+}
+
+.hero-eco-card .eco-content p {
+  margin-top: 0;
+}
+
+/* The hero screenshots share a single fixed overlay so the open/close behavior
+   stays consistent across every card and keeps the click target on the full screen. */
+body.has-image-lightbox {
+  overflow: hidden;
+}
+
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(4, 6, 10, 0.9);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.18s ease,
+    visibility 0.18s ease;
+}
+
+.image-lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.image-lightbox-frame {
+  position: relative;
+  width: min(92vw, 96rem);
+  max-height: 90vh;
+  padding: 1rem;
+  border: 1px solid var(--border-bright);
+  border-radius: 1rem;
+  background: rgba(11, 11, 11, 0.96);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
+  transform: scale(0.965);
+  transition: transform 0.18s ease;
+}
+
+.image-lightbox.is-open .image-lightbox-frame {
+  transform: scale(1);
+}
+
+.image-lightbox-image {
+  width: 100%;
+  max-height: calc(90vh - 2rem);
+  display: block;
+  object-fit: contain;
+  border-radius: 0.65rem;
+  background: var(--bg3);
+}
+
+.image-lightbox-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-bright);
+  border-radius: 999px;
+  background: rgba(8, 12, 19, 0.96);
+  color: var(--text);
+  font-size: 1.7rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.image-lightbox-close:hover,
+.image-lightbox-close:focus-visible {
+  transform: scale(1.05);
+  border-color: var(--accent);
+  background: rgba(11, 11, 11, 1);
 }
 
 .hero-stat {
@@ -953,15 +1098,19 @@ nav {
 .workflow-steps .wf-step:nth-child(1) {
   transition-delay: 0s;
 }
+
 .workflow-steps .wf-step:nth-child(2) {
   transition-delay: 0.14s;
 }
+
 .workflow-steps .wf-step:nth-child(3) {
   transition-delay: 0.28s;
 }
+
 .workflow-steps .wf-step:nth-child(4) {
   transition-delay: 0.42s;
 }
+
 .workflow-steps .wf-step:nth-child(5) {
   transition-delay: 0.56s;
 }
@@ -1652,7 +1801,8 @@ footer {
 .footer-logo svg {
   width: 24px;
   height: 24px;
-  color: #e78229; /* brand orange logo mark */
+  color: #e78229;
+  /* brand orange logo mark */
 }
 
 .footer-copyright {
@@ -1777,6 +1927,27 @@ footer {
 }
 
 @media (max-width: 600px) {
+  .image-lightbox {
+    padding: 0.85rem;
+  }
+
+  .image-lightbox-frame {
+    width: 100%;
+    padding: 0.7rem;
+    border-radius: 0.8rem;
+  }
+
+  .image-lightbox-image {
+    max-height: calc(90vh - 1.4rem);
+  }
+
+  .image-lightbox-close {
+    top: 0.65rem;
+    right: 0.65rem;
+    width: 2.7rem;
+    height: 2.7rem;
+  }
+
   .hero-stat-row {
     gap: 1.25rem 0.85rem;
   }
