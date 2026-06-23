@@ -36,6 +36,68 @@ function handlePricingClick(event, plan) {
   }
 }
 
+// ---- Hero cards sequential desktop entrance ----
+const HERO_CARD_SEQUENCE_DESKTOP_QUERY = "(min-width: 901px)";
+const HERO_CARD_SEQUENCE_ANIMATION_NAME = "heroCardSlideInBounce";
+const WORKFLOW_STEP_SEQUENCE_ANIMATION_NAME = "workflowStepSlideInBounce";
+
+/**
+ * Returns whether the hero cards should use the desktop-only sequential entrance.
+ */
+function isHeroCardSequenceDesktop() {
+  return window.matchMedia(HERO_CARD_SEQUENCE_DESKTOP_QUERY).matches;
+}
+
+/**
+ * Mirrors the current breakpoint into the root element so CSS can switch the
+ * hero cards between desktop sequencing and the static mobile layout.
+ */
+function syncHeroCardSequenceDesktopMode() {
+  document.documentElement.classList.toggle(
+    "desktop-hero-card-seq",
+    isHeroCardSequenceDesktop(),
+  );
+  document.documentElement.classList.toggle(
+    "desktop-roi-card-seq",
+    isHeroCardSequenceDesktop(),
+  );
+}
+
+/**
+ * Enables the sequential workflow-step entrance unless the user requested reduced motion.
+ */
+function syncWorkflowStepSequenceMode() {
+  var reducedMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
+
+  document.documentElement.classList.toggle(
+    "workflow-step-seq-active",
+    !reducedMotionQuery.matches,
+  );
+}
+
+/**
+ * Enables per-row scroll reveal for the problem comparison table unless reduced motion is requested.
+ */
+function syncProblemRowRevealMode() {
+  var reducedMotionQuery = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
+
+  document.documentElement.classList.toggle(
+    "problem-row-scroll-active",
+    !reducedMotionQuery.matches,
+  );
+}
+
+// Apply the breakpoint class as soon as the script runs so desktop cards start hidden
+// before the sequential entrance begins.
+syncHeroCardSequenceDesktopMode();
+syncWorkflowStepSequenceMode();
+syncProblemRowRevealMode();
+window.addEventListener("resize", syncHeroCardSequenceDesktopMode);
+
 // ---- Scroll reveal ----
 (function () {
   var els = document.querySelectorAll(".reveal");
@@ -59,6 +121,225 @@ function handlePricingClick(event, plan) {
   els.forEach(function (el) {
     obs.observe(el);
   });
+})();
+
+// ---- Sequential hero cards entrance (desktop only) ----
+(function () {
+  var container = document.querySelector(".hero-cards");
+  if (!container) return;
+
+  var cards = Array.prototype.slice.call(
+    container.querySelectorAll(".hero-card-seq"),
+  );
+  if (!cards.length) return;
+
+  // Mobile keeps the static layout: no staging, no hidden cards, no animation.
+  if (!isHeroCardSequenceDesktop()) return;
+
+  var hasStarted = false;
+
+  function startCardAt(index) {
+    if (index >= cards.length) return;
+
+    var card = cards[index];
+
+    // Reveal exactly one card now. The next card waits for this animation to finish.
+    card.classList.add("hero-card-seq-entered");
+
+    card.addEventListener("animationend", function onAnimationEnd(event) {
+      // Ignore unrelated animation events so the chaining remains deterministic.
+      if (event.animationName !== HERO_CARD_SEQUENCE_ANIMATION_NAME) return;
+
+      card.removeEventListener("animationend", onAnimationEnd);
+      startCardAt(index + 1);
+    });
+  }
+
+  function startSequenceOnce() {
+    if (hasStarted) return;
+    hasStarted = true;
+    startCardAt(0);
+  }
+
+  // Follow the workflow reveal model: start only when the hero card strip is actually in view.
+  if (!window.IntersectionObserver) {
+    startSequenceOnce();
+    return;
+  }
+
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+
+        observer.unobserve(container);
+        startSequenceOnce();
+      });
+    },
+    { threshold: 0.35 },
+  );
+
+  observer.observe(container);
+})();
+
+// ---- Problem comparison rows reveal independently on scroll ----
+(function () {
+  var rows = document.querySelectorAll(".problem-row-reveal");
+  if (!rows.length) return;
+
+  // Reduced-motion mode keeps every row visible with no staging.
+  if (
+    !document.documentElement.classList.contains("problem-row-scroll-active")
+  ) {
+    rows.forEach(function (row) {
+      row.classList.add("problem-row-visible");
+    });
+    return;
+  }
+
+  if (!window.IntersectionObserver) {
+    rows.forEach(function (row) {
+      row.classList.add("problem-row-visible");
+    });
+    return;
+  }
+
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+
+        entry.target.classList.add("problem-row-visible");
+        observer.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.32, rootMargin: "0px 0px -10% 0px" },
+  );
+
+  rows.forEach(function (row) {
+    observer.observe(row);
+  });
+})();
+
+// ---- Sequential ROI cards entrance (desktop only) ----
+(function () {
+  var container = document.querySelector(".roi-cards");
+  if (!container) return;
+
+  var cards = Array.prototype.slice.call(
+    container.querySelectorAll(".roi-card-seq"),
+  );
+  if (!cards.length) return;
+
+  // Match the hero behavior exactly: static on mobile, staged one by one on desktop.
+  if (!isHeroCardSequenceDesktop()) return;
+
+  var hasStarted = false;
+
+  function startCardAt(index) {
+    if (index >= cards.length) return;
+
+    var card = cards[index];
+
+    // Reveal exactly one ROI card now. The next one waits for the full landing animation.
+    card.classList.add("roi-card-seq-entered");
+
+    card.addEventListener("animationend", function onAnimationEnd(event) {
+      if (event.animationName !== HERO_CARD_SEQUENCE_ANIMATION_NAME) return;
+
+      card.removeEventListener("animationend", onAnimationEnd);
+      startCardAt(index + 1);
+    });
+  }
+
+  function startSequenceOnce() {
+    if (hasStarted) return;
+    hasStarted = true;
+    startCardAt(0);
+  }
+
+  // Follow the same viewport trigger as the hero cards so the strip starts only when visible.
+  if (!window.IntersectionObserver) {
+    startSequenceOnce();
+    return;
+  }
+
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+
+        observer.unobserve(container);
+        startSequenceOnce();
+      });
+    },
+    { threshold: 0.35 },
+  );
+
+  observer.observe(container);
+})();
+
+// ---- Sequential workflow steps entrance ----
+(function () {
+  var container = document.querySelector(".workflow-steps");
+  if (!container) return;
+
+  var steps = Array.prototype.slice.call(
+    container.querySelectorAll(".workflow-step-seq"),
+  );
+  if (!steps.length) return;
+
+  // When reduced motion is enabled, leave the workflow visible with no scripted staging.
+  if (
+    !document.documentElement.classList.contains("workflow-step-seq-active")
+  ) {
+    return;
+  }
+
+  var hasStarted = false;
+
+  function startStepAt(index) {
+    if (index >= steps.length) return;
+
+    var step = steps[index];
+
+    // Launch exactly one step now; the next step waits for the full travel + rebound.
+    step.classList.add("workflow-step-seq-entered");
+
+    step.addEventListener("animationend", function onAnimationEnd(event) {
+      if (event.animationName !== WORKFLOW_STEP_SEQUENCE_ANIMATION_NAME) return;
+
+      step.removeEventListener("animationend", onAnimationEnd);
+      startStepAt(index + 1);
+    });
+  }
+
+  function startSequenceOnce() {
+    if (hasStarted) return;
+    hasStarted = true;
+    startStepAt(0);
+  }
+
+  // Keep the same reveal timing philosophy as the hero cards: the sequence starts
+  // only when the workflow strip enters the viewport.
+  if (!window.IntersectionObserver) {
+    startSequenceOnce();
+    return;
+  }
+
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+
+        observer.unobserve(container);
+        startSequenceOnce();
+      });
+    },
+    { threshold: 0.2 },
+  );
+
+  observer.observe(container);
 })();
 
 // ---- Typing effect for hero antidote line ----
@@ -98,7 +379,8 @@ function handlePricingClick(event, plan) {
 })();
 
 // ---- Hero screenshot lightbox ----
-const HERO_IMAGE_LIGHTBOX_ANIMATION_MS = 180;
+const HERO_IMAGE_LIGHTBOX_ANIMATION_MS = 260;
+const HERO_IMAGE_LIGHTBOX_EASING = "cubic-bezier(0.2, 0.8, 0.2, 1)";
 
 /**
  * Returns the UI labels for the shared lightbox based on the current document language.
@@ -126,26 +408,25 @@ function createHeroImageLightbox() {
   var closeButton = document.createElement("button");
   var image = document.createElement("img");
 
-  // Keep the overlay inert while closed so it does not interfere with page clicks.
+  // Keep the overlay inert while closed so it does not intercept page interactions.
   overlay.className = "image-lightbox";
   overlay.hidden = true;
   overlay.setAttribute("aria-hidden", "true");
 
-  // The dialog frame only carries layout and semantics. Clicks still bubble to the overlay
-  // so the whole screen, including the enlarged screenshot area, closes the preview.
+  // The dialog frame hosts the final fullscreen screenshot once the zoom animation completes.
   frame.className = "image-lightbox-frame";
   frame.setAttribute("role", "dialog");
   frame.setAttribute("aria-modal", "true");
   frame.setAttribute("aria-label", labels.dialog);
 
-  // The close control remains visible and explicit, even though every overlay click closes too.
+  // The close control remains explicit even though clicking anywhere on the overlay closes it too.
   closeButton.className = "image-lightbox-close";
   closeButton.type = "button";
   closeButton.setAttribute("aria-label", labels.close);
   closeButton.setAttribute("title", labels.close);
   closeButton.textContent = "×";
 
-  // The preview image is updated on demand from the clicked hero card.
+  // The real fullscreen image stays hidden while the moving ghost animates into place.
   image.className = "image-lightbox-image";
   image.alt = "";
 
@@ -156,53 +437,278 @@ function createHeroImageLightbox() {
 
   return {
     overlay: overlay,
+    frame: frame,
     image: image,
-    closeTimer: null,
+    activeSourceImage: null,
+    animationTimer: null,
+    ghost: null,
   };
 }
 
 /**
- * Opens the shared overlay with the currently clicked hero screenshot.
+ * Removes the temporary animated ghost if one is currently attached.
+ */
+function removeHeroImageLightboxGhost(lightbox) {
+  if (!lightbox || !lightbox.ghost) return;
+
+  lightbox.ghost.remove();
+  lightbox.ghost = null;
+}
+
+/**
+ * Cancels any in-flight zoom animation so a new open/close sequence can start cleanly.
+ */
+function cancelHeroImageLightboxAnimation(lightbox) {
+  if (!lightbox) return;
+
+  if (lightbox.animationTimer !== null) {
+    window.clearTimeout(lightbox.animationTimer);
+    lightbox.animationTimer = null;
+  }
+
+  removeHeroImageLightboxGhost(lightbox);
+}
+
+/**
+ * Applies an absolute viewport rectangle to the animated ghost frame.
+ */
+function applyHeroImageLightboxGhostRect(ghost, rect) {
+  ghost.style.top = rect.top + "px";
+  ghost.style.left = rect.left + "px";
+  ghost.style.width = rect.width + "px";
+  ghost.style.height = rect.height + "px";
+}
+
+/**
+ * Reads the current frame metrics so the animated border/padding match the real fullscreen shell.
+ */
+function getHeroImageLightboxFrameMetrics(lightbox) {
+  var computedStyle = window.getComputedStyle(lightbox.frame);
+
+  return {
+    insetTop:
+      parseFloat(computedStyle.paddingTop) +
+      parseFloat(computedStyle.borderTopWidth),
+    insetRight:
+      parseFloat(computedStyle.paddingRight) +
+      parseFloat(computedStyle.borderRightWidth),
+    insetBottom:
+      parseFloat(computedStyle.paddingBottom) +
+      parseFloat(computedStyle.borderBottomWidth),
+    insetLeft:
+      parseFloat(computedStyle.paddingLeft) +
+      parseFloat(computedStyle.borderLeftWidth),
+  };
+}
+
+/**
+ * Expands the thumbnail image rectangle so the ghost frame wraps it from the very first frame.
+ */
+function buildHeroImageLightboxSourceFrameRect(sourceRect, metrics) {
+  return {
+    top: sourceRect.top - metrics.insetTop,
+    left: sourceRect.left - metrics.insetLeft,
+    width: sourceRect.width + metrics.insetLeft + metrics.insetRight,
+    height: sourceRect.height + metrics.insetTop + metrics.insetBottom,
+  };
+}
+
+/**
+ * Creates the animated ghost frame that visually travels between the card screenshot and the fullscreen slot.
+ */
+function createHeroImageLightboxGhost(imageUrl, imageAlt, fromRect) {
+  var ghost = document.createElement("div");
+  var ghostImage = document.createElement("img");
+  var ghostClose = document.createElement("span");
+
+  // The ghost reproduces the fullscreen frame shell so the border and close control
+  // are already visible while the zoom is travelling from the card.
+  ghost.className = "image-lightbox-ghost";
+
+  // Mirror the clicked screenshot in the travelling shell to keep the zoom continuous.
+  ghostImage.className = "image-lightbox-ghost-image";
+  ghostImage.src = imageUrl;
+  ghostImage.alt = imageAlt || "";
+  ghostImage.decoding = "async";
+
+  // The close glyph is visual only on the ghost: the overlay still handles every click.
+  ghostClose.className = "image-lightbox-ghost-close";
+  ghostClose.setAttribute("aria-hidden", "true");
+  ghostClose.textContent = "×";
+
+  ghost.appendChild(ghostImage);
+  ghost.appendChild(ghostClose);
+  applyHeroImageLightboxGhostRect(ghost, fromRect);
+
+  return ghost;
+}
+
+/**
+ * Hides the overlay and resets the fullscreen image once the zoom sequence is fully done.
+ */
+function resetHeroImageLightbox(lightbox) {
+  if (!lightbox) return;
+
+  lightbox.overlay.hidden = true;
+  lightbox.overlay.classList.remove("is-open", "is-measuring", "is-closing");
+  lightbox.overlay.setAttribute("aria-hidden", "true");
+  lightbox.image.classList.remove("is-visible");
+  lightbox.image.removeAttribute("src");
+  lightbox.image.alt = "";
+  lightbox.activeSourceImage = null;
+  document.body.classList.remove("has-image-lightbox");
+  cancelHeroImageLightboxAnimation(lightbox);
+}
+
+/**
+ * Opens the shared overlay by animating a ghost from the clicked card image to the fullscreen slot.
  */
 function openHeroImageLightbox(lightbox, sourceImage) {
   if (!lightbox || !sourceImage) return;
 
-  // Cancel any pending close animation before swapping content.
-  if (lightbox.closeTimer !== null) {
-    window.clearTimeout(lightbox.closeTimer);
-    lightbox.closeTimer = null;
-  }
+  var sourceRect = sourceImage.getBoundingClientRect();
+  var imageUrl = sourceImage.currentSrc || sourceImage.src;
 
-  // Mirror the visible hero asset so the fullscreen preview always matches the card.
-  lightbox.image.src = sourceImage.currentSrc || sourceImage.src;
+  // Reset any previous animation state before starting a fresh zoom from the clicked thumbnail.
+  cancelHeroImageLightboxAnimation(lightbox);
+  lightbox.activeSourceImage = sourceImage;
+  lightbox.image.src = imageUrl;
   lightbox.image.alt = sourceImage.alt || "";
+  lightbox.image.classList.remove("is-visible");
 
-  // Reveal the overlay first, then trigger the CSS transition on the next frame.
+  // Make the overlay participate in layout immediately so the fullscreen target rectangle is measurable.
   lightbox.overlay.hidden = false;
+  lightbox.overlay.classList.add("is-open", "is-measuring");
+  lightbox.overlay.classList.remove("is-closing");
   lightbox.overlay.setAttribute("aria-hidden", "false");
   document.body.classList.add("has-image-lightbox");
+
+  // Wait for the overlay layout, then animate a full frame shell toward the real fullscreen slot.
   window.requestAnimationFrame(function () {
-    lightbox.overlay.classList.add("is-open");
+    var frameMetrics = getHeroImageLightboxFrameMetrics(lightbox);
+    var sourceFrameRect = buildHeroImageLightboxSourceFrameRect(
+      sourceRect,
+      frameMetrics,
+    );
+    var targetRect = lightbox.frame.getBoundingClientRect();
+    var ghost = createHeroImageLightboxGhost(
+      imageUrl,
+      sourceImage.alt,
+      sourceFrameRect,
+    );
+
+    lightbox.ghost = ghost;
+    document.body.appendChild(ghost);
+
+    // Fade in the shell immediately and start the real zoom on the next frame so the browser
+    // captures the thumbnail-aligned geometry before we move the whole framed preview.
+    window.requestAnimationFrame(function () {
+      ghost.style.transition =
+        "top " +
+        HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
+        "ms " +
+        HERO_IMAGE_LIGHTBOX_EASING +
+        ", left " +
+        HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
+        "ms " +
+        HERO_IMAGE_LIGHTBOX_EASING +
+        ", width " +
+        HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
+        "ms " +
+        HERO_IMAGE_LIGHTBOX_EASING +
+        ", height " +
+        HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
+        "ms " +
+        HERO_IMAGE_LIGHTBOX_EASING +
+        ", opacity 0.18s ease";
+      ghost.classList.add("is-visible");
+      ghost.classList.remove("is-chrome-hidden");
+      applyHeroImageLightboxGhostRect(ghost, targetRect);
+    });
+
+    lightbox.animationTimer = window.setTimeout(function () {
+      // Reveal the real fullscreen frame only after the ghost arrives so the zoom remains continuous.
+      lightbox.image.classList.add("is-visible");
+      lightbox.overlay.classList.remove("is-measuring");
+      lightbox.animationTimer = null;
+      removeHeroImageLightboxGhost(lightbox);
+    }, HERO_IMAGE_LIGHTBOX_ANIMATION_MS);
   });
 }
 
 /**
- * Starts the close transition, then hides the overlay when the animation is finished.
+ * Closes the overlay by sending a ghost from the fullscreen slot back to the originating card image.
  */
 function closeHeroImageLightbox(lightbox) {
   if (!lightbox || lightbox.overlay.hidden) return;
 
-  // Drop the open state immediately so CSS can animate the fade-out/scale-out sequence.
-  lightbox.overlay.classList.remove("is-open");
-  lightbox.overlay.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("has-image-lightbox");
+  var sourceImage = lightbox.activeSourceImage;
+  var canAnimateBack =
+    sourceImage &&
+    sourceImage.isConnected &&
+    sourceImage.getBoundingClientRect().width > 0 &&
+    sourceImage.getBoundingClientRect().height > 0;
 
-  lightbox.closeTimer = window.setTimeout(function () {
-    // Hide and reset the image only after the animation so reopening stays flicker-free.
-    lightbox.overlay.hidden = true;
-    lightbox.image.removeAttribute("src");
-    lightbox.image.alt = "";
-    lightbox.closeTimer = null;
+  // Stop any pending open animation so the closing zoom uses the current visible geometry.
+  cancelHeroImageLightboxAnimation(lightbox);
+
+  // If the source thumbnail is no longer measurable, fall back to an immediate teardown.
+  if (!canAnimateBack) {
+    resetHeroImageLightbox(lightbox);
+    return;
+  }
+
+  var frameMetrics = getHeroImageLightboxFrameMetrics(lightbox);
+  var fromRect = lightbox.frame.getBoundingClientRect();
+  var targetRect = buildHeroImageLightboxSourceFrameRect(
+    sourceImage.getBoundingClientRect(),
+    frameMetrics,
+  );
+  var imageUrl = lightbox.image.currentSrc || lightbox.image.src;
+  var ghost = createHeroImageLightboxGhost(
+    imageUrl,
+    lightbox.image.alt,
+    fromRect,
+  );
+
+  // Hide the real fullscreen content instantly so only the framed ghost remains visible during zoom-out.
+  lightbox.overlay.classList.add("is-closing");
+  lightbox.image.classList.remove("is-visible");
+  lightbox.ghost = ghost;
+  ghost.classList.add("is-visible");
+  document.body.appendChild(ghost);
+
+  // Fade the backdrop away while the framed ghost returns to the thumbnail location.
+  lightbox.overlay.classList.remove("is-open");
+
+  // Trigger the reverse zoom on the next frame so the browser keeps the fullscreen frame geometry.
+  window.requestAnimationFrame(function () {
+    ghost.style.transition =
+      "top " +
+      HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
+      "ms " +
+      HERO_IMAGE_LIGHTBOX_EASING +
+      ", left " +
+      HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
+      "ms " +
+      HERO_IMAGE_LIGHTBOX_EASING +
+      ", width " +
+      HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
+      "ms " +
+      HERO_IMAGE_LIGHTBOX_EASING +
+      ", height " +
+      HERO_IMAGE_LIGHTBOX_ANIMATION_MS +
+      "ms " +
+      HERO_IMAGE_LIGHTBOX_EASING +
+      ", opacity 0.18s ease";
+    ghost.classList.add("is-chrome-hidden");
+    applyHeroImageLightboxGhostRect(ghost, targetRect);
+  });
+
+  lightbox.animationTimer = window.setTimeout(function () {
+    // Tear everything down only after the ghost lands back on the card screenshot.
+    lightbox.animationTimer = null;
+    resetHeroImageLightbox(lightbox);
   }, HERO_IMAGE_LIGHTBOX_ANIMATION_MS);
 }
 
@@ -214,7 +720,15 @@ function closeHeroImageLightbox(lightbox) {
   var lightbox = createHeroImageLightbox();
 
   triggers.forEach(function (trigger) {
-    trigger.addEventListener("click", function () {
+    trigger.addEventListener("click", function (event) {
+      // Mobile uses the anchor target directly because the geometric zoom animation
+      // is tuned for desktop layout coordinates and is intentionally disabled there.
+      if (!isHeroCardSequenceDesktop()) {
+        return;
+      }
+
+      event.preventDefault();
+
       var sourceImage = trigger.querySelector("img");
       openHeroImageLightbox(lightbox, sourceImage);
     });

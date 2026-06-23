@@ -126,15 +126,18 @@
           <div class="divider reveal reveal-delay-2"></div>
           <!-- Reuse the ROI card structure in the hero while keeping a fixed media row. -->
           <div class="economics-grid hero-cards">
-            <div class="eco-card hero-eco-card reveal reveal-delay-1">
+            <div
+              class="eco-card hero-eco-card hero-card-seq"
+              data-hero-card-seq="1"
+            >
               <div class="eco-img">
                 <!-- Keep the same asset as the card preview so the lightbox opens the exact screenshot shown in the hero. -->
-                <button class="eco-img-button" type="button">
+                <a class="eco-img-button" href="/docs/hero-security-en.png">
                   <img
                     src="/docs/hero-security-en.png"
                     alt="Security-first architecture with local indexing and private Azure routing"
                   />
-                </button>
+                </a>
               </div>
               <div class="eco-content">
                 <h3>Your data stays with you</h3>
@@ -145,15 +148,18 @@
               </div>
             </div>
 
-            <div class="eco-card hero-eco-card reveal reveal-delay-2">
+            <div
+              class="eco-card hero-eco-card hero-card-seq"
+              data-hero-card-seq="2"
+            >
               <div class="eco-img">
                 <!-- Reuse the inline screenshot source for the large preview to avoid divergent media between card and overlay. -->
-                <button class="eco-img-button" type="button">
+                <a class="eco-img-button" href="/docs/hero-index-en.png">
                   <img
                     src="/docs/hero-index-en.png"
                     alt="5D index mapping architecture, dependencies, and side effects"
                   />
-                </button>
+                </a>
               </div>
               <div class="eco-content">
                 <h3>Understands the code nobody understands anymore</h3>
@@ -164,15 +170,18 @@
               </div>
             </div>
 
-            <div class="eco-card hero-eco-card reveal reveal-delay-3">
+            <div
+              class="eco-card hero-eco-card hero-card-seq"
+              data-hero-card-seq="3"
+            >
               <div class="eco-img">
                 <!-- The clickable wrapper is the affordance for the fullscreen screenshot interaction. -->
-                <button class="eco-img-button" type="button">
+                <a class="eco-img-button" href="/docs/hero-refine-en.png">
                   <img
                     src="/docs/hero-refine-en.png"
                     alt="Specification audit catching architectural issues before coding"
                   />
-                </button>
+                </a>
               </div>
               <div class="eco-content">
                 <h3>Detects errors before the code is written</h3>
@@ -257,7 +266,7 @@
         <h2 class="reveal reveal-delay-1">High velocity. Massive debt.</h2>
         <div class="divider reveal reveal-delay-2"></div>
 
-        <div class="problem-table reveal reveal-delay-2">
+        <div class="problem-table">
           <div class="problem-row problem-header">
             <div class="problem-cell">
               <h3>What uncontrolled AI agents produce</h3>
@@ -268,7 +277,7 @@
             </div>
           </div>
 
-          <div class="problem-row">
+          <div class="problem-row problem-row-reveal">
             <div class="problem-cell">
               <div class="problem-item">
                 <div class="problem-icon icon-bad">✕</div>
@@ -312,7 +321,7 @@
             </div>
           </div>
 
-          <div class="problem-row">
+          <div class="problem-row problem-row-reveal">
             <div class="problem-cell">
               <div class="problem-item">
                 <div class="problem-icon icon-bad">✕</div>
@@ -349,7 +358,7 @@
             </div>
           </div>
 
-          <div class="problem-row">
+          <div class="problem-row problem-row-reveal">
             <div class="problem-cell">
               <div class="problem-item">
                 <div class="problem-icon icon-bad">✕</div>
@@ -386,7 +395,7 @@
             </div>
           </div>
 
-          <div class="problem-row">
+          <div class="problem-row problem-row-reveal">
             <div class="problem-cell">
               <div class="problem-item">
                 <div class="problem-icon icon-bad">✕</div>
@@ -426,7 +435,7 @@
             </div>
           </div>
 
-          <div class="problem-row">
+          <div class="problem-row problem-row-reveal">
             <div class="problem-cell">
               <div class="problem-item">
                 <div class="problem-icon icon-bad">✕</div>
@@ -550,8 +559,8 @@
           financial asset.
         </p>
 
-        <div class="economics-grid">
-          <div class="eco-card reveal reveal-delay-1">
+        <div class="economics-grid roi-cards">
+          <div class="eco-card roi-card-seq" data-roi-card-seq="1">
             <div class="eco-img">
               <img
                 src="/docs/eco-shift.png"
@@ -573,7 +582,7 @@
             </div>
           </div>
 
-          <div class="eco-card reveal reveal-delay-2">
+          <div class="eco-card roi-card-seq" data-roi-card-seq="2">
             <div class="eco-img">
               <img
                 src="/docs/eco-turnover.png"
@@ -592,7 +601,7 @@
             </div>
           </div>
 
-          <div class="eco-card reveal reveal-delay-3">
+          <div class="eco-card roi-card-seq" data-roi-card-seq="3">
             <div class="eco-img">
               <img
                 src="/docs/eco-scale.png"
@@ -641,7 +650,7 @@
         </p>
 
         <div class="workflow-steps">
-          <div class="wf-step reveal reveal-slide">
+          <div class="wf-step workflow-step-seq" data-workflow-step-seq="1">
             <div class="wf-number">01</div>
             <h4>Ideate</h4>
             <p>
@@ -649,7 +658,7 @@
               converge on a shared, precise understanding of the task.
             </p>
           </div>
-          <div class="wf-step reveal reveal-slide">
+          <div class="wf-step workflow-step-seq" data-workflow-step-seq="2">
             <div class="wf-number">02</div>
             <h4>Specify</h4>
             <p>
@@ -657,7 +666,7 @@
               You read it, correct misunderstandings, and lock the design.
             </p>
           </div>
-          <div class="wf-step reveal reveal-slide">
+          <div class="wf-step workflow-step-seq" data-workflow-step-seq="3">
             <div class="wf-number">03</div>
             <h4>Refine</h4>
             <p>
@@ -666,7 +675,7 @@
               is written.
             </p>
           </div>
-          <div class="wf-step reveal reveal-slide">
+          <div class="wf-step workflow-step-seq" data-workflow-step-seq="4">
             <div class="wf-number">04</div>
             <h4>Code</h4>
             <p>
@@ -675,7 +684,7 @@
               your approval.
             </p>
           </div>
-          <div class="wf-step reveal reveal-slide">
+          <div class="wf-step workflow-step-seq" data-workflow-step-seq="5">
             <div class="wf-number">05</div>
             <h4>Verify</h4>
             <p>

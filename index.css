@@ -605,6 +605,57 @@ nav {
   align-items: stretch;
 }
 
+/* Desktop-only sequential entrance, modeled on workflow's right-to-left arrival,
+   but stricter: cards are launched one by one only after the previous card has
+   completed its travel and rebound. Mobile keeps the static layout. */
+@media (min-width: 901px) {
+  .desktop-hero-card-seq .hero-card-seq {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100vw);
+  }
+
+  .desktop-roi-card-seq .roi-card-seq {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100vw);
+  }
+
+  .desktop-hero-card-seq .hero-card-seq.hero-card-seq-entered {
+    visibility: visible;
+    animation: heroCardSlideInBounce 0.72s cubic-bezier(0.22, 0.61, 0.36, 1)
+      forwards;
+  }
+
+  .desktop-roi-card-seq .roi-card-seq.roi-card-seq-entered {
+    visibility: visible;
+    animation: heroCardSlideInBounce 0.72s cubic-bezier(0.22, 0.61, 0.36, 1)
+      forwards;
+  }
+
+  @keyframes heroCardSlideInBounce {
+    0% {
+      opacity: 0;
+      transform: translateX(100vw);
+    }
+
+    60% {
+      opacity: 1;
+      transform: translateX(-0.8rem);
+    }
+
+    78% {
+      opacity: 1;
+      transform: translateX(0.28rem);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
 .hero-eco-card .eco-img {
   aspect-ratio: 16 / 10;
   display: flex;
@@ -617,8 +668,7 @@ nav {
   width: 100%;
   height: 100%;
   display: block;
-  border: none;
-  padding: 0;
+  text-decoration: none;
   background: transparent;
   cursor: zoom-in;
   position: relative;
@@ -708,14 +758,14 @@ body.has-image-lightbox {
   background: rgba(4, 6, 10, 0.9);
   opacity: 0;
   visibility: hidden;
-  transition:
-    opacity 0.18s ease,
-    visibility 0.18s ease;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
 }
 
 .image-lightbox.is-open {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 .image-lightbox-frame {
@@ -727,12 +777,11 @@ body.has-image-lightbox {
   border-radius: 1rem;
   background: rgba(11, 11, 11, 0.96);
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
-  transform: scale(0.965);
-  transition: transform 0.18s ease;
 }
 
-.image-lightbox.is-open .image-lightbox-frame {
-  transform: scale(1);
+.image-lightbox.is-measuring .image-lightbox-frame,
+.image-lightbox.is-closing .image-lightbox-frame {
+  visibility: hidden;
 }
 
 .image-lightbox-image {
@@ -742,6 +791,77 @@ body.has-image-lightbox {
   object-fit: contain;
   border-radius: 0.65rem;
   background: var(--bg3);
+  visibility: hidden;
+}
+
+.image-lightbox-image.is-visible {
+  visibility: visible;
+}
+
+.image-lightbox-ghost {
+  position: fixed;
+  z-index: 1210;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 1rem;
+  border: 1px solid var(--border-bright);
+  border-radius: 1rem;
+  background: rgba(11, 11, 11, 0.96);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  will-change: top, left, width, height, opacity;
+  opacity: 0;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.image-lightbox-ghost.is-visible {
+  opacity: 1;
+}
+
+.image-lightbox-ghost.is-chrome-hidden {
+  border-color: transparent;
+  background: rgba(11, 11, 11, 0);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0);
+}
+
+.image-lightbox-ghost-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  border-radius: 0.65rem;
+  background: var(--bg3);
+}
+
+.image-lightbox-ghost-close {
+  position: absolute;
+  top: 0.9rem;
+  right: 0.9rem;
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-bright);
+  border-radius: 999px;
+  background: rgba(8, 12, 19, 0.96);
+  color: var(--text);
+  font-size: 1.7rem;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.image-lightbox-ghost.is-visible .image-lightbox-ghost-close {
+  opacity: 1;
+}
+
+.image-lightbox-ghost.is-chrome-hidden .image-lightbox-ghost-close {
+  opacity: 0;
 }
 
 .image-lightbox-close {
@@ -891,6 +1011,21 @@ body.has-image-lightbox {
   gap: 2.5rem;
   padding: 1.3rem 0;
   align-items: center;
+}
+
+/* Reveal each comparison row independently as it enters the viewport instead of
+   showing the whole table in one block. */
+html.problem-row-scroll-active .problem-row-reveal {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  transition:
+    opacity 0.42s ease,
+    transform 0.42s ease;
+}
+
+html.problem-row-scroll-active .problem-row-reveal.problem-row-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .problem-row:not(:last-child) {
@@ -1094,25 +1229,40 @@ body.has-image-lightbox {
   z-index: 1;
 }
 
-/* Sequential slide-in: each step arrives a beat after the previous one. */
-.workflow-steps .wf-step:nth-child(1) {
-  transition-delay: 0s;
+/* Match the hero cards rhythm: each workflow step waits for the previous step
+   to fully land before it enters from the right with the same gentle rebound. */
+html.workflow-step-seq-active .workflow-step-seq {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(100vw);
 }
 
-.workflow-steps .wf-step:nth-child(2) {
-  transition-delay: 0.14s;
+html.workflow-step-seq-active .workflow-step-seq.workflow-step-seq-entered {
+  visibility: visible;
+  animation: workflowStepSlideInBounce 0.72s cubic-bezier(0.22, 0.61, 0.36, 1)
+    forwards;
 }
 
-.workflow-steps .wf-step:nth-child(3) {
-  transition-delay: 0.28s;
-}
+@keyframes workflowStepSlideInBounce {
+  0% {
+    opacity: 0;
+    transform: translateX(100vw);
+  }
 
-.workflow-steps .wf-step:nth-child(4) {
-  transition-delay: 0.42s;
-}
+  60% {
+    opacity: 1;
+    transform: translateX(-0.8rem);
+  }
 
-.workflow-steps .wf-step:nth-child(5) {
-  transition-delay: 0.56s;
+  78% {
+    opacity: 1;
+    transform: translateX(0.28rem);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .wf-number {
