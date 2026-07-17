@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Souveraineté des données | AICode</title>
+    <meta
+      name="description"
+      content="Aucun serveur AICode. Aucune base de données. Index local, votre propre clé API, connexion directe à votre tenant Azure privé. Votre code ne transite jamais par nous."
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/aicode-icon.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/docs/aicode-icon-32x32.png"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="canonical" href="https://ai-code.ai/fr/sovereignty/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/assets/common.css" />
+    <link rel="stylesheet" href="/assets/header.css" />
+    <link rel="stylesheet" href="/assets/footer.css" />
+    <script defer src="/assets/common.js"></script>
+    <script defer src="/assets/header.js"></script>
+    <script defer src="/assets/footer.js"></script>
+  </head>
+
+  <body>
+    <main>
+      <section id="top" class="section page-hero">
+        <div class="hero-grid-bg"></div>
+        <div class="container">
+          <h1 class="reveal">
+            Votre code ne quitte pas votre machine, sauf si vous en décidez ainsi.
+          </h1>
+          <div class="divider reveal reveal-delay-1"></div>
+          <p class="section-intro-dim reveal reveal-delay-2">
+            À une époque où les outils IA téléversent régulièrement toute votre
+            base de code ou votre index pour entraîner de futurs modèles,
+            AICode est conçu dès le départ avec la confidentialité comme
+            contrainte structurelle, pas comme un paramètre.
+          </p>
+          <figure class="shot-fig shot-fig-wide reveal reveal-delay-3">
+            <a class="eco-img-button" href="/docs/security-fr.png">
+              <img
+                src="/docs/security-fr.png"
+                alt="Architecture sécurisée avec index local et routage vers Azure privé"
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="shot-caption">
+              Index local, requêtes routées vers votre tenant Azure privé. Votre
+              code ne quitte jamais votre infrastructure.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section id="sovereignty" class="section">
+        <div class="container">
+          <h2 class="reveal">Privé par conception.</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <p class="section-intro-dim reveal reveal-delay-2">
+            AICode n'a pas de serveurs. Pas de base de données. Pas d'infrastructure.
+            C'est un exécutable autonome. Votre base de code, votre index et votre historique
+            ne quittent jamais votre machine. Seuls les extraits de contexte chirurgicaux
+            requis pour chaque requête sont envoyés directement à votre tenant Azure privé,
+            sans intermédiaire AICode.
+          </p>
+
+          <div class="item-grid">
+            <div class="item-card reveal reveal-delay-1">
+              <div class="item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <ellipse cx="12" cy="6" rx="8" ry="3" />
+                  <path d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6" />
+                  <path d="M4 12v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" />
+                </svg>
+              </div>
+              <h4>Indexation locale</h4>
+              <p>
+                L'index 5D complet, incluant les embeddings vectoriels, est
+              calculé et stocké sur votre disque local. Il ne quitte jamais votre machine.
+              </p>
+            </div>
+            <div class="item-card reveal reveal-delay-2">
+              <div class="item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="8" cy="8" r="4.5" />
+                  <path d="m11.2 11.2 9.8 9.8M16.5 16.5 19 14" />
+                </svg>
+              </div>
+              <h4>Apportez votre propre clé</h4>
+              <p>
+                Vous vous connectez directement à OpenAI ou à votre tenant Azure privé avec
+              votre propre clé API. AICode n'a pas de serveur intermédiaire.
+              Zéro interception de tokens.
+              </p>
+            </div>
+            <div class="item-card reveal reveal-delay-3">
+              <div class="item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M6 2v14a2 2 0 0 0 2 2h14" />
+                  <path d="M18 22V8a2 2 0 0 0-2-2H2" />
+                </svg>
+              </div>
+              <h4>Envoi de contexte chirurgical</h4>
+              <p>
+                Seuls les extraits pertinents requis pour la tâche en cours sont envoyés
+              au fournisseur de modèle. Pas votre base de code entière. Vous contrôlez
+              la fenêtre de contexte.
+              </p>
+            </div>
+            <div class="item-card reveal reveal-delay-4">
+              <div class="item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="4" y="3" width="16" height="18" rx="1" />
+                  <path d="M9 8h.01M15 8h.01M9 12h.01M15 12h.01M9 16h6" />
+                </svg>
+              </div>
+              <h4>Prêt pour l'entreprise</h4>
+              <p>
+                La compatibilité cloud Azure privé satisfait les politiques de données
+              d'entreprise et gouvernementales les plus strictes.
+              </p>
+            </div>
+          </div>
+
+          <div class="press-card reveal reveal-delay-2">
+            <div class="press-title">-- ARTICLE DE PRESSE EXTERNE ASSOCIÉ --</div>
+            <div class="press-header">
+              <span class="press-icon"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M4 4h13a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4Z"
+                  />
+                  <path d="M18 8h2a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2" />
+                  <path d="M7 8h7M7 12h7M7 16h4" /></svg
+              ></span>
+              <a
+                href="https://www.tradingkey.com/analysis/stocks/us-stocks/261808564-spacex-ipo-elon-musk-cursor-60-billion-tradingkey"
+                target="_blank"
+                rel="noopener"
+                class="press-url"
+                >https://www.tradingkey.com/analysis/stocks/us-stocks/261808564-spacex-ipo-elon-musk-cursor-60-billion-tradingkey</a
+              >
+            </div>
+            <div class="press-excerpt">
+              "En tant qu'outil pour développeurs, Cursor a constitué un vaste référentiel
+            de données sur les processus de programmation"
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

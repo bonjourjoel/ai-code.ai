@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enforced quality | AICode</title>
+    <meta
+      name="description"
+      content="AICode enforces what standard assistants skip: sound architecture, no silent regressions, remembered constraints, reviewable patches, tests that actually catch broken code."
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/aicode-icon.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/docs/aicode-icon-32x32.png"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="canonical" href="https://ai-code.ai/quality/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/assets/common.css" />
+    <link rel="stylesheet" href="/assets/header.css" />
+    <link rel="stylesheet" href="/assets/footer.css" />
+    <script defer src="/assets/common.js"></script>
+    <script defer src="/assets/header.js"></script>
+    <script defer src="/assets/footer.js"></script>
+  </head>
+
+  <body>
+    <main>
+      <section id="problem" class="section page-hero">
+        <div class="hero-grid-bg"></div>
+        <div class="container">
+          <h1 class="reveal">Enforced quality</h1>
+          <div class="divider reveal reveal-delay-1"></div>
+          <p class="section-intro-dim reveal reveal-delay-2">
+            AICode enforces what standard assistants skip: sound architecture,
+            no silent regressions, remembered constraints, reviewable patches,
+            tests that actually catch broken code.
+          </p>
+          <div class="problem-table">
+            <div class="problem-row problem-header">
+              <div class="problem-cell">
+                <h3>What uncontrolled AI agents produce</h3>
+              </div>
+              <div class="problem-arrow-cell"></div>
+              <div class="problem-cell">
+                <h3>What AICode enforces instead</h3>
+              </div>
+            </div>
+
+            <div class="problem-row problem-row-reveal">
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>
+                    Junior-grade architecture that accumulates technical debt
+                    from day one
+                  </p>
+                </div>
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>
+                    Narrow-focus changes that break invariants and will end in
+                    debug hells
+                  </p>
+                </div>
+              </div>
+              <div class="problem-arrow-cell">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-width="0.6"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-good">✓</div>
+                  <p>
+                    Structured specification reviewed and approved by
+                    <em>you</em> before a single line is written
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-row problem-row-reveal">
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>
+                    Silent regressions that look like the real thing, caught too
+                    late
+                  </p>
+                </div>
+              </div>
+              <div class="problem-arrow-cell">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-width="0.6"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-good">✓</div>
+                  <p>
+                    Refine + Verify loops that audit the spec and the generated
+                    code for design flaws
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-row problem-row-reveal">
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>
+                    No project memory: the AI forgets your constraints on every
+                    new prompt
+                  </p>
+                </div>
+              </div>
+              <div class="problem-arrow-cell">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-width="0.6"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-good">✓</div>
+                  <p>
+                    Project map: the model understands global architecture, with
+                    far fewer hallucinations
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-row problem-row-reveal">
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>
+                    Auto-edits written directly to disk before you can review
+                    them
+                  </p>
+                </div>
+              </div>
+              <div class="problem-arrow-cell">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-width="0.6"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-good">✓</div>
+                  <p>
+                    Reviewable patches in a virtual workspace. You accept
+                    changes file by file, line by line
+                  </p>
+                </div>
+                <div class="problem-item">
+                  <div class="problem-icon icon-good">✓</div>
+                  <p>MCP authorization gates by tool</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-row problem-row-reveal">
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>Unit tests that validate and hide broken code</p>
+                </div>
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>Hallucinations dressed as confidence</p>
+                </div>
+              </div>
+              <div class="problem-arrow-cell">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-width="0.6"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-good">✓</div>
+                  <p>
+                    Honest by design: the model won't bluff when context is
+                    missing. It will ask
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="reveal">The anti-"wow" effect</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <div class="problem-story-block reveal">
+            <div class="problem-story">
+              <p class="reveal reveal-delay-2">
+                True developer story: A top-tier AI coding agent generated the
+                messaging bus for a production application in
+                <strong>thirty minutes</strong>. Impressive. The bus was
+                optimized with <strong>eight message categories</strong>,
+                varying by argument count, whether a response was required,
+                async or sync execution. It was a nice PR, with green unit
+                tests, ready to merge. The kind of work that makes you say
+                "Wow".
+              </p>
+              <p class="reveal reveal-delay-3">
+                One month later, after connecting several services on top of
+                this architecture, I understood the bus was unmaintainable.
+                Every new integration required considering all eight variants.
+                When confronted on the design, the model defended it: "You save
+                2-3 instructions here, 1 CPU cycle there". Meanwhile, the entire
+                project was sinking under the weight of its own complexity.
+              </p>
+              <p class="reveal reveal-delay-4">
+                It took <strong>three weeks of refactoring</strong> to enforce a
+                single format: one single RPC contract, one single message type.
+                The model pushed back: "You're wasting resources, it'll be
+                slow". In reality, 1ms of overhead at runtime is invisible in
+                production. What the model couldn't measure, and therefore
+                ignored, is that the scarcest resource isn't CPU; it's human
+                capacity to understand and maintain code.
+              </p>
+              <p class="reveal reveal-delay-5">
+                AICode was built from that lesson. The Specify and Refine stages
+                exist to intercept exactly this kind of decision before it gets
+                coded, connected, and propagated across the entire architecture.
+                Uncontrolled generative AI is a disease. AICode is the antidote.
+              </p>
+            </div>
+          </div>
+
+          <div class="press-card reveal reveal-delay-2">
+            <div class="press-title">-- RELATED EXTERNAL PRESS ARTICLE --</div>
+            <div class="press-header">
+              <span class="press-icon"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M4 4h13a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4Z"
+                  />
+                  <path d="M18 8h2a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2" />
+                  <path d="M7 8h7M7 12h7M7 16h4" /></svg
+              ></span>
+              <a
+                href="https://www.reuters.com/business/ai-slows-down-some-experienced-software-developers-study-finds-2025-07-10"
+                target="_blank"
+                rel="noopener"
+                class="press-url"
+                >https://www.reuters.com/business/ai-slows-down-some-experienced-software-developers-study-finds-2025-07-10</a
+              >
+            </div>
+            <div class="press-excerpt">
+              "But the study found that using AI did the opposite: it increased
+              task completion time by 19%."
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="reveal">Quality is what lets you scale.</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <div class="frictionless-grid">
+            <div class="frictionless-text reveal reveal-delay-2">
+              <p>
+                AICode turns rare expert-level prompt engineering knowledge into
+                a software commodity, making it easy to scale teams.
+              </p>
+              <p>
+                Unlike standard AI tools that represent a major risk of code
+                pollution, AICode's specialized workflow allows AI acceleration
+                to be safely deployed across entire groups.
+              </p>
+            </div>
+            <div class="reveal reveal-delay-3">
+              <div class="frictionless-img">
+                <img
+                  src="/docs/scale.png"
+                  alt="Scale and multiplier effect"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

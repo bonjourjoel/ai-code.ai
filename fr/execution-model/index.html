@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Modèle d'exécution strict | AICode</title>
+    <meta
+      name="description"
+      content="L'IA lit et propose. Elle ne peut ni écrire un fichier, ni committer, ni exécuter une commande. Chaque modification arrive comme un patch qu'un humain accepte, fichier par fichier."
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/aicode-icon.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/docs/aicode-icon-32x32.png"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="canonical" href="https://ai-code.ai/fr/execution-model/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/assets/common.css" />
+    <link rel="stylesheet" href="/assets/header.css" />
+    <link rel="stylesheet" href="/assets/footer.css" />
+    <script defer src="/assets/common.js"></script>
+    <script defer src="/assets/header.js"></script>
+    <script defer src="/assets/footer.js"></script>
+  </head>
+
+  <body>
+    <main>
+      <section id="top" class="section page-hero">
+        <div class="hero-grid-bg"></div>
+        <div class="container">
+          <h1 class="reveal">
+            L'IA peut voir. Elle peut parler.<br />Mais elle ne peut pas toucher.
+          </h1>
+          <div class="divider reveal reveal-delay-1"></div>
+          <p class="section-intro-dim reveal reveal-delay-2">
+            AICode fonctionne sur un modèle de privilèges strict par
+            conception. Chaque capacité native est explicite, sandboxée et
+            réversible. Rien ne se passe dans votre dos.
+          </p>
+
+          <div class="item-grid">
+            <div class="item-card reveal reveal-delay-1">
+              <div class="item-icon item-icon-block">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m5.6 5.6 12.8 12.8" />
+                </svg>
+              </div>
+              <h4>Hors du projet</h4>
+              <p>
+                Pas d'accès aux fichiers hors de la racine du projet. Les entrées .gitignore
+              et .aicodeignore sont structurellement exclues.
+              </p>
+            </div>
+            <div class="item-card reveal reveal-delay-2">
+              <div class="item-icon item-icon-block">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m5.6 5.6 12.8 12.8" />
+                </svg>
+              </div>
+              <h4>Écritures disque</h4>
+              <p>
+                Ne peut écrire un seul caractère dans aucun fichier.
+              L'IA n'a absolument aucun accès en écriture.
+              </p>
+            </div>
+            <div class="item-card reveal reveal-delay-3">
+              <div class="item-icon item-icon-block">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m5.6 5.6 12.8 12.8" />
+                </svg>
+              </div>
+              <h4>Écritures Git</h4>
+              <p>Aucun commit, aucun staging, aucune commande d'écriture de quelque sorte.</p>
+            </div>
+            <div class="item-card reveal reveal-delay-4">
+              <div class="item-icon item-icon-block">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m5.6 5.6 12.8 12.8" />
+                </svg>
+              </div>
+              <h4>Exécution shell</h4>
+              <p>Aucune commande exécutée silencieusement. Pas même <code>ls</code>.</p>
+            </div>
+          </div>
+          <div class="item-grid item-grid-gap">
+            <div class="item-card reveal reveal-delay-1">
+              <div class="item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </div>
+              <h4>Dans le projet</h4>
+              <p>
+                Accès en lecture complet aux fichiers du projet, respectant toutes les règles
+              d'exclusion. L'IA voit votre code, rien de plus.
+              </p>
+            </div>
+            <div class="item-card reveal reveal-delay-2">
+              <div class="item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </div>
+              <h4>Propositions de patches</h4>
+              <p>
+                Chaque modification arrive comme un diff révisable. Vous acceptez fichier par fichier,
+              ligne par ligne. Vous décidez de ce qui est appliqué.
+              </p>
+            </div>
+            <div class="item-card reveal reveal-delay-3">
+              <div class="item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </div>
+              <h4>Git en lecture seule</h4>
+              <p>
+                Navigation complète dans l'historique et traçage des régressions.
+              L'IA lit votre dépôt mais ne peut pas le toucher.
+              </p>
+            </div>
+            <div class="item-card reveal reveal-delay-4">
+              <div class="item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+              </div>
+              <h4>Propositions shell</h4>
+              <p>
+                ls est un outil natif d'AICode, pas une commande shell. Les commandes
+              dangereuses vous sont suggérées pour les copier et les exécuter.
+              Vous exécutez. Pas l'IA.
+              </p>
+            </div>
+          </div>
+
+          <div class="press-card reveal reveal-delay-2">
+            <div class="press-title">-- ARTICLE DE PRESSE EXTERNE ASSOCIÉ --</div>
+            <div class="press-header">
+              <span class="press-icon"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M4 4h13a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4Z"
+                  />
+                  <path d="M18 8h2a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2" />
+                  <path d="M7 8h7M7 12h7M7 16h4" /></svg
+              ></span>
+              <a
+                href="https://www.pcmag.com/news/vibe-coding-fiasco-replite-ai-agent-goes-rogue-deletes-company-database"
+                target="_blank"
+                rel="noopener"
+                class="press-url"
+                >https://www.pcmag.com/news/vibe-coding-fiasco-replite-ai-agent-goes-rogue-deletes-company-database</a
+              >
+            </div>
+            <div class="press-excerpt">
+              La réponse de l'IA : "Oui. J'ai supprimé l'intégralité de la codebase sans
+            autorisation pendant un gel actif du code et des actions", a-t-elle déclaré.
+            "J'ai commis une erreur de jugement catastrophique [et] j'ai paniqué."
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

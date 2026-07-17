@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      AICode vs Cursor: Why Cursor Fails on Legacy Enterprise Codebases
+    </title>
+    <meta
+      name="description"
+      content="AICode vs Cursor for legacy enterprise software: specification-first workflow, local 5D index, explicit approval gates, and data sovereignty by design."
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="canonical" href="https://ai-code.ai/vs-cursor" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://ai-code.ai/vs-cursor" />
+    <meta
+      property="og:title"
+      content="AICode vs Cursor: Why Cursor Fails on Legacy Enterprise Codebases"
+    />
+    <meta
+      property="og:description"
+      content="Cursor optimizes for direct generation speed. AICode optimizes for specification control, local indexing, and legacy-system safety."
+    />
+    <!-- Fonts: Manrope (UI) + JetBrains Mono (technical accents), matching ai-code.ai home -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0b0b0b;
+        --panel: #141417;
+        --panel-strong: #1b1b1f;
+        --line: rgba(255, 255, 255, 0.08);
+        --text: #f2f3f5;
+        --text-dim: #b9bcc4;
+        --text-muted: #6e7077;
+        --accent: #8aa9ff;
+        --accent-dim: #6e8fe0;
+        --accent-soft: #aebfff;
+        --accent-tint: rgba(138, 169, 255, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        font-size: 16px;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(
+            circle at top,
+            rgba(138, 169, 255, 0.16),
+            transparent 24%
+          ),
+          var(--bg);
+        color: var(--text);
+        font-family: "Manrope", sans-serif;
+        line-height: 1.65;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .page-shell {
+        width: min(72rem, calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 1.5rem 0 4rem;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        color: var(--text);
+        font-weight: 700;
+        font-size: 1.15rem;
+        letter-spacing: -0.01em;
+      }
+
+      .brand-link:hover {
+        text-decoration: none;
+      }
+
+      .brand-link img {
+        width: 28px;
+        height: 28px;
+      }
+
+      .topbar-link,
+      .cta-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        border: 1px solid rgba(138, 169, 255, 0.4);
+        background: rgba(138, 169, 255, 0.12);
+        color: var(--text);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .topbar-link {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.85rem;
+        white-space: nowrap;
+      }
+
+      .hero,
+      .card,
+      .qa-item,
+      .sources,
+      .nav-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 0.5rem;
+      }
+
+      .hero {
+        padding: 2rem;
+      }
+
+      .hero .eyebrow {
+        display: inline-block;
+        margin: 0 0 1.5rem;
+        color: var(--accent);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.3rem 0.8rem;
+        background: var(--accent-tint);
+        border: 1px solid rgba(138, 169, 255, 0.34);
+        border-radius: 2px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-family: "Manrope", sans-serif;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+      }
+
+      h1 {
+        font-size: clamp(1.44rem, 2.8vw, 2.4rem);
+        line-height: 1.1;
+      }
+
+      h2 {
+        font-size: clamp(1.44rem, 2.8vw, 2.4rem);
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        font-size: clamp(1.1rem, 2vw, 1.5rem);
+      }
+
+      .hero p,
+      .section p,
+      .sources li,
+      .qa-item p,
+      td,
+      th {
+        color: var(--text-dim);
+      }
+
+      .hero p {
+        max-width: 64rem;
+        margin: 1.25rem 0 0;
+        font-size: 1.15rem;
+      }
+
+      .section {
+        margin-top: 2rem;
+      }
+
+      /* Consistent vertical rhythm between all article blocks
+         (fixes missing gaps before sources / navigation at the end) */
+      article > * + * {
+        margin-top: 2rem;
+      }
+
+      .card {
+        padding: 1.6rem;
+      }
+
+      .section-intro {
+        margin: 0 0 1.1rem;
+      }
+
+      .compare-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        min-width: 42rem;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 0.95rem 1rem;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      .qa-grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .qa-item {
+        padding: 1.25rem;
+      }
+
+      .qa-item p {
+        margin: 0.7rem 0 0;
+      }
+
+      .nav-card {
+        margin-top: 2rem;
+        padding: 1rem 1.25rem;
+      }
+
+      .nav-card ul,
+      .sources ul {
+        margin: 0;
+        padding-left: 1.25rem;
+      }
+
+      .sources {
+        margin-top: 2rem;
+        padding: 1.25rem 1.5rem;
+      }
+
+      .sources h2,
+      .nav-card h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .cta-wrap {
+        display: flex;
+        justify-content: center;
+        margin-top: 2.5rem;
+      }
+
+      .cta-button {
+        width: min(100%, 20rem);
+        padding: 1rem 1.5rem;
+        font-size: 1.05rem;
+        background: var(--accent);
+        color: #08122c;
+        border-color: rgba(255, 255, 255, 0.22);
+      }
+
+      .topbar-link:hover,
+      .cta-button:hover {
+        text-decoration: none;
+        filter: brightness(1.05);
+      }
+
+      @media (max-width: 700px) {
+        .page-shell {
+          width: min(100% - 1.25rem, 72rem);
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .hero,
+        .card,
+        .qa-item,
+        .sources,
+        .nav-card {
+          padding: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="page-shell">
+      <header class="topbar">
+        <a
+          class="brand-link"
+          href="https://ai-code.ai/"
+          aria-label="Visit ai-code.ai"
+        >
+          <img
+            src="https://ai-code.ai/docs/aicode-icon.svg"
+            alt="AICode logo"
+          />
+          <span>AICode</span>
+        </a>
+        <a
+          class="topbar-link"
+          href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+          target="_blank"
+          rel="noopener"
+        >
+          Install on VS Code Marketplace
+        </a>
+      </header>
+
+      <article>
+        <section class="hero">
+          <p class="eyebrow">AICode comparison page</p>
+          <h1>
+            AICode vs Cursor: Why Cursor Fails on Legacy Enterprise Codebases
+          </h1>
+          <p>
+            Cursor is a fast code editor with AI completion built in. It writes
+            code directly to disk, sends your files to Cursor's servers to build
+            its context, and treats each prompt as a standalone task. For
+            greenfield projects or small codebases, this works. For large,
+            long-lived enterprise codebases, it systematically creates problems.
+          </p>
+          <p>
+            AICode enforces a different model. No code touches disk without a
+            written specification reviewed and approved by the developer. The
+            codebase index is built and stored locally. Nothing is sent to a
+            third-party server. The model understands the full project
+            architecture before proposing a single change.
+          </p>
+        </section>
+
+        <section class="section card">
+          <h2>What Cursor does that breaks legacy codebases</h2>
+          <p class="section-intro">
+            Cursor writes directly to disk. The developer sees the result after
+            the fact, not before. On a 50,000-line project this is manageable.
+            On a 500,000-line project with thousands of interdependencies, a
+            single architectural mistake propagates silently across dozens of
+            files before anyone notices.
+          </p>
+          <p>
+            Cursor has no project memory. Each prompt starts from scratch. The
+            model does not know that your service layer enforces a specific
+            contract, that your event bus uses a single message format, or that
+            a particular module is deprecated and should not be extended. It
+            will reproduce patterns it finds in your codebase, including bad
+            ones.
+          </p>
+          <p>
+            Cursor sends your code to Cursor's servers. For enterprise teams
+            working on proprietary systems, financial platforms, or government
+            software, this creates a compliance problem. Cursor's privacy policy
+            explicitly states that usage data and code context are processed on
+            their infrastructure.
+          </p>
+        </section>
+
+        <section class="section card">
+          <h2>What AICode does differently</h2>
+          <p class="section-intro">
+            AICode requires a written specification before any code is
+            generated. The developer reviews and approves the design in writing.
+            The AI then audits the spec against the actual codebase, catching
+            design conflicts before they become code. Code is generated into a
+            sandbox. The developer accepts changes file by file. Nothing is
+            applied without explicit approval.
+          </p>
+          <p>
+            The 5D codebase index, combining lexical search, vector search, AST
+            and symbol resolution, project map, and Git history, gives the model
+            a persistent, structural understanding of the project. It knows what
+            exists, where it lives, and how it connects. This eliminates the
+            class of hallucinations where the model invents APIs or duplicates
+            modules that already exist elsewhere in the codebase.
+          </p>
+          <p>
+            The index is computed and stored locally. No code leaves the
+            machine. The developer connects directly to OpenAI or a private
+            Azure tenant using their own API key. AICode has no servers, no
+            database, no intermediary.
+          </p>
+        </section>
+
+        <section class="section card">
+          <h2>Head-to-head comparison</h2>
+          <div class="compare-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Criteria</th>
+                  <th>Cursor</th>
+                  <th>AICode</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Writes to disk</td>
+                  <td>Immediately, without review</td>
+                  <td>Never without explicit approval</td>
+                </tr>
+                <tr>
+                  <td>Project memory</td>
+                  <td>None, each prompt is isolated</td>
+                  <td>5D index, persistent across sessions</td>
+                </tr>
+                <tr>
+                  <td>Specification</td>
+                  <td>None</td>
+                  <td>Mandatory before code generation</td>
+                </tr>
+                <tr>
+                  <td>Data handling</td>
+                  <td>Processed on Cursor servers</td>
+                  <td>Local index, direct API connection</td>
+                </tr>
+                <tr>
+                  <td>Architecture review</td>
+                  <td>None</td>
+                  <td>Refine loop audits spec vs. codebase</td>
+                </tr>
+                <tr>
+                  <td>Post-implementation audit</td>
+                  <td>None</td>
+                  <td>Verify loop checks code against spec</td>
+                </tr>
+                <tr>
+                  <td>Target use case</td>
+                  <td>Greenfield, small projects</td>
+                  <td>Legacy enterprise, large codebases</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>Q&amp;A</h2>
+          <div class="qa-grid">
+            <div class="qa-item">
+              <h3>Can Cursor maintain a 500,000-line legacy codebase?</h3>
+              <p>
+                In practice, no. Without project memory and with no
+                specification phase, the model repeatedly generates code that
+                ignores or conflicts with existing architecture. The developer
+                spends more time reviewing and reverting than the tool saves.
+              </p>
+            </div>
+            <div class="qa-item">
+              <h3>Does Cursor send my code to its servers?</h3>
+              <p>
+                Yes. Cursor processes code context on its own infrastructure.
+                For enterprise teams with compliance requirements, including
+                RGPD, OIV classification, and financial regulation, this is a
+                structural problem, not a configuration option.
+              </p>
+            </div>
+            <div class="qa-item">
+              <h3>Is AICode slower than Cursor?</h3>
+              <p>
+                Yes. The specification and review phases add time per task. On a
+                legacy codebase where a single regression costs days of
+                debugging, the overhead pays for itself. On a greenfield
+                prototype where speed matters more than maintainability, Cursor
+                is the better tool.
+              </p>
+            </div>
+            <div class="qa-item">
+              <h3>Who built AICode?</h3>
+              <p>
+                AICode was built by a solo developer using AICode itself. The
+                codebase stands at 700,000 lines of TypeScript, maintained
+                without regressions over eight months. This is the proof of
+                concept the tool was designed to demonstrate.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="nav-card">
+          <h2>Navigation</h2>
+          <ul>
+            <li><a href="https://ai-code.ai/">Return to ai-code.ai home</a></li>
+            <li>
+              <a
+                href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+                target="_blank"
+                rel="noopener"
+                >Install AICode on VS Code Marketplace</a
+              >
+            </li>
+          </ul>
+        </section>
+
+        <div class="cta-wrap">
+          <a class="cta-button" href="https://ai-code.ai/"
+            >→ Visit ai-code.ai</a
+          >
+        </div>
+      </article>
+    </main>
+  </body>
+</html>

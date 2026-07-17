@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      AICode: Develop at light speed without code review | AI coding agent
+    </title>
+    <meta
+      name="description"
+      content="The bottleneck in generative AI is human review. AICode checks the code before it is generated. One developer does the work of 10 to 200."
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/aicode-icon.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/docs/aicode-icon-32x32.png"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ai-code.ai/" />
+    <meta
+      property="og:title"
+      content="AICode: Develop at light speed without code review | AI coding agent"
+    />
+    <meta
+      property="og:description"
+      content="The bottleneck in generative AI is human review. AICode checks the code before it is generated. One developer does the work of 10 to 200."
+    />
+    <meta property="twitter:card" content="summary" />
+    <meta property="twitter:url" content="https://ai-code.ai/" />
+    <meta
+      property="twitter:title"
+      content="AICode: Develop at light speed without code review | AI coding agent"
+    />
+    <meta
+      property="twitter:description"
+      content="The bottleneck in generative AI is human review. AICode checks the code before it is generated. One developer does the work of 10 to 200."
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/assets/common.css" />
+    <link rel="stylesheet" href="/assets/header.css" />
+    <link rel="stylesheet" href="/assets/footer.css" />
+    <script defer src="/assets/common.js"></script>
+    <script defer src="/assets/header.js"></script>
+    <script defer src="/assets/footer.js"></script>
+  </head>
+
+  <body>
+    <main>
+      <section id="hero" class="section">
+        <div class="hero-grid-bg"></div>
+        <div class="hero-glow"></div>
+        <div class="container">
+          <div class="hero-inner">
+            <h1 class="hero-headline reveal">
+              <span class="hero-tagline-line1"
+                >Develop at light speed, without code review.</span
+              >
+              <span
+                class="hero-tagline-line2"
+                id="hero-antidote"
+                data-text="→ Industrial quality from smaller teams."
+                ><span class="typing-cursor" id="typing-cursor"></span
+              ></span>
+            </h1>
+            <div class="divider reveal reveal-delay-2"></div>
+
+            <div class="hero-copy reveal reveal-delay-2">
+              <p>
+                Classical AI coding agents write code a lot faster. But the
+                bottleneck was never generation, it's the human code review that
+                follows, capping the real gain at 0x to 4x, with uncertain
+                quality.
+              </p>
+              <p>
+                AICode doesn't remove that verification. It moves the control
+                <strong>before</strong> the code is generated, not after. The
+                induced acceleration is spectacular, because reading and fixing
+                an intent is far easier than reading and fixing code.
+              </p>
+              <p>
+                The result: Top quality AI-driven software delivery, at
+                <strong>10x to 200x speed</strong>. Nothing slows down the AI.
+              </p>
+            </div>
+
+            <div class="timelines reveal reveal-delay-3">
+              <svg
+                width="100%"
+                viewBox="40 72 720 145"
+                role="img"
+                xmlns="http://www.w3.org/2000/svg"
+                class="tl-svg"
+              >
+                <title>
+                  Timeline comparison to production between a classical coding
+                  agent and AICode, with an equal-length production stage for
+                  both
+                </title>
+                <desc>
+                  Two thin horizontal lines. The top line, your agent, crosses
+                  four stages: prompt, AI code, a long code review stage, then
+                  production. The bottom line, AICode, crosses four much shorter
+                  stages before the same final production stage, identical in
+                  length in both cases: prompt, a brief control before
+                  generation, AI code, then production. A vertical dashed line
+                  connects the moment AICode finishes its development work, just
+                  before its production arrow, up to the top line, showing that
+                  at that moment the classical agent is still in the middle of
+                  code review.
+                </desc>
+                <defs>
+                  <marker
+                    id="tl-arrow"
+                    viewBox="0 0 10 10"
+                    refX="8"
+                    refY="5"
+                    markerWidth="6"
+                    markerHeight="6"
+                    orient="auto-start-reverse"
+                  >
+                    <path
+                      d="M2 1L8 5L2 9"
+                      fill="none"
+                      stroke="context-stroke"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    ></path>
+                  </marker>
+                </defs>
+
+                <text
+                  x="130"
+                  y="112"
+                  text-anchor="end"
+                  dominant-baseline="central"
+                  fill="#f2f3f5"
+                  font-family="Manrope, sans-serif"
+                  font-size="14"
+                  font-weight="500"
+                >
+                  Your agent:
+                </text>
+                <text
+                  x="166"
+                  y="90"
+                  text-anchor="middle"
+                  fill="#9b9da4"
+                  font-family="Manrope, sans-serif"
+                  font-size="12"
+                >
+                  Prompt
+                </text>
+                <text
+                  x="222"
+                  y="90"
+                  text-anchor="middle"
+                  fill="#9b9da4"
+                  font-family="Manrope, sans-serif"
+                  font-size="12"
+                >
+                  Code
+                </text>
+                <text
+                  x="410"
+                  y="90"
+                  text-anchor="middle"
+                  fill="#9b9da4"
+                  font-family="Manrope, sans-serif"
+                  font-size="12"
+                >
+                  Code review
+                </text>
+                <text
+                  x="601"
+                  y="90"
+                  text-anchor="middle"
+                  fill="#9b9da4"
+                  font-family="Manrope, sans-serif"
+                  font-size="12"
+                >
+                  Production
+                </text>
+                <line
+                  x1="140"
+                  y1="112"
+                  x2="633"
+                  y2="112"
+                  stroke="#1D9E75"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                ></line>
+                <line
+                  x1="192"
+                  y1="107"
+                  x2="192"
+                  y2="117"
+                  stroke="#1D9E75"
+                  stroke-width="1.5"
+                ></line>
+                <line
+                  x1="252"
+                  y1="107"
+                  x2="252"
+                  y2="117"
+                  stroke="#1D9E75"
+                  stroke-width="1.5"
+                ></line>
+                <line
+                  x1="568"
+                  y1="107"
+                  x2="568"
+                  y2="117"
+                  stroke="#1D9E75"
+                  stroke-width="1.5"
+                ></line>
+                <line
+                  x1="633"
+                  y1="112"
+                  x2="641"
+                  y2="112"
+                  stroke="#1D9E75"
+                  stroke-width="3"
+                  marker-end="url(#tl-arrow)"
+                ></line>
+
+                <text
+                  x="130"
+                  y="204"
+                  text-anchor="end"
+                  dominant-baseline="central"
+                  fill="#f2f3f5"
+                  font-family="Manrope, sans-serif"
+                  font-size="14"
+                  font-weight="500"
+                >
+                  AICode:
+                </text>
+                <text
+                  x="166"
+                  y="182"
+                  text-anchor="middle"
+                  fill="#9b9da4"
+                  font-family="Manrope, sans-serif"
+                  font-size="12"
+                >
+                  Prompt
+                </text>
+                <text
+                  x="221"
+                  y="182"
+                  text-anchor="middle"
+                  fill="#9b9da4"
+                  font-family="Manrope, sans-serif"
+                  font-size="12"
+                >
+                  Control
+                </text>
+                <text
+                  x="279"
+                  y="182"
+                  text-anchor="middle"
+                  fill="#9b9da4"
+                  font-family="Manrope, sans-serif"
+                  font-size="12"
+                >
+                  Code
+                </text>
+                <text
+                  x="342"
+                  y="182"
+                  text-anchor="middle"
+                  fill="#9b9da4"
+                  font-family="Manrope, sans-serif"
+                  font-size="12"
+                >
+                  Production
+                </text>
+                <line
+                  x1="140"
+                  y1="204"
+                  x2="374"
+                  y2="204"
+                  stroke="#1D9E75"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                ></line>
+                <line
+                  x1="192"
+                  y1="199"
+                  x2="192"
+                  y2="209"
+                  stroke="#1D9E75"
+                  stroke-width="1.5"
+                ></line>
+                <line
+                  x1="249"
+                  y1="199"
+                  x2="249"
+                  y2="209"
+                  stroke="#1D9E75"
+                  stroke-width="1.5"
+                ></line>
+                <line
+                  x1="309"
+                  y1="199"
+                  x2="309"
+                  y2="209"
+                  stroke="#1D9E75"
+                  stroke-width="1.5"
+                ></line>
+                <line
+                  x1="374"
+                  y1="204"
+                  x2="382"
+                  y2="204"
+                  stroke="#1D9E75"
+                  stroke-width="3"
+                  marker-end="url(#tl-arrow)"
+                ></line>
+
+                <text
+                  x="750"
+                  y="112"
+                  text-anchor="end"
+                  dominant-baseline="central"
+                  fill="#8aa9ff"
+                  font-family="'JetBrains Mono', monospace"
+                  font-size="15"
+                  font-weight="600"
+                >
+                  0–4x
+                </text>
+                <text
+                  x="750"
+                  y="204"
+                  text-anchor="end"
+                  dominant-baseline="central"
+                  fill="#8aa9ff"
+                  font-family="'JetBrains Mono', monospace"
+                  font-size="15"
+                  font-weight="600"
+                >
+                  10–200x
+                </text>
+              </svg>
+            </div>
+
+            <div class="hero-ctas reveal reveal-delay-4">
+              <a
+                href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+                target="_blank"
+                rel="noopener"
+                class="btn btn-primary"
+              >
+                ↓ Install on VS Code Marketplace
+              </a>
+              <a
+                href="https://aisovereignlabs.ai/docs/case-study/liveSession/case-study-live-session-en.pdf"
+                target="_blank"
+                rel="noopener"
+                class="btn btn-outline"
+              >
+                Read the case study
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="onboarding" class="section">
+        <div class="container">
+          <h2 class="reveal">Not only faster code. Also faster onboarding.</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <div class="frictionless-grid">
+            <div class="frictionless-text reveal reveal-delay-2">
+              <p>
+                AICode understands your codebase in depth, even if it is poorly
+                documented, through a
+                <a href="/index-5d/">five-dimensional index</a>. Whereas
+                classical agents have only one.
+              </p>
+              <p>
+                This makes your delivery process more immune to turnover, as
+                historical developers are no longer the only ones to understand
+                the program.
+              </p>
+            </div>
+            <div class="reveal reveal-delay-3">
+              <div class="frictionless-img">
+                <img
+                  src="/docs/turnover.png"
+                  alt="Project knowledge retention despite turnover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="product" class="section">
+        <div class="container">
+          <h2 class="reveal">This is what control before code looks like.</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <div class="shot-grid">
+            <figure class="shot-fig reveal reveal-delay-2">
+              <a class="eco-img-button" href="/docs/refine-en.png">
+                <img
+                  src="/docs/refine-en.png"
+                  alt="Specification with Refine and Verify buttons"
+                  loading="lazy"
+                />
+              </a>
+              <figcaption class="shot-caption">
+                Every change starts as a plain-language spec, reviewed and
+                corrected before a single line of code is written.
+              </figcaption>
+            </figure>
+            <figure class="shot-fig reveal reveal-delay-3">
+              <a class="eco-img-button" href="/docs/index-en.png">
+                <img
+                  src="/docs/index-en.png"
+                  alt="The local 5D index of the codebase"
+                  loading="lazy"
+                />
+              </a>
+              <figcaption class="shot-caption">
+                The five-dimensional index understands the entire codebase in
+                depth, without any knowledge transfer.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section id="case-study" class="section">
+        <div class="container">
+          <h2 class="reveal">Proof, on a real system.</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <div class="features-pullquote reveal reveal-delay-2">
+            <p>
+              In the following case study, the agent rebuilds a core system
+              invariant in just three days, with minimal human input, correcting
+              201 errors before shipping code with zero bugs, zero regressions,
+              and zero technical debt.
+            </p>
+          </div>
+          <div class="hero-ctas reveal reveal-delay-3">
+            <a
+              href="https://aisovereignlabs.ai/docs/case-study/liveSession/case-study-live-session-en.pdf"
+              target="_blank"
+              rel="noopener"
+              class="btn btn-outline"
+            >
+              ↗ Case study: an "impossible" 160-file refactor
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="speed" class="section">
+        <div class="container">
+          <h2 class="reveal">How power is converted into speed.</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <div class="link-table">
+            <div class="link-row reveal reveal-delay-1">
+              <a
+                class="feat-icon"
+                href="/workflow/"
+                aria-hidden="true"
+                tabindex="-1"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="5" y="3" width="14" height="18" rx="2" />
+                  <path d="M9 8h6M9 12h6M9 16h4" />
+                </svg>
+              </a>
+              <h3><a href="/workflow/">Spec-driven workflow</a></h3>
+              <p>
+                Every change is designed, corrected and locked in plain language
+                before a single line of code exists. Ideate → Specify → Refine →
+                Code → Verify. The control happens where it is 100x cheaper.
+              </p>
+              <a class="link-more" href="/workflow/">read more →</a>
+            </div>
+            <div class="link-row reveal reveal-delay-2">
+              <a
+                class="feat-icon"
+                href="/index-5d/"
+                aria-hidden="true"
+                tabindex="-1"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 3 3 8l9 5 9-5-9-5Z" />
+                  <path d="m3 13 9 5 9-5" />
+                </svg>
+              </a>
+              <h3><a href="/index-5d/">5D index</a></h3>
+              <p>
+                Five simultaneous views of your codebase: project map, lexical,
+                vector, symbols, Git history. The agent understands your code in
+                depth, even without documentation.
+              </p>
+              <a class="link-more" href="/index-5d/">read more →</a>
+            </div>
+            <div class="link-row reveal reveal-delay-3">
+              <a
+                class="feat-icon"
+                href="/quality/"
+                aria-hidden="true"
+                tabindex="-1"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+                </svg>
+              </a>
+              <h3><a href="/quality/">Enforced quality</a></h3>
+              <p>
+                AICode enforces what standard assistants skip: sound
+                architecture, no silent regressions, remembered constraints,
+                reviewable patches, tests that actually catch broken code.
+              </p>
+              <a class="link-more" href="/quality/">read more →</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="enterprise" class="section">
+        <div class="container">
+          <h2 class="reveal">Enterprise ready.</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <div class="link-table">
+            <div class="link-row reveal reveal-delay-1">
+              <a
+                class="feat-icon"
+                href="/legacy/"
+                aria-hidden="true"
+                tabindex="-1"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="4" y="3" width="16" height="18" rx="1" />
+                  <path d="M9 8h.01M15 8h.01M9 12h.01M15 12h.01M9 16h6" />
+                </svg>
+              </a>
+              <h3><a href="/legacy/">Built for large legacy codebases</a></h3>
+              <p>
+                Designed for large codebases where one uncontrolled change
+                propagates regressions across dozens of modules.
+              </p>
+              <a class="link-more" href="/legacy/">read more →</a>
+            </div>
+            <div class="link-row reveal reveal-delay-2">
+              <a
+                class="feat-icon"
+                href="/sovereignty/"
+                aria-hidden="true"
+                tabindex="-1"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="4" y="10.5" width="16" height="11" rx="2" />
+                  <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
+                </svg>
+              </a>
+              <h3><a href="/sovereignty/">Data sovereignty</a></h3>
+              <p>
+                No AICode servers. No database. Local index, your own API key,
+                direct connection to your private Azure tenant. Your code never
+                transits through us.
+              </p>
+              <a class="link-more" href="/sovereignty/">read more →</a>
+            </div>
+            <div class="link-row reveal reveal-delay-3">
+              <a
+                class="feat-icon"
+                href="/execution-model/"
+                aria-hidden="true"
+                tabindex="-1"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="m5.6 5.6 12.8 12.8" />
+                </svg>
+              </a>
+              <h3><a href="/execution-model/">Strict execution model</a></h3>
+              <p>
+                The AI reads and proposes. It cannot write a file, commit, or
+                run a command. Every change lands as a patch a human accepts,
+                file by file.
+              </p>
+              <a class="link-more" href="/execution-model/">read more →</a>
+            </div>
+            <div class="link-row reveal reveal-delay-4">
+              <a
+                class="feat-icon"
+                href="https://easy-agents.ai"
+                aria-hidden="true"
+                tabindex="-1"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="4" y="9" width="16" height="11" rx="2" />
+                  <path d="M12 5v4" />
+                  <circle cx="12" cy="3.5" r="1.5" />
+                  <path d="M9 14h.01M15 14h.01" />
+                  <path d="M9.5 17h5" />
+                </svg>
+              </a>
+              <h3><a href="https://easy-agents.ai">EasyAgents</a></h3>
+              <p>
+                EasyAgents turns one spreadsheet into a controlled fleet of
+                autonomous AI coding sessions: tests, documentation, migrations,
+                and transpilation at scale, on your own infrastructure.
+              </p>
+              <a class="link-more" href="https://easy-agents.ai">read more →</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="install" class="section">
+        <div class="container">
+          <h2 class="reveal">
+            Install and index.<br />No configuration required.
+          </h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <div class="setup-inner">
+            <div class="setup-text reveal reveal-delay-2">
+              <p>
+                AICode is a standard VS Code extension. It is offline-first, so
+                the initial install takes 2-3 minutes. No account registration.
+                No cloud sync. Your code stays on your machine.
+              </p>
+              <div class="setup-steps">
+                <div class="setup-step">
+                  <div class="step-num">1</div>
+                  <div>
+                    <h4>Install the extension</h4>
+                    <p>
+                      Open VS Code, go to Extensions, search
+                      <code>aicode-ja</code>, install.
+                    </p>
+                  </div>
+                </div>
+                <div class="setup-step">
+                  <div class="step-num">2</div>
+                  <div>
+                    <h4>Open settings</h4>
+                    <p>
+                      Click the AICode icon in the sidebar, then open Settings
+                      to configure your LLM provider.
+                    </p>
+                  </div>
+                </div>
+                <div class="setup-step">
+                  <div class="step-num">3</div>
+                  <div>
+                    <h4>Paste your API key</h4>
+                    <p>
+                      Enter your OpenAI or Azure key. It is stored locally and
+                      never displayed again.
+                    </p>
+                  </div>
+                </div>
+                <div class="setup-step">
+                  <div class="step-num">4</div>
+                  <div>
+                    <h4>Start a new chat</h4>
+                    <p>
+                      Wait for project indexing to complete. Approximately 20
+                      min per 100k LOC.
+                      <br />
+                      Click "+ New Chat" and describe your task. AICode handles
+                      the rest.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <a
+                href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+                target="_blank"
+                rel="noopener"
+                class="btn btn-primary btn-mt"
+              >
+                ↓ Install now
+              </a>
+            </div>
+
+            <div class="reveal reveal-delay-3">
+              <div class="setup-img">
+                <img
+                  src="/docs/quick-setup.png"
+                  alt="AICode setup: 4 steps in VS Code"
+                  loading="lazy"
+                />
+              </div>
+              <p class="setup-note">
+                // 4 steps · 2–3 minutes · No account required
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="pricing" class="section">
+        <div class="container">
+          <h2 class="reveal">Invest in codebase longevity.</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <p class="section-intro-dim mb-3 reveal reveal-delay-1">
+            Free to evaluate for 30 days. A license is required after that,
+            unless you qualify for free use. Billed monthly, quarterly, or
+            yearly. Cancel anytime.
+          </p>
+
+          <div class="personas-grid reveal reveal-delay-2">
+            <div class="persona-card">
+              <div class="persona-role">Free</div>
+              <h3>Individual &amp; small organizations</h3>
+              <p>
+                Free use for individual professionals and organizations with
+                fewer than 10 paid employees or registered volunteers.
+              </p>
+              <p>Free use for schools, universities, and non-profits.</p>
+              <div class="pricing-price">
+                <strong>€0</strong>
+              </div>
+              <a
+                href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+                target="_blank"
+                rel="noopener"
+                class="btn btn-primary btn-full"
+              >
+                ↓ Install free
+              </a>
+            </div>
+            <div class="persona-card">
+              <div class="persona-role">Pro</div>
+              <h3>Teams &amp; organizations</h3>
+              <p>Full access per tier of 50 users.</p>
+              <p>Quality tutorials, custom onboarding and dedicated support.</p>
+              <p>Includes a 30-day free evaluation period.</p>
+              <div class="pricing-price">
+                <strong>€30,000/yr</strong>
+                <span
+                  >excl. tax · per tier of 50 users · €2,500/mo.<br />API tokens
+                  billed separately by your provider.</span
+                >
+              </div>
+              <a
+                href="#"
+                id="pricing-pro-btn"
+                class="btn btn-primary btn-full"
+                onclick="handlePricingClick(event, 'pro')"
+              >
+                ✉ Contact us
+              </a>
+            </div>
+            <div class="persona-card">
+              <div class="persona-role">Founding client</div>
+              <h3>Free license, guaranteed success</h3>
+              <p>
+                We personally lead your first AICode project, a new build or the
+                rescue of a project going wrong, with the creator of AICode
+                doing the work, hands-on.
+              </p>
+              <p>
+                Success guaranteed. In exchange: a published case study and a
+                client reference.
+              </p>
+              <div class="pricing-price">
+                <strong>€0</strong>
+                <span
+                  >full license · expert delivery included<br />in exchange for
+                  a case study &amp; reference</span
+                >
+              </div>
+              <a
+                href="#"
+                id="pricing-founding-btn"
+                class="btn btn-primary btn-full"
+                onclick="handlePricingClick(event, 'founding')"
+              >
+                ✉ Contact us
+              </a>
+            </div>
+          </div>
+
+          <div class="problem-quote reveal">
+            <p>
+              AI coding assistants constructors claim their agents program
+              perfectly, yet employ 200+ engineers to build the agent itself. If
+              it worked so well, why not trust it instead of Scrum teams? AICode
+              was built by a single developer using AICode, matching the
+              quantity and quality of a 200-engineer team. Would you trust a
+              tool its own creators don't?
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

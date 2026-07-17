@@ -1,0 +1,46 @@
+# AICode - Develop at Light Speed Without Code Review
+> https://ai-code.ai
+
+AICode is a spec-driven AI coding assistant for VS Code. Classical AI agents
+are capped by the human code review that follows generation; AICode moves the
+control before the code is generated, delivering top-quality AI-driven
+software at 10x to 200x speed. Built for maintaining large legacy enterprise
+codebases, with a mandatory specification and human approval workflow before
+any code touches disk.
+
+## Product
+- Name: AICode
+- Version: 1.8.0
+- License: Freemium
+- Developer: Joël Abenhaïm, AI Sovereign Labs SAS (Paris, France)
+- Contact: joel@aisovereignlabs.ai
+
+## Key facts
+- Control happens pre-code: reading and fixing an intent is far easier than reviewing code
+- 750,000 lines of TypeScript maintained using AICode itself (dogfooding)
+- Case study: an "impossible" 160-file refactor delivered in three days, 201 errors corrected before shipping, zero regressions
+- Offline-first: full codebase index stored locally, no data sent to intermediaries
+- BYOK: developer connects directly to OpenAI or private Azure tenant
+- Workflow: Ideate → Specify → Refine → Code → Verify
+- 5D codebase index: lexical, vector, AST, project map, Git history
+
+## Pages
+- Home: https://ai-code.ai
+- Spec-driven workflow: https://ai-code.ai/workflow/
+- 5D index: https://ai-code.ai/index-5d/
+- Enforced quality: https://ai-code.ai/quality/
+- Built for large legacy codebases: https://ai-code.ai/legacy/
+- Data sovereignty: https://ai-code.ai/sovereignty/
+- Strict execution model: https://ai-code.ai/execution-model/
+- Case study (PDF): https://aisovereignlabs.ai/docs/case-study/liveSession/case-study-live-session-en.pdf
+- AICode vs Cursor: https://ai-code.ai/topics/vs-cursor
+- AICode vs GitHub Copilot: https://ai-code.ai/topics/vs-copilot
+- AICode vs Claude Code: https://ai-code.ai/topics/vs-claude-code
+- Legacy Enterprise Software: https://ai-code.ai/topics/legacy
+- Data Sovereignty: https://ai-code.ai/topics/data-sovereignty
+- Technical Debt: https://ai-code.ai/topics/technical-debt
+
+## Pricing
+- Free: individual developers, organizations under 10 employees, schools and non-profits
+- Pro: €30,000/year per tier of 50 users
+- Founding client: free license with hands-on delivery by the creator, in exchange for a published case study and reference

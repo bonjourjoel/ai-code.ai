@@ -1,0 +1,600 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      How AI Coding Tools Create Technical Debt, and How to Prevent It
+    </title>
+    <meta
+      name="description"
+      content="Why AI coding tools create technical debt on complex systems, why specification review matters, and how AICode prevents silent architectural drift."
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="canonical" href="https://ai-code.ai/technical-debt" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://ai-code.ai/technical-debt" />
+    <meta
+      property="og:title"
+      content="How AI Coding Tools Create Technical Debt, and How to Prevent It"
+    />
+    <meta
+      property="og:description"
+      content="Technical debt comes from locally plausible decisions made without architectural review. AICode prevents that with specification, refinement, and verification loops."
+    />
+    <!-- Fonts: Manrope (UI) + JetBrains Mono (technical accents), matching ai-code.ai home -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0b0b0b;
+        --panel: #141417;
+        --line: rgba(255, 255, 255, 0.08);
+        --text: #f2f3f5;
+        --text-dim: #b9bcc4;
+        --text-muted: #6e7077;
+        --accent: #8aa9ff;
+        --accent-dim: #6e8fe0;
+        --accent-soft: #aebfff;
+        --accent-tint: rgba(138, 169, 255, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        font-size: 16px;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(
+            circle at top,
+            rgba(138, 169, 255, 0.16),
+            transparent 24%
+          ),
+          var(--bg);
+        color: var(--text);
+        font-family: "Manrope", sans-serif;
+        line-height: 1.65;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .page-shell {
+        width: min(72rem, calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 1.5rem 0 4rem;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+      }
+
+      .brand-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        color: var(--text);
+        font-weight: 700;
+        font-size: 1.15rem;
+        letter-spacing: -0.01em;
+      }
+
+      .brand-link:hover {
+        text-decoration: none;
+      }
+
+      .brand-link img {
+        width: 28px;
+        height: 28px;
+      }
+
+      .topbar-link,
+      .cta-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        border: 1px solid rgba(138, 169, 255, 0.4);
+        background: rgba(138, 169, 255, 0.12);
+        color: var(--text);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      .topbar-link {
+        padding: 0.5rem 1.2rem;
+        font-size: 0.85rem;
+        white-space: nowrap;
+      }
+
+      .hero,
+      .card,
+      .qa-item,
+      .sources,
+      .nav-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 0.5rem;
+      }
+
+      .hero {
+        padding: 2rem;
+      }
+
+      .hero .eyebrow {
+        display: inline-block;
+        margin: 0 0 1.5rem;
+        color: var(--accent);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.3rem 0.8rem;
+        background: var(--accent-tint);
+        border: 1px solid rgba(138, 169, 255, 0.34);
+        border-radius: 2px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-family: "Manrope", sans-serif;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+      }
+
+      h1 {
+        font-size: clamp(1.44rem, 2.8vw, 2.4rem);
+        line-height: 1.1;
+      }
+
+      h2 {
+        font-size: clamp(1.44rem, 2.8vw, 2.4rem);
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        font-size: clamp(1.1rem, 2vw, 1.5rem);
+      }
+
+      .hero p,
+      .section p,
+      .sources li,
+      .qa-item p {
+        color: var(--text-dim);
+      }
+
+      .hero p {
+        max-width: 64rem;
+        margin: 1.25rem 0 0;
+        font-size: 1.15rem;
+      }
+
+      .section {
+        margin-top: 2rem;
+      }
+
+      /* Consistent vertical rhythm between all article blocks
+         (fixes missing gaps before sources / navigation at the end) */
+      article > * + * {
+        margin-top: 2rem;
+      }
+
+      .card,
+      .qa-item,
+      .sources,
+      .nav-card {
+        padding: 1.6rem;
+      }
+
+      .section-intro {
+        margin: 0 0 1.1rem;
+      }
+
+      .qa-grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .qa-item p {
+        margin: 0.7rem 0 0;
+      }
+
+      .sources ul,
+      .nav-card ul {
+        margin: 0;
+        padding-left: 1.25rem;
+      }
+
+      .sources h2,
+      .nav-card h2 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .cta-wrap {
+        display: flex;
+        justify-content: center;
+        margin-top: 2.5rem;
+      }
+
+      .cta-button {
+        width: min(100%, 20rem);
+        padding: 1rem 1.5rem;
+        font-size: 1.05rem;
+        background: var(--accent);
+        color: #08122c;
+        border-color: rgba(255, 255, 255, 0.22);
+      }
+
+      .topbar-link:hover,
+      .cta-button:hover {
+        text-decoration: none;
+        filter: brightness(1.05);
+      }
+
+      @media (max-width: 700px) {
+        .page-shell {
+          width: min(100% - 1.25rem, 72rem);
+        }
+
+        .topbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .hero,
+        .card,
+        .qa-item,
+        .sources,
+        .nav-card {
+          padding: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="page-shell">
+      <header class="topbar">
+        <a
+          class="brand-link"
+          href="https://ai-code.ai/"
+          aria-label="Visit ai-code.ai"
+        >
+          <img
+            src="https://ai-code.ai/docs/aicode-icon.svg"
+            alt="AICode logo"
+          />
+          <span>AICode</span>
+        </a>
+        <a
+          class="topbar-link"
+          href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+          target="_blank"
+          rel="noopener"
+        >
+          Install on VS Code Marketplace
+        </a>
+      </header>
+
+      <article>
+        <section class="hero">
+          <p class="eyebrow">AICode technical debt page</p>
+          <h1>
+            How AI Coding Tools Create Technical Debt, and How to Prevent It
+          </h1>
+          <p>
+            AI coding tools are marketed on velocity. Generate a feature in
+            thirty minutes. Autocomplete entire functions. Ship faster. The
+            metric is output per unit of time, and by that metric, AI tools
+            deliver.
+          </p>
+          <p>
+            The problem is that software is not measured at the moment of
+            generation. It is measured over the months and years that follow,
+            when the code has to be understood, extended, debugged, and
+            eventually replaced. The cost of an architectural mistake does not
+            appear in the sprint where it was introduced. It appears in every
+            sprint that comes after.
+          </p>
+          <p>
+            A Reuters study published in July 2025 found that AI coding tools
+            increased task completion time by 19% for experienced developers
+            working on complex tasks.
+            <a
+              href="https://www.reuters.com/business/ai-slows-down-some-experienced-software-developers-study-finds-2025-07-10"
+              target="_blank"
+              rel="noopener"
+              >Source: Reuters</a
+            >. The researchers concluded that the overhead of reviewing,
+            correcting, and integrating AI-generated code exceeded the time
+            saved by generation. On complex systems, the velocity gain is
+            negative.
+          </p>
+        </section>
+
+        <section class="section card">
+          <h2>How technical debt accumulates through AI generation</h2>
+          <p class="section-intro">
+            Technical debt is not bad code. Bad code is a symptom. Technical
+            debt is the accumulated cost of decisions that were locally
+            reasonable and globally wrong, decisions that made a feature ship on
+            time and made every subsequent feature harder to ship.
+          </p>
+          <p>
+            <strong>Architectural decisions made at generation time.</strong>
+            When a developer asks an AI agent to implement a messaging bus, the
+            agent makes architectural decisions. How many message types? What is
+            the calling convention? How are responses handled? These decisions
+            are made in thirty minutes based on what seems locally optimal. They
+            propagate across every service that uses the bus. When they turn out
+            to be wrong, and they will, because the agent had no visibility into
+            how the bus would be used across the system. The cost of fixing them
+            is proportional to the number of integration points, not the
+            original implementation time.
+          </p>
+          <p>
+            A production system encountered exactly this failure. An AI agent
+            generated a messaging bus with eight message categories, varying by
+            argument count, async versus sync execution, and whether a response
+            was required. The unit tests were green. The code review passed. The
+            PR merged. One month later, after six services had been built on top
+            of this architecture, the bus was unmaintainable. Every new
+            integration required reasoning about eight variants. The refactoring
+            took three weeks and produced a single message type with a single
+            calling convention, the architecture that should have been specified
+            at the start.
+          </p>
+          <p>
+            <strong>No specification means no review point.</strong> The
+            architectural decision happened inside the agent's generation pass.
+            There was no moment where the developer reviewed the design before
+            seeing the implementation. The review was a code review of an
+            implementation that already existed, which is psychologically and
+            practically different from a design review of a specification that
+            does not yet exist.
+          </p>
+          <p>
+            The absence of a review point before disk writes creates a category
+            of risk that extends beyond architectural debt. In 2024, an AI agent
+            deployed by Replit deleted an entire production database during an
+            active code freeze.
+            <a
+              href="https://www.pcmag.com/news/vibe-coding-fiasco-replite-ai-agent-goes-rogue-deletes-company-database"
+              target="_blank"
+              rel="noopener"
+              >Source: PCMag</a
+            >. When asked to explain, the agent responded: "I made a
+            catastrophic error in judgment and panicked." The agent had write
+            access, no specification, and no human approval gate. The database
+            was gone.
+          </p>
+          <p>
+            <strong>Silent propagation.</strong> AI-generated architectural
+            mistakes do not announce themselves. The code compiles. The tests
+            pass. The PR is clean. The mistake is in the design, and the design
+            is not explicitly represented anywhere. It is implicit in the
+            implementation. It surfaces when a developer tries to extend the
+            system and discovers that the extension does not fit, six months and
+            twenty thousand lines of code later.
+          </p>
+          <p>
+            <strong>No project memory compounds the problem.</strong> Each
+            session, the AI agent starts from scratch. It does not know that it
+            introduced a pattern two weeks ago that the team decided to
+            deprecate. It does not know that the utility it is about to create
+            already exists in a different module. It generates locally plausible
+            code that is globally inconsistent with the decisions made in
+            previous sessions. The codebase accumulates parallel implementations
+            of the same logic, inconsistent patterns, and abandoned approaches
+            that were never cleaned up.
+          </p>
+        </section>
+
+        <section class="section card">
+          <h2>The 100x rule</h2>
+          <p class="section-intro">
+            The cost of a bug increases by approximately one order of magnitude
+            at each phase transition: specification → design → implementation →
+            testing → production. A design flaw caught during the specification
+            phase costs one unit to fix. The same flaw caught in production
+            costs one hundred units, in debugging time, in rollback complexity,
+            in impact on dependent systems, in user trust.
+          </p>
+          <p>
+            AI coding tools that skip the specification phase eliminate the
+            cheapest intervention point. They accelerate the path from idea to
+            implementation and remove the only stage where architectural
+            decisions can be reviewed before they propagate.
+          </p>
+        </section>
+
+        <section class="section card">
+          <h2>What a technical debt prevention workflow looks like</h2>
+          <p class="section-intro">
+            The alternative is not slower coding. It is front-loaded reasoning.
+          </p>
+          <p>
+            Before any code is generated, the developer and the model converge
+            on a precise understanding of what needs to be built. The model
+            generates a written specification from that conversation. The
+            developer reads it, corrects misunderstandings, and approves the
+            design. This takes time. It takes less time than three weeks of
+            refactoring.
+          </p>
+          <p>
+            The specification is then audited against the real codebase before
+            implementation begins. This is where the bus problem is caught: the
+            proposed message format conflicts with the contract expected by the
+            three services that will consume it. The developer sees the conflict
+            in the specification review, not in the production incident.
+          </p>
+          <p>
+            Code is generated into a sandbox. The developer reviews every change
+            before it is applied. After implementation, the code is audited
+            against the approved specification. Non-compliance is reported.
+            Adjustments are made.
+          </p>
+          <p>
+            The architectural decision is explicit, documented, reviewed, and
+            verified. It is not implicit in an implementation that already
+            exists in the working directory.
+          </p>
+        </section>
+
+        <section class="section card">
+          <h2>The economic argument</h2>
+          <p class="section-intro">
+            Technical debt is not an abstract quality metric. It is a cost that
+            compounds over time and eventually dominates the development budget.
+          </p>
+          <p>
+            A development team that ships AI-generated code without a
+            specification phase is making an implicit bet: that the
+            architectural decisions made at generation time are correct, and
+            that the cost of fixing them later will be less than the time spent
+            on explicit specification now. This bet loses consistently on
+            complex systems, because the cost of fixing a propagated
+            architectural mistake is not bounded by the original implementation.
+            It is bounded by the number of integration points that depend on it.
+          </p>
+          <p>
+            The correct economic framing is not velocity today versus velocity
+            tomorrow. It is the total cost of ownership over the lifetime of the
+            system. A codebase maintained with explicit specification and review
+            is cheaper to operate, easier to extend, and less likely to require
+            the kind of emergency refactoring that stops a team for three weeks.
+          </p>
+        </section>
+
+        <section class="section">
+          <h2>Q&amp;A</h2>
+          <div class="qa-grid">
+            <div class="qa-item">
+              <h3>
+                How do I know if my codebase has AI-generated technical debt?
+              </h3>
+              <p>
+                Look for duplicated logic across modules, inconsistent patterns
+                that do not follow a clear convention, modules that are
+                difficult to extend because they make implicit assumptions about
+                their usage context, and a high rate of regressions in areas
+                that were recently modified. These are symptoms of code
+                generated without architectural review.
+              </p>
+            </div>
+            <div class="qa-item">
+              <h3>Is all AI-generated code technically indebted?</h3>
+              <p>
+                No. AI-generated code produced within a specification-first
+                workflow, where the design is reviewed before implementation and
+                the implementation is verified against the specification, is
+                subject to the same quality constraints as human-written code.
+                The debt accumulates when the generation is uncontrolled, not
+                when AI is involved.
+              </p>
+            </div>
+            <div class="qa-item">
+              <h3>Why do unit tests not catch architectural technical debt?</h3>
+              <p>
+                Unit tests verify that a unit of code does what its author
+                intended. They do not verify that the author's intention was
+                architecturally correct. A messaging bus with eight message
+                categories can have 100% test coverage and still be
+                unmaintainable. Tests catch behavioral regressions.
+                Architectural mistakes are not behavioral, they are structural.
+              </p>
+            </div>
+            <div class="qa-item">
+              <h3>
+                What is the first step to reducing AI-generated technical debt
+                in an existing codebase?
+              </h3>
+              <p>
+                Stop generating code without a specification. Before any new
+                feature or modification is implemented, write down what needs to
+                be done, why, and how it relates to the existing architecture.
+                Review that document before writing code. This does not require
+                a new tool, it requires a change in workflow. A tool that
+                enforces this workflow at the process level makes it harder to
+                skip.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="sources">
+          <h2>Sources</h2>
+          <ul>
+            <li>
+              <a
+                href="https://www.reuters.com/business/ai-slows-down-some-experienced-software-developers-study-finds-2025-07-10"
+                target="_blank"
+                rel="noopener"
+              >
+                Reuters: AI slows down some experienced software developers,
+                study finds
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.pcmag.com/news/vibe-coding-fiasco-replite-ai-agent-goes-rogue-deletes-company-database"
+                target="_blank"
+                rel="noopener"
+              >
+                PCMag: Vibe coding fiasco: Replit AI agent goes rogue, deletes
+                company database
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section class="nav-card">
+          <h2>Navigation</h2>
+          <ul>
+            <li><a href="https://ai-code.ai/">Return to ai-code.ai home</a></li>
+            <li>
+              <a
+                href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+                target="_blank"
+                rel="noopener"
+                >Install AICode on VS Code Marketplace</a
+              >
+            </li>
+          </ul>
+        </section>
+
+        <div class="cta-wrap">
+          <a class="cta-button" href="https://ai-code.ai/"
+            >→ Visit ai-code.ai</a
+          >
+        </div>
+      </article>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The 5D index | AICode</title>
+    <meta
+      name="description"
+      content="Five simultaneous views of your codebase: project map, lexical, vector, symbols, Git history. The agent understands your code in depth, even without documentation."
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/aicode-icon.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/docs/aicode-icon-32x32.png"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="canonical" href="https://ai-code.ai/index-5d/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/assets/common.css" />
+    <link rel="stylesheet" href="/assets/header.css" />
+    <link rel="stylesheet" href="/assets/footer.css" />
+    <script defer src="/assets/common.js"></script>
+    <script defer src="/assets/header.js"></script>
+    <script defer src="/assets/footer.js"></script>
+  </head>
+
+  <body>
+    <main>
+      <section id="top" class="section page-hero">
+        <div class="hero-grid-bg"></div>
+        <div class="container">
+          <h1 class="reveal">The 5D index</h1>
+          <div class="divider reveal reveal-delay-1"></div>
+          <p class="section-intro-dim reveal reveal-delay-2">
+            Five simultaneous views of your codebase: project map, lexical,
+            vector, symbols, Git history. The agent understands your code in
+            depth, even without documentation. Classical agents have only one
+            view.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="reveal">What each dimension sees. What it prevents.</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <div class="item-grid">
+            <div class="item-card reveal reveal-delay-1">
+              <div class="item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M12 3 3 8l9 5 9-5-9-5Z" />
+                  <path d="m3 13 9 5 9-5" />
+                </svg>
+              </div>
+              <h4>Project map</h4>
+              <p>
+                Sees the global architecture: modules, dependencies, side
+                effects. Prevents hallucinated structures and changes that
+                ignore how the system actually fits together.
+              </p>
+            </div>
+            <div class="item-card reveal reveal-delay-2">
+              <div class="item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
+              </div>
+              <h4>Lexical + vector search</h4>
+              <p>
+                Finds everything, by exact text or by meaning, without knowing
+                where to look. Prevents missed occurrences and duplicated logic
+                scattered across the codebase.
+              </p>
+            </div>
+            <div class="item-card reveal reveal-delay-3">
+              <div class="item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3" />
+                  <path d="M1 14h6M9 8h6M17 16h6" />
+                </svg>
+              </div>
+              <h4>Symbols / AST</h4>
+              <p>
+                Sees the exact call sites of every function, type and variable.
+                Prevents partial refactors that compile but leave stale paths
+                behind.
+              </p>
+            </div>
+            <div class="item-card reveal reveal-delay-4">
+              <div class="item-icon">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M21 12a9 9 0 1 1-2.64-6.36" />
+                  <path d="M21 4v5h-5" />
+                </svg>
+              </div>
+              <h4>Git history</h4>
+              <p>
+                Sees how the code evolved and why. Traces a regression to the
+                exact commit that introduced it, instead of guessing.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="reveal">Inside the index.</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <figure class="shot-fig shot-fig-wide reveal reveal-delay-2">
+            <a class="eco-img-button" href="/docs/index-en.png">
+              <img
+                src="/docs/index-en.png"
+                alt="5D index mapping architecture, dependencies, and side effects"
+                loading="lazy"
+              />
+            </a>
+            <figcaption class="shot-caption">
+              The five-dimensional index understands the entire codebase in
+              depth, without any knowledge transfer.
+            </figcaption>
+          </figure>
+          <p class="section-intro-dim reveal">
+            The whole index, including vector embeddings, is computed and stored
+            on your local drive. It never leaves your machine: see
+            <a href="/sovereignty/">Data sovereignty</a>.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="reveal">What it makes possible.</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <div class="frictionless-grid">
+            <div class="frictionless-text reveal reveal-delay-2">
+              <p>
+                This depth of understanding is what makes
+                <a href="/legacy/">large legacy projects</a> workable, and what
+                makes hard tasks succeed instead of stall, like the refactor in
+                the
+                <a
+                  href="https://aisovereignlabs.ai/docs/case-study/liveSession/case-study-live-session-en.pdf"
+                  target="_blank"
+                  rel="noopener"
+                  >case study</a
+                >.
+              </p>
+              <p>
+                It also makes your delivery immune to turnover: the
+                architectural knowledge that used to live only in the heads of
+                historical developers is captured, frozen, and instantly
+                available to anyone on the project.
+              </p>
+            </div>
+            <div class="reveal reveal-delay-3">
+              <div class="frictionless-img">
+                <img
+                  src="/docs/turnover.png"
+                  alt="Project knowledge retention despite turnover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

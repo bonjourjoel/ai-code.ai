@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Qualité imposée | AICode</title>
+    <meta
+      name="description"
+      content="AICode impose ce que les assistants standard négligent : architecture saine, pas de régressions silencieuses, contraintes mémorisées, patches révisables, tests qui détectent vraiment le code cassé."
+    />
+    <link rel="icon" type="image/svg+xml" href="/docs/aicode-icon.svg" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/docs/aicode-icon-32x32.png"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <link rel="canonical" href="https://ai-code.ai/fr/quality/" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/assets/common.css" />
+    <link rel="stylesheet" href="/assets/header.css" />
+    <link rel="stylesheet" href="/assets/footer.css" />
+    <script defer src="/assets/common.js"></script>
+    <script defer src="/assets/header.js"></script>
+    <script defer src="/assets/footer.js"></script>
+  </head>
+
+  <body>
+    <main>
+      <section id="problem" class="section page-hero">
+        <div class="hero-grid-bg"></div>
+        <div class="container">
+          <h1 class="reveal">Qualité imposée</h1>
+          <div class="divider reveal reveal-delay-1"></div>
+          <p class="section-intro-dim reveal reveal-delay-2">
+            AICode impose ce que les assistants standard négligent :
+            architecture saine, pas de régressions silencieuses, contraintes
+            mémorisées, patches révisables, tests qui détectent vraiment le
+            code cassé.
+          </p>
+          <div class="problem-table">
+            <div class="problem-row problem-header">
+              <div class="problem-cell">
+                <h3>Ce que produisent les agents IA non contrôlés</h3>
+              </div>
+              <div class="problem-arrow-cell"></div>
+              <div class="problem-cell">
+                <h3>Ce qu'AICode impose à la place</h3>
+              </div>
+            </div>
+
+            <div class="problem-row problem-row-reveal">
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>
+                    Architecture de niveau junior qui accumule la dette technique dès
+                  le premier jour
+                  </p>
+                </div>
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>
+                    Modifications trop ciblées qui cassent les invariants et mènent à
+                  des enfers de debug
+                  </p>
+                </div>
+              </div>
+              <div class="problem-arrow-cell">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-width="0.6"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-good">✓</div>
+                  <p>
+                    Spécification structurée relue et approuvée par
+                  <em>vous</em> avant qu'une seule ligne ne soit écrite
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-row problem-row-reveal">
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>
+                    Régressions silencieuses qui ressemblent au vrai code, détectées trop
+                  tard
+                  </p>
+                </div>
+              </div>
+              <div class="problem-arrow-cell">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-width="0.6"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-good">✓</div>
+                  <p>
+                    Boucles Raffiner + Vérifier qui auditent la spécification et le code
+                  généré pour détecter les défauts de conception
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-row problem-row-reveal">
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>
+                    Aucune mémoire de projet : l'IA oublie vos contraintes à chaque
+                  nouveau prompt
+                  </p>
+                </div>
+              </div>
+              <div class="problem-arrow-cell">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-width="0.6"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-good">✓</div>
+                  <p>
+                    Carte de projet : le modèle comprend l'architecture globale,
+                  avec bien moins d'hallucinations
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-row problem-row-reveal">
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>
+                    Modifications automatiques écrites directement sur disque avant que vous puissiez les relire
+                  </p>
+                </div>
+              </div>
+              <div class="problem-arrow-cell">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-width="0.6"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-good">✓</div>
+                  <p>
+                    Patches révisables dans un espace de travail virtuel. Vous acceptez
+                  les modifications fichier par fichier, ligne par ligne
+                  </p>
+                </div>
+                <div class="problem-item">
+                  <div class="problem-icon icon-good">✓</div>
+                  <p>Contrôles d'autorisation MCP par outil</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-row problem-row-reveal">
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>Tests unitaires qui valident et cachent du code cassé</p>
+                </div>
+                <div class="problem-item">
+                  <div class="problem-icon icon-bad">✕</div>
+                  <p>Hallucinations déguisées en confiance</p>
+                </div>
+              </div>
+              <div class="problem-arrow-cell">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="28"
+                  height="28"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2,10 L14,10 L14,4 L22,12 L14,20 L14,14 L2,14 Z"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-width="0.6"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div class="problem-cell">
+                <div class="problem-item">
+                  <div class="problem-icon icon-good">✓</div>
+                  <p>
+                    Honnête par conception : le modèle ne bluffe pas quand le contexte
+                  manque. Il pose la question
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="reveal">L'anti-effet "wow"</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <div class="problem-story-block reveal">
+            <div class="problem-story">
+              <p class="reveal reveal-delay-2">
+                Histoire vraie : un agent de codage IA de premier rang a généré le
+              bus de messagerie d'une application de production en
+              <strong>trente minutes</strong>. Impressionnant. Le bus était
+              optimisé avec <strong>huit catégories de messages</strong>,
+              variant selon le nombre d'arguments, si une réponse était requise,
+              exécution async ou sync. C'était une belle PR, avec des tests
+              unitaires verts, prête à merger. Le genre de travail qui fait dire
+              "Wow".
+              </p>
+              <p class="reveal reveal-delay-3">
+                Un mois plus tard, après avoir connecté plusieurs services sur cette
+              architecture, j'ai compris que le bus était non maintenable.
+              Chaque nouvelle intégration nécessitait de considérer les huit
+              variantes. Confronté à la conception, le modèle l'a défendue :
+              "Tu économises 2-3 instructions ici, 1 cycle CPU là". Pendant ce
+              temps, tout le projet coulait sous le poids de sa propre complexité.
+              </p>
+              <p class="reveal reveal-delay-4">
+                Il a fallu <strong>trois semaines de refactoring</strong> pour imposer un
+              format unique : un seul contrat RPC, un seul type de message.
+              Le modèle a résisté : "Tu gaspilles des ressources, ça sera lent".
+              En réalité, 1ms en plus à l'exécution est invisible en production.
+              Ce que le modèle ne pouvait pas mesurer, et donc ignorait, c'est que
+              la ressource la plus rare n'est pas le CPU ; c'est la capacité humaine
+              à comprendre et maintenir le code.
+              </p>
+              <p class="reveal reveal-delay-5">
+                AICode a été construit à partir de cette leçon. Les étapes Spécifier et Raffiner
+              existent pour intercepter exactement ce type de décision avant qu'elle ne soit
+              codée, connectée et propagée dans toute l'architecture.
+              L'IA générative non contrôlée est une maladie. AICode est l'antidote.
+              </p>
+            </div>
+          </div>
+
+          <div class="press-card reveal reveal-delay-2">
+            <div class="press-title">-- ARTICLE DE PRESSE EXTERNE ASSOCIÉ --</div>
+            <div class="press-header">
+              <span class="press-icon"
+                ><svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M4 4h13a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4Z"
+                  />
+                  <path d="M18 8h2a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2" />
+                  <path d="M7 8h7M7 12h7M7 16h4" /></svg
+              ></span>
+              <a
+                href="https://www.reuters.com/business/ai-slows-down-some-experienced-software-developers-study-finds-2025-07-10"
+                target="_blank"
+                rel="noopener"
+                class="press-url"
+                >https://www.reuters.com/business/ai-slows-down-some-experienced-software-developers-study-finds-2025-07-10</a
+              >
+            </div>
+            <div class="press-excerpt">
+              "Mais l'étude a constaté que l'utilisation de l'IA produisait l'effet inverse :
+            elle a augmenté le temps d'accomplissement des tâches de 19 %."
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="reveal">La qualité est ce qui permet de passer à l'échelle.</h2>
+          <div class="divider reveal reveal-delay-1"></div>
+          <div class="frictionless-grid">
+            <div class="frictionless-text reveal reveal-delay-2">
+              <p>
+                AICode transforme les connaissances rares d'ingénierie de prompts
+                de niveau expert en un bien logiciel sur étagère, facilitant la
+                montée en charge des équipes.
+              </p>
+              <p>
+                Contrairement aux outils IA standard qui représentent un risque
+                majeur de pollution du code, le workflow spécialisé d'AICode
+                permet de déployer l'accélération IA en toute sécurité à
+                l'échelle de groupes entiers.
+              </p>
+            </div>
+            <div class="reveal reveal-delay-3">
+              <div class="frictionless-img">
+                <img
+                  src="/docs/scale.png"
+                  alt="Effet d'échelle et multiplicateur"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
