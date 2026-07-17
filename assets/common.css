@@ -314,9 +314,8 @@ code,
 
 /* ========== CALLOUT (dotted overshoot rule + icon) ========== */
 /* CSS-only: a dotted vertical rule that OVERSHOOTS the text (top & bottom),
-   plus a small icon to its right. Applied to the quote boxes and the hero
-   security line. No extra markup, no inline styles. */
-.problem-quote::before,
+   plus a small icon to its right. Applied to the hero security line.
+   No extra markup, no inline styles. */
 .features-pullquote::before {
   content: "";
   position: absolute;
@@ -326,7 +325,6 @@ code,
   border-left: 2px dotted var(--accent);
 }
 
-.problem-quote::after,
 .features-pullquote::after {
   content: "";
   position: absolute;
@@ -998,24 +996,6 @@ html.problem-row-scroll-active .problem-row-reveal.problem-row-visible {
 .problem-item p {
   font-size: 0.92rem;
   color: var(--text-dim);
-}
-
-/* Quote callout (hero + problem section) */
-.problem-quote {
-  position: relative;
-  margin-top: 3rem;
-  padding: 1.4rem 1.75rem 1.4rem 3.5rem;
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-}
-
-.problem-quote p {
-  font-family: "Manrope", sans-serif;
-  font-size: 1.05rem;
-  font-weight: 500;
-  line-height: 1.55;
-  color: var(--text);
 }
 
 /* True story */
