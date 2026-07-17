@@ -807,10 +807,29 @@ function getStoredLangOverride() {
   return SUPPORTED_LANGS.includes(storedLang) ? storedLang : null;
 }
 
-function buildLocalizedPath(lang, pathWithoutLang) {
-  var suffix =
-    pathWithoutLang.length > 0 ? "/" + pathWithoutLang.join("/") : "/";
-  var localizedPath = lang === DEFAULT_LANG ? suffix : "/" + lang + suffix;
+function getPathWithoutLangSuffix() {
+  var pathname = window.location.pathname || "/";
+  var currentLang = getLangFromPath();
+
+  // Preserve the raw suffix exactly as served by the site (`/services/`,
+  // `/services/index.html`, `/#hero`, etc.) so later redirects compare and
+  // rebuild the same canonical shape instead of oscillating between aliases.
+  if (currentLang === null) {
+    return pathname;
+  }
+
+  var prefix = "/" + currentLang;
+  var suffix = pathname.slice(prefix.length);
+
+  return suffix.length > 0 ? suffix : "/";
+}
+
+function buildLocalizedPath(lang, pathWithoutLangSuffix) {
+  var suffix = pathWithoutLangSuffix || "/";
+  var localizedPath =
+    lang === DEFAULT_LANG
+      ? suffix
+      : "/" + lang + (suffix === "/" ? "/" : suffix);
 
   // Preserve the current query string and anchor so a manual language choice
   // remains stable even when the user returns via section links or shared URLs.
@@ -819,25 +838,25 @@ function buildLocalizedPath(lang, pathWithoutLang) {
 
 function switchLang(select) {
   localStorage.setItem("lang-override", select.value);
-  const parts = window.location.pathname.split("/").filter(Boolean);
-  const hasLang = parts.length > 0 && SUPPORTED_LANGS.includes(parts[0]);
-  const pathWithoutLang = hasLang ? parts.slice(1) : parts;
-  const newPath = buildLocalizedPath(select.value, pathWithoutLang);
+  const pathWithoutLangSuffix = getPathWithoutLangSuffix();
+  const newPath = buildLocalizedPath(select.value, pathWithoutLangSuffix);
   window.location.href = newPath;
 }
 
 // ---- Auto lang redirect ----
 (function () {
   if (/claudeusercontent\.com$/.test(location.hostname)) return; // preview sandbox
-  const parts = window.location.pathname.split("/").filter(Boolean);
   const currentLang = getLangFromPath();
-  const pathWithoutLang = currentLang !== null ? parts.slice(1) : parts;
+  const pathWithoutLangSuffix = getPathWithoutLangSuffix();
   const storedLang = getStoredLangOverride();
 
   // A manual language selection is the strongest signal: once the user picked
   // a language from the switcher, keep that language pinned on every later visit.
   if (storedLang !== null) {
-    var desiredStoredPath = buildLocalizedPath(storedLang, pathWithoutLang);
+    var desiredStoredPath = buildLocalizedPath(
+      storedLang,
+      pathWithoutLangSuffix,
+    );
     var currentFullPath =
       window.location.pathname + window.location.search + window.location.hash;
 
@@ -860,7 +879,9 @@ function switchLang(select) {
 
   // When no explicit user choice exists yet, fall back to browser detection
   // while keeping the same page path and anchor.
-  window.location.replace(buildLocalizedPath(browserLang, pathWithoutLang));
+  window.location.replace(
+    buildLocalizedPath(browserLang, pathWithoutLangSuffix),
+  );
 })();
 
 // ---- Lang switcher init ----
