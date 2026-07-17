@@ -799,27 +799,61 @@ function getLangFromPath() {
     : null;
 }
 
+function getStoredLangOverride() {
+  var storedLang = localStorage.getItem("lang-override");
+
+  // Ignore stale or unexpected values so future manual storage edits cannot
+  // send the public site into an unsupported routing state.
+  return SUPPORTED_LANGS.includes(storedLang) ? storedLang : null;
+}
+
+function buildLocalizedPath(lang, pathWithoutLang) {
+  var suffix =
+    pathWithoutLang.length > 0 ? "/" + pathWithoutLang.join("/") : "/";
+  var localizedPath = lang === DEFAULT_LANG ? suffix : "/" + lang + suffix;
+
+  // Preserve the current query string and anchor so a manual language choice
+  // remains stable even when the user returns via section links or shared URLs.
+  return localizedPath + window.location.search + window.location.hash;
+}
+
 function switchLang(select) {
   localStorage.setItem("lang-override", select.value);
   const parts = window.location.pathname.split("/").filter(Boolean);
   const hasLang = parts.length > 0 && SUPPORTED_LANGS.includes(parts[0]);
   const pathWithoutLang = hasLang ? parts.slice(1) : parts;
-  const suffix =
-    pathWithoutLang.length > 0 ? "/" + pathWithoutLang.join("/") : "/";
-  const newPath =
-    select.value === DEFAULT_LANG ? suffix : "/" + select.value + suffix;
+  const newPath = buildLocalizedPath(select.value, pathWithoutLang);
   window.location.href = newPath;
 }
 
 // ---- Auto lang redirect ----
 (function () {
   if (/claudeusercontent\.com$/.test(location.hostname)) return; // preview sandbox
-  if (getLangFromPath() !== null) return;
-  if (localStorage.getItem("lang-override") === DEFAULT_LANG) return;
+  const parts = window.location.pathname.split("/").filter(Boolean);
+  const currentLang = getLangFromPath();
+  const pathWithoutLang = currentLang !== null ? parts.slice(1) : parts;
+  const storedLang = getStoredLangOverride();
+
+  // A manual language selection is the strongest signal: once the user picked
+  // a language from the switcher, keep that language pinned on every later visit.
+  if (storedLang !== null) {
+    if (storedLang === currentLang) return;
+
+    // English lives at the root while French uses the `/fr/` prefix, so the
+    // redirect target must always be rebuilt from the path without its language.
+    window.location.replace(buildLocalizedPath(storedLang, pathWithoutLang));
+    return;
+  }
+
+  if (currentLang !== null) return;
+
   const browserLang = (navigator.language || "").slice(0, 2).toLowerCase();
   if (browserLang === DEFAULT_LANG || !SUPPORTED_LANGS.includes(browserLang))
     return;
-  window.location.replace("/" + browserLang + "/");
+
+  // When no explicit user choice exists yet, fall back to browser detection
+  // while keeping the same page path and anchor.
+  window.location.replace(buildLocalizedPath(browserLang, pathWithoutLang));
 })();
 
 // ---- Lang switcher init ----
@@ -827,7 +861,8 @@ function switchLang(select) {
 // select both at DOM ready and when the header reports in.
 function initLangSelect() {
   const sel = document.querySelector(".lang-switcher select");
-  if (sel) sel.value = getLangFromPath() || DEFAULT_LANG;
+  if (sel)
+    sel.value = getStoredLangOverride() || getLangFromPath() || DEFAULT_LANG;
 }
 document.addEventListener("DOMContentLoaded", initLangSelect);
 document.addEventListener("aicode:header-ready", initLangSelect);

@@ -453,9 +453,9 @@ code,
   z-index: 2;
 }
 
-.hero-headline {
-  max-width: 820px;
-}
+/* Keep the home hero aligned with the shared page container used everywhere else.
+   A narrower custom text column here makes the hero look visually disconnected
+   from the rest of the landing and from the subpages. */
 
 .hero-tagline-line1 {
   display: block;
@@ -1978,9 +1978,9 @@ html.workflow-step-seq-active .workflow-step-seq.workflow-step-seq-entered {
   letter-spacing: -0.01em;
 }
 
-.hero-copy {
-  max-width: 760px;
-}
+/* The hero body copy follows the same container width policy as the surrounding
+   sections. Avoid hero-specific max-width caps so the reading column stays
+   consistent across the site. */
 
 .hero-copy p {
   color: var(--text-dim);
