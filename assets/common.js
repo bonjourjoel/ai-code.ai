@@ -837,11 +837,18 @@ function switchLang(select) {
   // A manual language selection is the strongest signal: once the user picked
   // a language from the switcher, keep that language pinned on every later visit.
   if (storedLang !== null) {
-    if (storedLang === currentLang) return;
+    var desiredStoredPath = buildLocalizedPath(storedLang, pathWithoutLang);
+    var currentFullPath =
+      window.location.pathname + window.location.search + window.location.hash;
+
+    // The English locale is represented by the root path with no language prefix,
+    // so equality must be checked against the fully rebuilt target URL instead of
+    // comparing the raw `currentLang` marker only.
+    if (desiredStoredPath === currentFullPath) return;
 
     // English lives at the root while French uses the `/fr/` prefix, so the
     // redirect target must always be rebuilt from the path without its language.
-    window.location.replace(buildLocalizedPath(storedLang, pathWithoutLang));
+    window.location.replace(desiredStoredPath);
     return;
   }
 
