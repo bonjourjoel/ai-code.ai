@@ -2111,8 +2111,9 @@ a.feat-icon:hover {
 }
 
 .shot-fig .eco-img-button {
-  display: block;
+  display: flex;
   position: relative;
+  aspect-ratio: 43 / 25;
   border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
@@ -2127,6 +2128,8 @@ a.feat-icon:hover {
 
 .shot-fig .eco-img-button img {
   width: 100%;
+  height: 100%;
+  object-fit: contain;
   display: block;
 }
 
