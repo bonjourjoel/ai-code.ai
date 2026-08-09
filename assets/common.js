@@ -1,41 +1,4 @@
-/* AICode - shared behaviors (adapted from the single-page index.js) */
-// ---- Email ----
-function getFullEmail() {
-  var user = "joel";
-  var domain = "aisovereignlabs";
-  var tld = "ai";
-  return user + "@" + domain + "." + tld;
-}
-
-function handleContactClick(event) {
-  var fullAddress = getFullEmail();
-  var el = event.currentTarget;
-
-  if (el.dataset.revealed !== "1") {
-    if (event) event.preventDefault();
-    var anchors = ["#nav-contact", "#footer-contact", "#footer-legal-contact"];
-    anchors.forEach(function (sel) {
-      var target = document.querySelector(sel);
-      if (target) {
-        target.href = "mailto:" + fullAddress;
-        target.textContent = fullAddress;
-        target.dataset.revealed = "1";
-      }
-    });
-  }
-}
-
-function handlePricingClick(event, plan) {
-  var fullAddress = getFullEmail();
-  var btn = document.getElementById("pricing-" + plan + "-btn");
-
-  if (btn && btn.dataset.revealed !== "1") {
-    if (event) event.preventDefault();
-    btn.textContent = fullAddress;
-    btn.href = "mailto:" + fullAddress;
-    btn.dataset.revealed = "1";
-  }
-}
+/* AICode - shared behaviors for the public marketing pages. */
 
 // ---- Hero cards sequential desktop entrance ----
 const HERO_CARD_SEQUENCE_DESKTOP_QUERY = "(min-width: 901px)";
