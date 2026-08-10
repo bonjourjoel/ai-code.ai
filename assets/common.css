@@ -258,6 +258,18 @@ code,
   justify-content: center;
 }
 
+/* Monochrome button icons inherit the CTA text color for consistent rendering. */
+.btn-icon {
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .btn-primary {
   background: var(--accent);
   color: #08122c;
@@ -1725,20 +1737,86 @@ html.workflow-step-seq-active .workflow-step-seq.workflow-step-seq-entered {
 }
 
 /* ========== PRICING ========== */
-/* Pricing: three offers on one row (stacked on mobile via the shared 900px rule). */
+/*
+ * Share intrinsic content, price, and action rows across the three desktop cards.
+ * The tallest localized price content defines the price row without fixed heights.
+ */
 #pricing .personas-grid {
+  --pricing-section-gap: 0.8rem;
+
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 1fr) auto auto;
+  gap: var(--pricing-section-gap) 2rem;
+}
+
+/* Each card spans the shared rows so price boxes and CTA buttons remain aligned. */
+#pricing .persona-card {
+  display: grid;
+  grid-row: 1 / span 3;
+  grid-template-rows: subgrid;
+  padding-top: 1.65rem;
+  padding-bottom: 1.65rem;
+}
+
+/* Keep the card's descriptive content compact while the outer subgrid aligns sections. */
+#pricing .pricing-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pricing-section-gap);
+  min-width: 0;
+}
+
+#pricing .persona-role {
+  margin-bottom: 0;
 }
 
 @media (max-width: 900px) {
   #pricing .personas-grid {
     grid-template-columns: 1fr;
+    grid-template-rows: none;
+    gap: 2rem;
+  }
+
+  /* Stacked cards return to their natural independent flow on narrow screens. */
+  #pricing .persona-card {
+    display: flex;
+    grid-row: auto;
+    gap: var(--pricing-section-gap);
   }
 }
 
+/* Remove local section margins so every direct card section follows the shared rhythm. */
+#pricing .pricing-features {
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--text-dim);
+}
+
+/* Introduce inherited benefits without presenting the sentence as another feature. */
+#pricing .pricing-includes {
+  margin: 0;
+  font-weight: 600;
+}
+
+#pricing .pricing-features li {
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+#pricing .pricing-features li::marker {
+  color: var(--accent);
+}
+
+#pricing .pricing-features li + li {
+  margin-top: 0.55rem;
+}
+
 .pricing-price {
-  margin: auto 0 1.5rem 0;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0;
+  padding: 0.7rem 1rem;
   background: var(--bg2);
   border-radius: 6px;
   border: 1px solid var(--border);
