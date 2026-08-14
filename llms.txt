@@ -32,7 +32,7 @@ any code touches disk.
 - Built for large legacy codebases: https://ai-code.ai/legacy/
 - Data sovereignty: https://ai-code.ai/sovereignty/
 - Strict execution model: https://ai-code.ai/execution-model/
-- Case study (PDF): https://aisovereignlabs.ai/docs/case-study/liveSession/case-study-live-session-en.pdf
+- ↗ Full case study, published on arXiv: https://arxiv.org/abs/2608.12440
 - AICode vs Cursor: https://ai-code.ai/topics/vs-cursor
 - AICode vs GitHub Copilot: https://ai-code.ai/topics/vs-copilot
 - AICode vs Claude Code: https://ai-code.ai/topics/vs-claude-code
