@@ -330,7 +330,7 @@ window.addEventListener("resize", syncHeroCardSequenceDesktopMode);
 })();
 
 // ---- Sticky nav background on scroll ----
-// The nav is injected asynchronously by header.js, so resolve it lazily.
+// The nav is statically precomposed into every deployable page by the sites build.
 (function () {
   window.addEventListener(
     "scroll",
@@ -848,12 +848,11 @@ function switchLang(select) {
 })();
 
 // ---- Lang switcher init ----
-// The header arrives asynchronously (fetched by header.js), so sync the
-// select both at DOM ready and when the header reports in.
+// The header is present in the initial HTML, so DOM readiness is the only
+// initialization barrier required for the shared language selector.
 function initLangSelect() {
   const sel = document.querySelector(".lang-switcher select");
   if (sel)
     sel.value = getStoredLangOverride() || getLangFromPath() || DEFAULT_LANG;
 }
 document.addEventListener("DOMContentLoaded", initLangSelect);
-document.addEventListener("aicode:header-ready", initLangSelect);

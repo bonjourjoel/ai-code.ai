@@ -141,22 +141,20 @@ code,
 }
 
 /* ========== SCROLL REVEAL ========== */
-/* JS (index.js) only toggles .visible; the motion lives entirely here.
-   Kept deliberately calm: a short rise + fade, gentle stagger (no "christmas tree"). */
+/* JS (common.js) only toggles .visible; the motion lives entirely here.
+   Content stays fully opaque before JS runs, so rendering failures cannot hide
+   semantic text or links from users and crawlers. */
 .reveal {
-  opacity: 0;
+  opacity: 1;
   transform: translateY(16px);
-  transition:
-    opacity 0.6s ease,
-    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .reveal.visible {
-  opacity: 1;
   transform: none;
 }
 
-/* Variant: pure fade, no movement - for headings/labels so they don't all "jump" */
+/* Variant: stationary headings and labels remain readable without visual movement. */
 .reveal-fade {
   transform: none;
 }
@@ -170,16 +168,13 @@ code,
    one after another from the right of the content zone toward their place.
    (body has overflow-x:hidden, so the off-screen start never adds a scrollbar.) */
 .reveal-slide {
-  opacity: 0;
+  opacity: 1;
   transform: translateX(110px);
 }
 
 .reveal-slide.visible {
-  opacity: 1;
   transform: translateX(0);
-  transition:
-    opacity 0.5s ease,
-    transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 /* Reduced, tighter stagger */

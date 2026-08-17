@@ -1,4 +1,4 @@
-/* AICode - footer styles (shared, injected by /assets/footer.js) */
+/* AICode - shared styles for the statically precomposed footer. */
 
 /* ========== FOOTER ========== */
 footer {
@@ -102,7 +102,6 @@ footer {
 .footer-legal-link:hover {
   color: var(--accent);
 }
-
 
 @media (max-width: 900px) {
   .footer-inner {

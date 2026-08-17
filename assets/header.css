@@ -1,7 +1,7 @@
-/* AICode - header styles (shared, injected by /assets/header.js) */
+/* AICode - shared styles for the statically precomposed header. */
 
 /* ========== NAVIGATION ========== */
-/* index.js sets nav background to rgba(11,11,11,…) on scroll - matches --bg exactly. */
+/* common.js sets the navigation background on scroll and matches --bg exactly. */
 nav {
   position: fixed;
   top: 0;
@@ -92,7 +92,6 @@ nav {
   background: var(--bg2);
   color: var(--text);
 }
-
 
 @media (max-width: 600px) {
   .nav-links {
