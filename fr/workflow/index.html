@@ -31,7 +31,7 @@
 
   <body>
     <!-- AICODE_SHARED_HEADER_START: generated from partials/header.html -->
-    <nav>
+    <nav class="site-nav">
       <a href="/" class="nav-logo" aria-label="Accueil AICode">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -49,40 +49,58 @@
         </svg>
         <span>AICode</span>
       </a>
-      <ul class="nav-links">
-        <li><a href="/fr/#hero">Vitesse lumière</a></li>
-        <li><a href="/fr/#case-study">Case study</a></li>
-        <li><a href="/fr/#speed">Fonctionnement</a></li>
-        <li><a href="/fr/#enterprise">Entreprise</a></li>
-        <li><a href="/fr/#install">Installation</a></li>
-        <li><a href="/fr/#pricing">Tarifs</a></li>
-        <li>
-          <a
-            href="https://aisovereignlabs.zohodesk.eu"
-            target="_blank"
-            rel="noopener"
-            id="nav-contact"
-            >Support</a
-          >
-        </li>
-      </ul>
 
-      <div class="nav-right">
+      <!-- One shared panel hosts the single language selector and the single nav list.
+           Desktop keeps them inline, while mobile reuses the exact same nodes in the fullscreen sheet. -->
+      <div id="site-nav-panel" class="nav-panel" data-nav-panel aria-hidden="false">
         <div class="lang-switcher">
           <select onchange="switchLang(this)" aria-label="Language selection">
             <option value="en">EN</option>
             <option value="fr" selected>FR</option>
           </select>
         </div>
-        <a
-          href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
-          target="_blank"
-          rel="noopener"
-          class="btn btn-primary nav-cta"
-        >
-          ↓ Installer gratuitement
-        </a>
+        <ul class="nav-links">
+          <li><a href="/fr/#hero">Vitesse lumière</a></li>
+          <li><a href="/fr/#case-study">Case study</a></li>
+          <li><a href="/fr/#speed">Fonctionnement</a></li>
+          <li><a href="/fr/#enterprise">Entreprise</a></li>
+          <li><a href="/fr/#install">Installation</a></li>
+          <li><a href="/fr/#pricing">Tarifs</a></li>
+          <li>
+            <a
+              href="https://aisovereignlabs.zohodesk.eu"
+              target="_blank"
+              rel="noopener"
+              id="nav-contact"
+              >Support</a
+            >
+          </li>
+        </ul>
       </div>
+
+      <a
+        href="https://marketplace.visualstudio.com/items?itemName=joelabenhaim.aicode-ja"
+        target="_blank"
+        rel="noopener"
+        class="btn btn-primary nav-cta"
+      >
+        ↓ Installer gratuitement
+      </a>
+
+      <button
+        type="button"
+        class="nav-toggle"
+        data-nav-toggle
+        aria-controls="site-nav-panel"
+        aria-expanded="false"
+        aria-label="Ouvrir le menu mobile"
+        data-label-open="Ouvrir le menu mobile"
+        data-label-close="Fermer le menu mobile"
+      >
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
     </nav>
     <!-- AICODE_SHARED_HEADER_END -->
     <main>

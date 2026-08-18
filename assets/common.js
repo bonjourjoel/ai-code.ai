@@ -5,12 +5,20 @@ const HERO_CARD_SEQUENCE_DESKTOP_QUERY = "(min-width: 901px)";
 const HERO_CARD_SEQUENCE_ANIMATION_NAME = "heroCardSlideInBounce";
 const WORKFLOW_STEP_SEQUENCE_ANIMATION_NAME = "workflowStepSlideInBounce";
 const FEATURED_MENTIONS_CONTINUOUS_SCROLL_SPEED_PX_PER_MS = 0.72;
+const SITE_NAV_MOBILE_QUERY = "(max-width: 600px)";
 
 /**
  * Returns whether the hero cards should use the desktop-only sequential entrance.
  */
 function isHeroCardSequenceDesktop() {
   return window.matchMedia(HERO_CARD_SEQUENCE_DESKTOP_QUERY).matches;
+}
+
+/**
+ * Returns whether the shared site header should switch to its mobile fullscreen sheet.
+ */
+function isSiteNavMobile() {
+  return window.matchMedia(SITE_NAV_MOBILE_QUERY).matches;
 }
 
 /**
@@ -642,35 +650,66 @@ function scheduleFeaturedCarouselRefresh(state) {
 
 // ---- Sticky nav background on scroll ----
 // The nav is statically precomposed into every deployable page by the sites build.
+
+/**
+ * Computes the correct shared-header background for the current scroll and mobile-menu state.
+ */
+function computeSiteNavBackground(nav) {
+  if (!nav) {
+    return "rgba(11,11,11,0.88)";
+  }
+
+  // The mobile fullscreen sheet needs an opaque header cap so the burger remains readable
+  // while the open sheet animates underneath it.
+  if (nav.classList.contains("is-mobile-nav-open")) {
+    return "rgba(11,11,11,0.98)";
+  }
+
+  return window.scrollY > 40 ? "rgba(11,11,11,0.97)" : "rgba(11,11,11,0.88)";
+}
+
+/**
+ * Reapplies the shared-header background after scroll or mobile-menu state changes.
+ */
+function syncSiteNavBackground() {
+  var nav =
+    document.querySelector(".site-nav") || document.querySelector("nav");
+  if (!nav) return;
+
+  nav.style.background = computeSiteNavBackground(nav);
+}
+
 (function () {
-  window.addEventListener(
-    "scroll",
-    function () {
-      var nav = document.querySelector("nav");
-      if (!nav) return;
-      nav.style.background =
-        window.scrollY > 40 ? "rgba(11,11,11,0.97)" : "rgba(11,11,11,0.88)";
-    },
-    { passive: true },
-  );
+  syncSiteNavBackground();
+  window.addEventListener("scroll", syncSiteNavBackground, { passive: true });
 })();
 
-// ---- Hero screenshot lightbox ----
+// ---- Shared visual lightbox ----
 const HERO_IMAGE_LIGHTBOX_ANIMATION_MS = 260;
 const HERO_IMAGE_LIGHTBOX_EASING = "cubic-bezier(0.2, 0.8, 0.2, 1)";
 
 /**
- * Returns the UI labels for the shared lightbox (accessibility only, English).
+ * Returns the UI labels for the shared lightbox in the current document language.
  */
 function getHeroImageLightboxLabels() {
+  var documentLang =
+    document.documentElement.getAttribute("lang") || window.location.pathname;
+
+  if (String(documentLang).toLowerCase().indexOf("fr") === 0) {
+    return {
+      close: "Fermer l'aperçu de l'image",
+      dialog: "Aperçu agrandi de l'image",
+    };
+  }
+
   return {
-    close: "Close screenshot preview",
-    dialog: "Expanded screenshot preview",
+    close: "Close image preview",
+    dialog: "Expanded image preview",
   };
 }
 
 /**
- * Builds the single overlay reused by every hero screenshot.
+ * Builds the single overlay reused by every zoomable visual on the site.
  */
 function createHeroImageLightbox() {
   var labels = getHeroImageLightboxLabels();
@@ -751,6 +790,72 @@ function waitForImageReady(image) {
     image.addEventListener("load", resolve, { once: true });
     image.addEventListener("error", resolve, { once: true });
   });
+}
+
+/**
+ * Returns whether the lightbox should switch to the fullscreen mobile presentation.
+ */
+function shouldUseMobileHeroImageLightbox() {
+  return !isHeroCardSequenceDesktop();
+}
+
+/**
+ * Serializes the live inline SVG so the fullscreen overlay reuses the already-translated markup.
+ */
+function buildHeroImageLightboxSvgDataUrl(svgElement) {
+  if (!svgElement) {
+    return null;
+  }
+
+  return (
+    "data:image/svg+xml;charset=UTF-8," +
+    encodeURIComponent(new XMLSerializer().serializeToString(svgElement))
+  );
+}
+
+/**
+ * Extracts the payload needed to open the shared lightbox from any supported trigger.
+ */
+function getHeroImageLightboxTriggerPayload(trigger) {
+  if (!trigger) {
+    return null;
+  }
+
+  var sourceImage = trigger.querySelector("img");
+
+  // Regular screenshot cards already expose a real <img>, which desktop can animate geometrically.
+  if (sourceImage) {
+    return {
+      kind: "image",
+      sourceImage: sourceImage,
+      imageUrl: sourceImage.currentSrc || sourceImage.src,
+      alt: sourceImage.alt || "",
+    };
+  }
+
+  var svgSourceId = trigger.getAttribute("data-lightbox-svg-source");
+  if (!svgSourceId) {
+    return null;
+  }
+
+  var sourceSvg = document.getElementById(svgSourceId);
+  if (!sourceSvg) {
+    return null;
+  }
+
+  var svgTitle = sourceSvg.querySelector("title");
+
+  // The hero timeline stays inline in HTML for translation reasons, so mobile uses a
+  // serialized data URL while keeping the same accessible label users already see in the DOM.
+  return {
+    kind: "svg",
+    sourceImage: null,
+    imageUrl: buildHeroImageLightboxSvgDataUrl(sourceSvg),
+    alt:
+      (svgTitle && svgTitle.textContent ? svgTitle.textContent.trim() : "") ||
+      trigger.getAttribute("aria-label") ||
+      "",
+  };
 }
 
 /**
@@ -857,7 +962,12 @@ function resetHeroImageLightbox(lightbox) {
   if (!lightbox) return;
 
   lightbox.overlay.hidden = true;
-  lightbox.overlay.classList.remove("is-open", "is-measuring", "is-closing");
+  lightbox.overlay.classList.remove(
+    "is-open",
+    "is-measuring",
+    "is-closing",
+    "is-mobile",
+  );
   lightbox.overlay.setAttribute("aria-hidden", "true");
   lightbox.image.classList.remove("is-visible");
   lightbox.image.removeAttribute("src");
@@ -959,10 +1069,67 @@ async function openHeroImageLightbox(lightbox, sourceImage) {
 }
 
 /**
+ * Opens the shared overlay in fullscreen mobile mode without the desktop ghost animation.
+ */
+async function openHeroImageLightboxMobile(lightbox, payload) {
+  if (!lightbox || !payload || !payload.imageUrl) return;
+
+  var sessionId = lightbox.animationSessionId + 1;
+
+  // Restart from a clean state so a previous desktop or mobile animation cannot leak
+  // chrome classes, timers, or stale media into the new fullscreen presentation.
+  cancelHeroImageLightboxAnimation(lightbox);
+  lightbox.animationSessionId = sessionId;
+  lightbox.activeSourceImage = null;
+  lightbox.image.src = payload.imageUrl;
+  lightbox.image.alt = payload.alt || "";
+  lightbox.image.classList.remove("is-visible");
+
+  // Mobile owns the whole viewport, so the frame becomes a full-bleed stage and the
+  // image itself carries the scale/fade animation.
+  lightbox.overlay.hidden = false;
+  lightbox.overlay.classList.add("is-open", "is-mobile");
+  lightbox.overlay.classList.remove("is-measuring", "is-closing");
+  lightbox.overlay.setAttribute("aria-hidden", "false");
+  document.body.classList.add("has-image-lightbox");
+
+  // Wait until the browser decodes the asset so the fullscreen image animates once
+  // with stable intrinsic dimensions instead of popping after the backdrop appears.
+  await waitForImageReady(lightbox.image);
+  await waitForNextAnimationFrame();
+
+  if (sessionId !== lightbox.animationSessionId || lightbox.overlay.hidden) {
+    return;
+  }
+
+  lightbox.image.classList.add("is-visible");
+}
+
+/**
  * Closes the overlay by sending a ghost from the fullscreen slot back to the originating card image.
  */
 function closeHeroImageLightbox(lightbox) {
   if (!lightbox || lightbox.overlay.hidden) return;
+
+  if (lightbox.overlay.classList.contains("is-mobile")) {
+    var mobileSessionId = lightbox.animationSessionId + 1;
+
+    // Mobile closes with a simple fullscreen fade/scale reversal because there is no
+    // source-card geometry to travel back to and the tap target should stay the whole screen.
+    cancelHeroImageLightboxAnimation(lightbox);
+    lightbox.animationSessionId = mobileSessionId;
+    lightbox.overlay.classList.remove("is-open");
+    lightbox.image.classList.remove("is-visible");
+    lightbox.animationTimer = window.setTimeout(function () {
+      if (mobileSessionId !== lightbox.animationSessionId) {
+        return;
+      }
+
+      lightbox.animationTimer = null;
+      resetHeroImageLightbox(lightbox);
+    }, HERO_IMAGE_LIGHTBOX_ANIMATION_MS);
+    return;
+  }
 
   var sourceImage = lightbox.activeSourceImage;
   var sessionId = lightbox.animationSessionId + 1;
@@ -1035,25 +1202,33 @@ function closeHeroImageLightbox(lightbox) {
   }, HERO_IMAGE_LIGHTBOX_ANIMATION_MS);
 }
 
-// Bind the hero card screenshots to the shared fullscreen overlay.
+// Bind every zoomable site visual to the shared fullscreen overlay.
 (function () {
-  var triggers = document.querySelectorAll(".eco-img-button");
+  var triggers = document.querySelectorAll(
+    ".eco-img-button, [data-image-lightbox-trigger]",
+  );
   if (!triggers.length) return;
 
   var lightbox = createHeroImageLightbox();
 
   triggers.forEach(function (trigger) {
     trigger.addEventListener("click", function (event) {
-      // Mobile uses the anchor target directly because the geometric zoom animation
-      // is tuned for desktop layout coordinates and is intentionally disabled there.
-      if (!isHeroCardSequenceDesktop()) {
+      var payload = getHeroImageLightboxTriggerPayload(trigger);
+      if (!payload) {
         return;
       }
 
       event.preventDefault();
 
-      var sourceImage = trigger.querySelector("img");
-      openHeroImageLightbox(lightbox, sourceImage);
+      // Desktop keeps the geometric card-to-overlay zoom when a real screenshot image is
+      // available. Mobile, and inline SVG sources like the hero timeline, use the shared
+      // fullscreen stage instead of navigating to the raw asset URL.
+      if (!shouldUseMobileHeroImageLightbox() && payload.kind === "image") {
+        openHeroImageLightbox(lightbox, payload.sourceImage);
+        return;
+      }
+
+      openHeroImageLightboxMobile(lightbox, payload);
     });
   });
 
@@ -1166,4 +1341,87 @@ function initLangSelect() {
   if (sel)
     sel.value = getStoredLangOverride() || getLangFromPath() || DEFAULT_LANG;
 }
-document.addEventListener("DOMContentLoaded", initLangSelect);
+
+// ---- Mobile nav fullscreen sheet ----
+
+/**
+ * Wires the shared mobile burger to the fullscreen header sheet without duplicating
+ * the language selector or the nav links in the DOM.
+ */
+function initMobileNav() {
+  var nav =
+    document.querySelector(".site-nav") || document.querySelector("nav");
+  if (!nav) return;
+
+  var toggle = nav.querySelector("[data-nav-toggle]");
+  var panel = nav.querySelector("[data-nav-panel]");
+  if (!toggle || !panel) return;
+
+  /**
+   * Keeps ARIA state, body scroll locking, and header background aligned with the
+   * actual mobile-sheet state after every interaction and resize.
+   */
+  function syncMobileNavState() {
+    var isMobile = isSiteNavMobile();
+
+    // Resizing back to desktop must always tear the mobile state down because the
+    // desktop header reuses the same DOM nodes inline.
+    if (!isMobile && nav.classList.contains("is-mobile-nav-open")) {
+      nav.classList.remove("is-mobile-nav-open");
+    }
+
+    var isOpen = isMobile && nav.classList.contains("is-mobile-nav-open");
+    var openLabel =
+      toggle.getAttribute("data-label-open") || "Open mobile menu";
+    var closeLabel =
+      toggle.getAttribute("data-label-close") || "Close mobile menu";
+
+    toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    toggle.setAttribute("aria-label", isOpen ? closeLabel : openLabel);
+    panel.setAttribute("aria-hidden", isMobile ? String(!isOpen) : "false");
+    document.body.classList.toggle("has-mobile-nav-open", isOpen);
+    syncSiteNavBackground();
+  }
+
+  toggle.addEventListener("click", function () {
+    if (!isSiteNavMobile()) {
+      return;
+    }
+
+    nav.classList.toggle("is-mobile-nav-open");
+    syncMobileNavState();
+  });
+
+  panel.addEventListener("click", function (event) {
+    var navLink = event.target.closest(".nav-links a");
+    if (!navLink || !isSiteNavMobile()) {
+      return;
+    }
+
+    // Same-page anchors do not reload the document, so the mobile sheet must close
+    // immediately after the tap to reveal the destination section.
+    nav.classList.remove("is-mobile-nav-open");
+    syncMobileNavState();
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Escape") {
+      return;
+    }
+
+    if (!nav.classList.contains("is-mobile-nav-open")) {
+      return;
+    }
+
+    nav.classList.remove("is-mobile-nav-open");
+    syncMobileNavState();
+  });
+
+  window.addEventListener("resize", syncMobileNavState);
+  syncMobileNavState();
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  initLangSelect();
+  initMobileNav();
+});

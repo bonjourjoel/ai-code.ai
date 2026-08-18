@@ -960,6 +960,54 @@ body.has-image-lightbox {
   background: rgba(11, 11, 11, 1);
 }
 
+/* Mobile fullscreen mode removes every decorative inset so phone users read the
+   visual at the largest size possible instead of being pushed to a raw asset URL. */
+.image-lightbox.is-mobile {
+  padding: 0;
+  background: rgba(4, 6, 10, 0.96);
+}
+
+.image-lightbox.is-mobile .image-lightbox-frame {
+  width: 100vw;
+  height: 100vh;
+  max-height: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.image-lightbox.is-mobile .image-lightbox-image {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  object-fit: contain;
+  border-radius: 0;
+  background: transparent;
+  opacity: 0;
+  transform: scale(0.965);
+  transition:
+    transform 0.26s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.18s ease;
+}
+
+.image-lightbox.is-mobile .image-lightbox-image.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.image-lightbox.is-mobile .image-lightbox-close {
+  position: fixed;
+  top: calc(env(safe-area-inset-top, 0rem) + 0.85rem);
+  right: calc(env(safe-area-inset-right, 0rem) + 0.85rem);
+  z-index: 1;
+  background: rgba(8, 12, 19, 0.82);
+}
+
 .hero-stat {
   flex: 1 1 0;
   min-width: 0;
@@ -2038,6 +2086,26 @@ html.workflow-step-seq-active .workflow-step-seq.workflow-step-seq-entered {
 
 /* ========== MOBILE (breakpoints identical to source) ========== */
 @media (max-width: 900px) {
+  .timelines {
+    margin-top: 2rem;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .timelines-zoom {
+    display: block;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+  }
+
   .featured-mentions {
     margin-top: 2.15rem;
   }
@@ -2107,14 +2175,51 @@ html.workflow-step-seq-active .workflow-step-seq.workflow-step-seq-entered {
 }
 
 @media (max-width: 600px) {
+  .timelines-zoom {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+  }
+
   .featured-mentions__shell {
-    gap: 0.55rem;
+    position: relative;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    overflow: visible;
+  }
+
+  .featured-mentions__viewport {
+    width: 100%;
   }
 
   .featured-mentions__arrow {
+    position: absolute;
+    top: 50%;
     width: 2.35rem;
     height: 2.35rem;
     font-size: 1rem;
+    background: var(--bg3);
+    z-index: 1;
+  }
+
+  .featured-mentions__arrow[data-featured-carousel-direction="-1"] {
+    left: -1.175rem;
+    transform: translateY(-50%);
+  }
+
+  .featured-mentions__arrow[data-featured-carousel-direction="1"] {
+    right: -1.175rem;
+    transform: translateY(-50%);
+  }
+
+  .featured-mentions__arrow:hover,
+  .featured-mentions__arrow.is-active,
+  .featured-mentions__arrow[data-featured-carousel-direction="-1"]:focus-visible,
+  .featured-mentions__arrow[data-featured-carousel-direction="1"]:focus-visible {
+    transform: translateY(-50%);
   }
 
   .featured-mentions__card {
@@ -2240,6 +2345,7 @@ html.workflow-step-seq-active .workflow-step-seq.workflow-step-seq-entered {
 
 /* Timelines schema (hero) */
 .timelines {
+  position: relative;
   margin-top: 2.75rem;
   padding: 1.25rem 1.25rem 1rem;
   background: var(--bg2);
@@ -2253,8 +2359,117 @@ html.workflow-step-seq-active .workflow-step-seq.workflow-step-seq-entered {
   height: auto;
 }
 
+/* Reuse the same loupe affordance as the screenshot cards, but keep it hidden
+   on desktop because the inline timeline remains readable there. */
+.timelines-zoom {
+  display: none;
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  appearance: none;
+  background: transparent;
+  cursor: zoom-in;
+  z-index: 1;
+}
+
+/* The button covers the whole timeline area on mobile so users can tap anywhere,
+   while the visual loupe stays anchored in the corner through pseudo-elements. */
+.timelines-zoom::before {
+  content: "";
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.85rem;
+  width: 2.65rem;
+  height: 2.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-bright);
+  background: rgba(11, 11, 11, 0.86);
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.timelines-zoom::after {
+  content: "";
+  position: absolute;
+  right: 1.68rem;
+  bottom: 1.68rem;
+  width: 1rem;
+  height: 1rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238aa9ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='6'/%3E%3Cpath d='m20 20-4.35-4.35'/%3E%3C/svg%3E")
+    no-repeat center / contain;
+  pointer-events: none;
+}
+
+.timelines-zoom:hover::before,
+.timelines-zoom:focus-visible::before {
+  transform: scale(1.05);
+  border-color: var(--accent);
+  background: rgba(8, 12, 19, 0.96);
+}
+
+.timelines-zoom:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 0.25rem;
+  border-radius: 0.75rem;
+}
+
 .timelines .workflow-caption {
   margin-top: 0.5rem;
+}
+
+/* The earlier mobile block appears before the canonical timeline rules in this file,
+   so the mobile overrides must be repeated here to win the cascade on phones. */
+@media (max-width: 900px) {
+  .timelines {
+    margin-top: 2rem;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .timelines-zoom {
+    display: block;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+  }
+}
+
+/* Keep the control slightly smaller on narrow phones so it stays off the SVG labels. */
+@media (max-width: 600px) {
+  .timelines-zoom {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+  }
+
+  .timelines-zoom::before {
+    width: 2.5rem;
+    height: 2.5rem;
+    right: 0.7rem;
+    bottom: 0.7rem;
+  }
+
+  .timelines-zoom::after {
+    right: 1.47rem;
+    bottom: 1.47rem;
+    width: 0.95rem;
+    height: 0.95rem;
+  }
 }
 
 /* Link tables (home: speed / enterprise sections) - no ruled lines */
