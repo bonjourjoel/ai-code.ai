@@ -10,7 +10,7 @@ any code touches disk.
 
 ## Product
 - Name: AICode
-- Version: 2.3.3
+- Version: 2.3.4
 - License: Freemium
 - Developer: Joël Abenhaïm, AI Sovereign Labs SAS (Paris, France)
 - Contact: joel@aisovereignlabs.ai
