@@ -46,6 +46,7 @@ nav.site-nav {
    and the mobile fullscreen sheet. */
 .nav-panel {
   margin-left: auto;
+  flex: 1 1 auto;
   min-width: 0;
   display: flex;
   align-items: center;
@@ -58,11 +59,17 @@ nav.site-nav {
 .lang-switcher {
   order: 2;
   flex: 0 0 auto;
+  margin-left: auto;
+  position: relative;
+  z-index: 1;
 }
 
 .nav-links {
   order: 1;
-  min-width: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: max-content;
   display: flex;
   align-items: center;
   gap: 0.15rem;
@@ -93,6 +100,8 @@ nav.site-nav {
   margin-left: 0.25rem;
   padding: 0.5rem 1.2rem !important;
   font-size: 0.85rem !important;
+  position: relative;
+  z-index: 1;
 }
 
 /* ========== LANG SWITCHER ========== */
@@ -251,7 +260,11 @@ body.has-mobile-nav-open {
 
   .nav-links {
     order: 2;
+    position: static;
+    left: auto;
+    transform: none;
     width: 100%;
+    min-width: 0;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.35rem;
