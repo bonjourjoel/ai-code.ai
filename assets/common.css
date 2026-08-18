@@ -512,6 +512,159 @@ code,
   margin-top: 2.5rem;
 }
 
+/* The press carousel stays inside the hero so visitors see social proof before
+   leaving the fold, but its spacing keeps the install CTA visually dominant. */
+.featured-mentions {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+/* Reuse the site's mono eyebrow language so the label reads like editorial metadata
+   rather than a second heading competing with the hero headline. */
+.featured-mentions__eyebrow {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--accent-soft);
+  background: var(--accent-tint);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.38rem 0.78rem;
+}
+
+/* The shell reserves two stable button columns so the analog arrows never overlap
+   logos or quotes while the viewport keeps the cards clipped cleanly. */
+.featured-mentions__shell {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: center;
+}
+
+/* These arrows are hold-to-scroll controls, so they look like persistent hardware
+   controls rather than one-shot pagination dots. */
+.featured-mentions__arrow {
+  width: 2.8rem;
+  height: 2.8rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid var(--border-bright);
+  background: var(--bg3);
+  color: var(--accent);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition:
+    background 0.22s,
+    border-color 0.22s,
+    color 0.22s,
+    transform 0.22s;
+  user-select: none;
+  touch-action: none;
+}
+
+.featured-mentions__arrow:hover,
+.featured-mentions__arrow:focus-visible,
+.featured-mentions__arrow.is-active {
+  background: var(--accent-glow);
+  border-color: var(--accent);
+  color: var(--accent-soft);
+}
+
+.featured-mentions__arrow:hover,
+.featured-mentions__arrow.is-active {
+  transform: translateY(-1px);
+}
+
+.featured-mentions__arrow:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 0.2rem;
+}
+
+/* Native horizontal scrolling keeps touch dragging fluid, while hidden scrollbars prevent
+   the hero from looking like a generic overflow strip. */
+.featured-mentions__viewport {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 0.15rem 0;
+}
+
+.featured-mentions__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+/* The fallback width already exposes 3.5 cards on desktop. JS duplicates the six canonical
+   cards to fake infinity, but layout stays stable even before duplication finishes. */
+.featured-mentions__card {
+  flex: 0 0 calc((100% - 3rem) / 3.5);
+  min-width: calc((100% - 3rem) / 3.5);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 0.95rem;
+  border: 1.15px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  background: var(--bg3);
+  color: var(--text);
+  transition:
+    border-color 0.22s,
+    background 0.22s,
+    transform 0.22s;
+}
+
+.featured-mentions__card:hover {
+  border-color: var(--border-bright);
+  background: var(--bg4);
+  transform: translateY(-2px);
+}
+
+.featured-mentions__card:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 0.2rem;
+}
+
+/* Every logo sits inside the exact same aspect-ratio slot so mixed source ratios remain
+   aligned with zero cumulative layout shift. */
+.featured-mentions__logo-slot {
+  width: 100%;
+  aspect-ratio: 600 / 235;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.35rem 0.45rem;
+}
+
+.featured-mentions__logo-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+/* Quotes stay compact and readable under each logo without introducing a new type system. */
+.featured-mentions__quote {
+  display: block;
+  font-size: 0.92rem;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--text);
+}
+
 /* Hero cards reuse the ROI card skeleton, but keep a fixed media slot so
    different image heights do not shift titles or descriptions vertically. */
 .hero-cards {
@@ -1885,6 +2038,24 @@ html.workflow-step-seq-active .workflow-step-seq.workflow-step-seq-entered {
 
 /* ========== MOBILE (breakpoints identical to source) ========== */
 @media (max-width: 900px) {
+  .featured-mentions {
+    margin-top: 2.15rem;
+  }
+
+  .featured-mentions__shell {
+    gap: 0.65rem;
+  }
+
+  .featured-mentions__arrow {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .featured-mentions__card {
+    flex-basis: calc((100% - 1rem) / 1.75);
+    min-width: calc((100% - 1rem) / 1.75);
+  }
+
   .hero-stat-row {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1936,6 +2107,24 @@ html.workflow-step-seq-active .workflow-step-seq.workflow-step-seq-entered {
 }
 
 @media (max-width: 600px) {
+  .featured-mentions__shell {
+    gap: 0.55rem;
+  }
+
+  .featured-mentions__arrow {
+    width: 2.35rem;
+    height: 2.35rem;
+    font-size: 1rem;
+  }
+
+  .featured-mentions__card {
+    padding: 0.85rem;
+  }
+
+  .featured-mentions__quote {
+    font-size: 0.88rem;
+  }
+
   .image-lightbox {
     padding: 0.85rem;
   }

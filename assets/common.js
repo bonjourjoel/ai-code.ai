@@ -4,6 +4,7 @@
 const HERO_CARD_SEQUENCE_DESKTOP_QUERY = "(min-width: 901px)";
 const HERO_CARD_SEQUENCE_ANIMATION_NAME = "heroCardSlideInBounce";
 const WORKFLOW_STEP_SEQUENCE_ANIMATION_NAME = "workflowStepSlideInBounce";
+const FEATURED_MENTIONS_CONTINUOUS_SCROLL_SPEED_PX_PER_MS = 0.72;
 
 /**
  * Returns whether the hero cards should use the desktop-only sequential entrance.
@@ -183,6 +184,316 @@ window.addEventListener("resize", syncHeroCardSequenceDesktopMode);
   rows.forEach(function (row) {
     observer.observe(row);
   });
+})();
+
+// ---- Featured mentions infinite carousel ----
+
+/**
+ * Builds one inert clone for the infinite-loop press strip.
+ */
+function cloneFeaturedCarouselItem(item) {
+  var clone = item.cloneNode(true);
+  var cloneImage = clone.querySelector("img");
+
+  // Keep the duplicated cards clickable for pointer users while removing them from
+  // sequential keyboard navigation and screen-reader repetition.
+  clone.removeAttribute("data-featured-carousel-item");
+  clone.setAttribute("data-featured-carousel-clone", "true");
+  clone.setAttribute("aria-hidden", "true");
+  clone.tabIndex = -1;
+
+  // Only the canonical hero cards need eager loading. The off-screen loop copies can
+  // yield to the browser because they reuse the same already-cached assets.
+  if (cloneImage !== null) {
+    cloneImage.loading = "lazy";
+    cloneImage.decoding = "async";
+    cloneImage.setAttribute("fetchpriority", "low");
+  }
+
+  return clone;
+}
+
+/**
+ * Measures the width of one canonical press cycle, including the inter-card gap.
+ */
+function measureFeaturedCarouselCycleWidth(state) {
+  if (!state.appendedItems.length || !state.originalItems.length) {
+    return 0;
+  }
+
+  // The loop resets by jumping from the canonical cycle to the appended duplicate
+  // cycle. Measuring start-to-start guarantees the visual content stays identical
+  // after each wrap without inventing a synthetic starting offset.
+  return (
+    state.appendedItems[0].offsetLeft - state.originalItems[0].offsetLeft || 0
+  );
+}
+
+/**
+ * Persists the logical progress inside the canonical cycle.
+ */
+function updateFeaturedCarouselProgress(state) {
+  if (!state.originalItems.length || state.cycleWidth <= 0) {
+    state.progressRatio = 0;
+    return;
+  }
+
+  // The canonical cycle starts at scrollLeft = 0. Using the browser-managed scroll
+  // offset directly avoids mixing in absolute DOM coordinates from offsetLeft, which
+  // would otherwise reintroduce a fake initial offset after ResizeObserver refreshes.
+  var relativeOffset = state.viewport.scrollLeft;
+  var normalizedOffset =
+    ((relativeOffset % state.cycleWidth) + state.cycleWidth) % state.cycleWidth;
+
+  state.progressRatio = normalizedOffset / state.cycleWidth;
+}
+
+/**
+ * Restores the last known logical progress after a resize changes card widths.
+ */
+function restoreFeaturedCarouselProgress(state) {
+  if (!state.originalItems.length || state.cycleWidth <= 0) {
+    return;
+  }
+
+  // The canonical cycle starts at the browser's natural left edge, so restoration
+  // only reapplies the logical offset inside that first cycle.
+  state.viewport.scrollLeft = state.progressRatio * state.cycleWidth;
+}
+
+/**
+ * Repositions the scroll head whenever it drifts into the cloned copies.
+ */
+function normalizeFeaturedCarouselScroll(state) {
+  if (state.cycleWidth <= 0) {
+    return;
+  }
+
+  // The visible cycle always lives in the browser's natural [0, cycleWidth) range.
+  // When the viewport drifts into the appended copy, jump back by one exact cycle.
+  while (state.viewport.scrollLeft >= state.cycleWidth) {
+    state.viewport.scrollLeft -= state.cycleWidth;
+  }
+}
+
+/**
+ * Stops any in-flight analog arrow scroll.
+ */
+function stopFeaturedCarouselAnalogScroll(state) {
+  if (state.animationFrameId !== 0) {
+    window.cancelAnimationFrame(state.animationFrameId);
+    state.animationFrameId = 0;
+  }
+
+  // Reset the active arrow styling as soon as the hold interaction ends.
+  if (state.activeButton !== null) {
+    state.activeButton.classList.remove("is-active");
+  }
+
+  state.activeButton = null;
+  state.activeDirection = 0;
+  state.lastStepTimestamp = 0;
+}
+
+/**
+ * Starts a hold-to-scroll interaction on one arrow.
+ */
+function startFeaturedCarouselAnalogScroll(state, direction, button) {
+  if (state.cycleWidth <= 0) {
+    return;
+  }
+
+  // Restarting from a clean state keeps timestamp deltas bounded when users switch
+  // directly from one arrow to the opposite arrow.
+  stopFeaturedCarouselAnalogScroll(state);
+  state.activeButton = button;
+  state.activeDirection = direction;
+  state.lastStepTimestamp = 0;
+  button.classList.add("is-active");
+
+  /**
+   * Advances the scroll head proportionally to frame time while the pointer stays held.
+   */
+  function step(timestamp) {
+    if (state.activeDirection === 0) {
+      return;
+    }
+
+    var deltaMs = 16;
+
+    if (state.lastStepTimestamp !== 0) {
+      deltaMs = timestamp - state.lastStepTimestamp;
+    }
+
+    state.lastStepTimestamp = timestamp;
+
+    // The carousel must visually start at the very first card. When users press the
+    // left arrow from that natural origin, first hop to the duplicated cycle, then
+    // continue the analog motion from there so the loop still feels infinite.
+    if (state.activeDirection < 0 && state.viewport.scrollLeft <= 1) {
+      state.viewport.scrollLeft += state.cycleWidth;
+    }
+
+    // The motion stays analog because we add a continuous pixel delta every frame
+    // instead of snapping by card-sized jumps.
+    state.viewport.scrollLeft +=
+      state.activeDirection *
+      deltaMs *
+      FEATURED_MENTIONS_CONTINUOUS_SCROLL_SPEED_PX_PER_MS;
+    normalizeFeaturedCarouselScroll(state);
+    updateFeaturedCarouselProgress(state);
+    state.animationFrameId = window.requestAnimationFrame(step);
+  }
+
+  state.animationFrameId = window.requestAnimationFrame(step);
+}
+
+/**
+ * Re-measures the loop after layout changes.
+ */
+function refreshFeaturedCarouselMetrics(state) {
+  state.cycleWidth = measureFeaturedCarouselCycleWidth(state);
+  restoreFeaturedCarouselProgress(state);
+  normalizeFeaturedCarouselScroll(state);
+  updateFeaturedCarouselProgress(state);
+}
+
+/**
+ * Schedules one metric refresh on the next frame to avoid repeated synchronous layout work.
+ */
+function scheduleFeaturedCarouselRefresh(state) {
+  if (state.refreshFrameId !== 0) {
+    window.cancelAnimationFrame(state.refreshFrameId);
+  }
+
+  state.refreshFrameId = window.requestAnimationFrame(function () {
+    state.refreshFrameId = 0;
+    refreshFeaturedCarouselMetrics(state);
+  });
+}
+
+(function () {
+  var root = document.querySelector("[data-featured-carousel]");
+  if (!root || root.dataset.featuredCarouselReady === "true") return;
+
+  var viewport = root.querySelector("[data-featured-carousel-viewport]");
+  var buttons = Array.prototype.slice.call(
+    root.querySelectorAll("[data-featured-carousel-direction]"),
+  );
+  var originalItems = Array.prototype.slice.call(
+    viewport ? viewport.querySelectorAll("[data-featured-carousel-item]") : [],
+  );
+
+  if (!viewport || originalItems.length === 0 || buttons.length !== 2) {
+    return;
+  }
+
+  var appendedItems = originalItems.map(cloneFeaturedCarouselItem);
+
+  // Keep the native browser origin on the canonical first card. Only append a second
+  // cycle so forward scrolling and left-arrow wraparound can reuse identical content.
+  appendedItems.forEach(function (clone) {
+    viewport.appendChild(clone);
+  });
+
+  var state = {
+    viewport: viewport,
+    originalItems: originalItems,
+    appendedItems: appendedItems,
+    cycleWidth: 0,
+    progressRatio: 0,
+    animationFrameId: 0,
+    refreshFrameId: 0,
+    activeButton: null,
+    activeDirection: 0,
+    lastStepTimestamp: 0,
+  };
+
+  root.dataset.featuredCarouselReady = "true";
+  refreshFeaturedCarouselMetrics(state);
+
+  // The first visible frame must start at the browser's natural left edge so the
+  // hero looks like a normal strip before the user touches the arrows.
+  viewport.scrollLeft = 0;
+  updateFeaturedCarouselProgress(state);
+
+  viewport.addEventListener(
+    "scroll",
+    function () {
+      normalizeFeaturedCarouselScroll(state);
+      updateFeaturedCarouselProgress(state);
+    },
+    { passive: true },
+  );
+
+  buttons.forEach(function (button) {
+    var direction = Number(button.dataset.featuredCarouselDirection);
+
+    button.addEventListener("pointerdown", function (event) {
+      // Ignore secondary mouse buttons so right-click still behaves like a normal button.
+      if (event.pointerType === "mouse" && event.button !== 0) {
+        return;
+      }
+
+      event.preventDefault();
+      startFeaturedCarouselAnalogScroll(state, direction, button);
+    });
+
+    button.addEventListener("pointerleave", function (event) {
+      // Mouse hover should stop as soon as the pointer leaves the arrow.
+      if (event.pointerType === "mouse") {
+        stopFeaturedCarouselAnalogScroll(state);
+      }
+    });
+
+    button.addEventListener("pointerup", function () {
+      stopFeaturedCarouselAnalogScroll(state);
+    });
+
+    button.addEventListener("pointercancel", function () {
+      stopFeaturedCarouselAnalogScroll(state);
+    });
+
+    button.addEventListener("blur", function () {
+      stopFeaturedCarouselAnalogScroll(state);
+    });
+
+    button.addEventListener("keydown", function (event) {
+      if (event.key !== " " && event.key !== "Enter") {
+        return;
+      }
+
+      // Keyboard users get the same hold-to-scroll behavior while the key stays pressed.
+      event.preventDefault();
+      startFeaturedCarouselAnalogScroll(state, direction, button);
+    });
+
+    button.addEventListener("keyup", function (event) {
+      if (event.key === " " || event.key === "Enter") {
+        stopFeaturedCarouselAnalogScroll(state);
+      }
+    });
+  });
+
+  // Releasing the pointer outside the arrow must still stop the analog motion.
+  document.addEventListener("pointerup", function () {
+    stopFeaturedCarouselAnalogScroll(state);
+  });
+  document.addEventListener("pointercancel", function () {
+    stopFeaturedCarouselAnalogScroll(state);
+  });
+
+  window.addEventListener("resize", function () {
+    scheduleFeaturedCarouselRefresh(state);
+  });
+
+  if (typeof ResizeObserver === "function") {
+    var resizeObserver = new ResizeObserver(function () {
+      scheduleFeaturedCarouselRefresh(state);
+    });
+
+    resizeObserver.observe(viewport);
+  }
 })();
 
 // ---- Sequential ROI cards entrance (desktop only) ----

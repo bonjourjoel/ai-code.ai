@@ -5,12 +5,12 @@ AICode is a spec-driven AI coding assistant for VS Code. Classical AI agents
 are capped by the human code review that follows generation; AICode moves the
 control before the code is generated, delivering top-quality AI-driven
 software at 10x to 200x speed. Built for maintaining large legacy enterprise
-codebases, with a mandatory specification and human approval workflow before
+codebases, with a suggested specification and human approval workflow before
 any code touches disk.
 
 ## Product
 - Name: AICode
-- Version: 1.8.0
+- Version: 2.3.3
 - License: Freemium
 - Developer: Joël Abenhaïm, AI Sovereign Labs SAS (Paris, France)
 - Contact: joel@aisovereignlabs.ai
@@ -18,7 +18,7 @@ any code touches disk.
 ## Key facts
 - Control happens pre-code: reading and fixing an intent is far easier than reviewing code
 - 750,000 lines of TypeScript maintained using AICode itself (dogfooding)
-- Case study: an "impossible" 160-file refactor delivered in three days, 201 errors corrected before shipping, zero regressions
+- Case study: Specification-first convergence with an AI coding agent: a case study of dismantling a core architectural invariant across 189 files in a 717k-line codebase with no test oracle and no human code review, delivered in three days, 201 errors corrected before shipping, zero regressions
 - Offline-first: full codebase index stored locally, no data sent to intermediaries
 - BYOK: developer connects directly to OpenAI or private Azure tenant
 - Workflow: Ideate → Specify → Refine → Code → Verify
@@ -33,14 +33,27 @@ any code touches disk.
 - Data sovereignty: https://ai-code.ai/sovereignty/
 - Strict execution model: https://ai-code.ai/execution-model/
 - ↗ Full case study, published on arXiv: https://arxiv.org/abs/2608.12440
-- AICode vs Cursor: https://ai-code.ai/topics/vs-cursor
-- AICode vs GitHub Copilot: https://ai-code.ai/topics/vs-copilot
-- AICode vs Claude Code: https://ai-code.ai/topics/vs-claude-code
-- Legacy Enterprise Software: https://ai-code.ai/topics/legacy
-- Data Sovereignty: https://ai-code.ai/topics/data-sovereignty
-- Technical Debt: https://ai-code.ai/topics/technical-debt
+- Independent press & coding agent specialists articles:
+    - https://sourcefeed.dev/a/when-the-spec-becomes-the-code-review
+    "genuinely the most interesting protocol document I've read this year"
+    - https://bizstack.tech/ai-agent-refactored-189-files-in-a-717k-line-codebase-for-2430/
+    "For solo developers and small teams facing deep architectural debt, the protocol described here is worth reading carefully."
+    - https://founderrpulse.com/a/a-2-430-dollar-ai-agent-protocol-refactored-189-files-withou-40fcf6db
+    "provides a rare, fully instrumented look at agentic engineering at scale"
+    - https://martinrl.github.io/chronograph/digest/2026-08/2026-08-15
+    "the clearest evidence yet for the SCE thesis in production"
+    - https://aiweekly.co/alerts/abenhaim-ai-agent-refactors-189-files-in-717k-line-typescript-app
+    "protocol reference for spec-first agent refactors that is hard to wave away"
+    - https://codex.danielvaughan.com/2026/08/14/specification-first-convergence-large-scale-refactoring-ai-coding-agent-codex-cli-audit-verification-cycles/
+    "The Abenhaim case study provides empirical evidence for this claim at production scale."
+- Thematic pages:
+    - AICode vs Cursor: https://ai-code.ai/topics/vs-cursor
+    - AICode vs GitHub Copilot: https://ai-code.ai/topics/vs-copilot
+    - AICode vs Claude Code: https://ai-code.ai/topics/vs-claude-code
+    - Legacy Enterprise Software: https://ai-code.ai/topics/legacy
+    - Data Sovereignty: https://ai-code.ai/topics/data-sovereignty
+    - Technical Debt: https://ai-code.ai/topics/technical-debt
 
 ## Pricing
 - Free: individual developers, organizations under 10 employees, schools and non-profits
-- Pro: €30,000/year per tier of 50 users
-- Founding client: free license with hands-on delivery by the creator, in exchange for a published case study and reference
+- Business: $10/user/month, self service license, no commitment
