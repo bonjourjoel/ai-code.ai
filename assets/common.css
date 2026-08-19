@@ -654,14 +654,17 @@ code,
 }
 
 /* Each press logo gets the same circular affordance as the existing zoom buttons,
-   but the icon communicates that the card opens an external article in a new tab. */
+   but the icon communicates that the card opens an external article in a new tab.
+   The badge sits astride the top center of the logo, so the click affordance is
+   visible immediately without stealing width from the quote below. */
 .featured-mentions__logo-slot::before {
   content: "";
   position: absolute;
-  right: calc(var(--featured-mentions-logo-action-size) * -0.5);
-  bottom: calc(var(--featured-mentions-logo-action-size) * -0.5);
+  left: 50%;
+  top: calc(var(--featured-mentions-logo-action-size) * -0.5);
   width: var(--featured-mentions-logo-action-size);
   height: var(--featured-mentions-logo-action-size);
+  margin-left: calc(var(--featured-mentions-logo-action-size) * -0.5);
   border-radius: 999px;
   border: 1px solid var(--border-bright);
   background: rgba(11, 11, 11, 0.86);
@@ -676,10 +679,11 @@ code,
 .featured-mentions__logo-slot::after {
   content: "";
   position: absolute;
-  right: calc(var(--featured-mentions-logo-action-icon-size) * -0.5);
-  bottom: calc(var(--featured-mentions-logo-action-icon-size) * -0.5);
+  left: 50%;
+  top: calc(var(--featured-mentions-logo-action-icon-size) * -0.5);
   width: var(--featured-mentions-logo-action-icon-size);
   height: var(--featured-mentions-logo-action-icon-size);
+  margin-left: calc(var(--featured-mentions-logo-action-icon-size) * -0.5);
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238aa9ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 5h5v5'/%3E%3Cpath d='M10 14L19 5'/%3E%3Cpath d='M19 13v6H5V5h6'/%3E%3C/svg%3E")
     no-repeat center / contain;
   pointer-events: none;
