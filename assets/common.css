@@ -640,12 +640,56 @@ code,
 /* Every logo sits inside the exact same aspect-ratio slot so mixed source ratios remain
    aligned with zero cumulative layout shift. */
 .featured-mentions__logo-slot {
+  position: relative;
   width: 100%;
   aspect-ratio: 600 / 235;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0.35rem 0.45rem;
+  margin-bottom: 0.45rem;
+  overflow: visible;
+  --featured-mentions-logo-action-size: 2.65rem;
+  --featured-mentions-logo-action-icon-size: 1rem;
+}
+
+/* Each press logo gets the same circular affordance as the existing zoom buttons,
+   but the icon communicates that the card opens an external article in a new tab. */
+.featured-mentions__logo-slot::before {
+  content: "";
+  position: absolute;
+  right: calc(var(--featured-mentions-logo-action-size) * -0.5);
+  bottom: calc(var(--featured-mentions-logo-action-size) * -0.5);
+  width: var(--featured-mentions-logo-action-size);
+  height: var(--featured-mentions-logo-action-size);
+  border-radius: 999px;
+  border: 1px solid var(--border-bright);
+  background: rgba(11, 11, 11, 0.86);
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+  pointer-events: none;
+}
+
+.featured-mentions__logo-slot::after {
+  content: "";
+  position: absolute;
+  right: calc(var(--featured-mentions-logo-action-icon-size) * -0.5);
+  bottom: calc(var(--featured-mentions-logo-action-icon-size) * -0.5);
+  width: var(--featured-mentions-logo-action-icon-size);
+  height: var(--featured-mentions-logo-action-icon-size);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238aa9ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 5h5v5'/%3E%3Cpath d='M10 14L19 5'/%3E%3Cpath d='M19 13v6H5V5h6'/%3E%3C/svg%3E")
+    no-repeat center / contain;
+  pointer-events: none;
+}
+
+.featured-mentions__card:hover .featured-mentions__logo-slot::before,
+.featured-mentions__card:focus-visible .featured-mentions__logo-slot::before {
+  transform: scale(1.05);
+  border-color: var(--accent);
+  background: rgba(8, 12, 19, 0.96);
 }
 
 .featured-mentions__logo-slot img {
@@ -2104,6 +2148,7 @@ html.workflow-step-seq-active .workflow-step-seq.workflow-step-seq-entered {
     left: 0;
     width: auto;
     height: auto;
+    opacity: 0.5;
   }
 
   .featured-mentions {
@@ -2182,6 +2227,12 @@ html.workflow-step-seq-active .workflow-step-seq.workflow-step-seq-entered {
     left: 0;
     width: auto;
     height: auto;
+  }
+
+  .featured-mentions__logo-slot {
+    margin-bottom: 0.35rem;
+    --featured-mentions-logo-action-size: 2.5rem;
+    --featured-mentions-logo-action-icon-size: 0.95rem;
   }
 
   .featured-mentions__shell {
