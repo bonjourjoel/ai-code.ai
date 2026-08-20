@@ -607,8 +607,8 @@ code,
   display: none;
 }
 
-/* The fallback width already exposes 3.5 cards on desktop. JS duplicates the six canonical
-   cards to fake infinity, but layout stays stable even before duplication finishes. */
+/* The fallback width already exposes 3.5 cards on desktop. JS duplicates the canonical
+   card cycle to fake infinity, but layout stays stable even before duplication finishes. */
 .featured-mentions__card {
   flex: 0 0 calc((100% - 3rem) / 3.5);
   min-width: calc((100% - 3rem) / 3.5);

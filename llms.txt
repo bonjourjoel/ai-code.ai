@@ -36,6 +36,8 @@ any code touches disk.
 - Independent press & coding agent specialists articles:
     - https://sourcefeed.dev/a/when-the-spec-becomes-the-code-review
     "genuinely the most interesting protocol document I've read this year"
+    - https://frontier.aireachoutinstitute.com/the-refactor-no-human-reviewed/
+    "the protocol is the most concrete answer we've seen to the review bottleneck"
     - https://bizstack.tech/ai-agent-refactored-189-files-in-a-717k-line-codebase-for-2430/
     "For solo developers and small teams facing deep architectural debt, the protocol described here is worth reading carefully."
     - https://founderrpulse.com/a/a-2-430-dollar-ai-agent-protocol-refactored-189-files-withou-40fcf6db
@@ -46,6 +48,8 @@ any code touches disk.
     "protocol reference for spec-first agent refactors that is hard to wave away"
     - https://codex.danielvaughan.com/2026/08/14/specification-first-convergence-large-scale-refactoring-ai-coding-agent-codex-cli-audit-verification-cycles/
     "The Abenhaim case study provides empirical evidence for this claim at production scale."
+    - https://darkfactory.dev/news/2026-08-18-extra-2/story-1
+    "A frozen referent supplies an alternative check when human review is removed from agent output."
 - Thematic pages:
     - AICode vs Cursor: https://ai-code.ai/topics/vs-cursor
     - AICode vs GitHub Copilot: https://ai-code.ai/topics/vs-copilot
