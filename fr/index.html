@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AICode : Développez à la vitesse de la lumière sans code review | Agent de codage IA</title>
+    <title>AICode : Développez à la vitesse de la lumière sans code review | Assistant IA de codage pour VS Code</title>
     <meta
       name="description"
-      content="Le goulot d'étranglement de l'IA générative est la review humaine. AICode contrôle le code avant qu'il soit généré. Un développeur fait le travail de 10 à 200."
+      content="AICode est une extension VS Code et un assistant IA de codage qui contrôle le code avant qu'il soit généré. Un développeur fait le travail de 10 à 200."
     />
     <link rel="icon" type="image/svg+xml" href="/docs/aicode-icon.svg" />
     <link
@@ -21,29 +21,55 @@
     <meta property="og:site_name" content="AICode" />
     <meta
       property="og:title"
-      content="AICode : Développez à la vitesse de la lumière sans code review | Agent de codage IA"
+      content="AICode : Développez à la vitesse de la lumière sans code review | Assistant IA de codage pour VS Code"
     />
     <meta
       property="og:description"
-      content="Le goulot d'étranglement de l'IA générative est la review humaine. AICode contrôle le code avant qu'il soit généré. Un développeur fait le travail de 10 à 200."
+      content="AICode est une extension VS Code et un assistant IA de codage qui contrôle le code avant qu'il soit généré. Un développeur fait le travail de 10 à 200."
     />
+    <!-- Structured data must declare both the website and the software product so search engines do not index AICode as a generic AI article page. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "AICode",
-        "url": "https://ai-code.ai/"
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://ai-code.ai/#website",
+            "name": "AICode",
+            "url": "https://ai-code.ai/",
+            "publisher": {
+              "@id": "https://aisovereignlabs.ai/#organization"
+            }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://ai-code.ai/#software",
+            "name": "AICode",
+            "applicationCategory": "DeveloperApplication",
+            "url": "https://ai-code.ai/",
+            "description": "AICode is a VS Code extension and AI coding assistant that checks the code before it is generated. One developer does the work of 10 to 200.",
+            "publisher": {
+              "@id": "https://aisovereignlabs.ai/#organization"
+            }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://aisovereignlabs.ai/#organization",
+            "name": "AI Sovereign Labs",
+            "url": "https://aisovereignlabs.ai/"
+          }
+        ]
       }
     </script>
     <meta property="twitter:card" content="summary" />
     <meta property="twitter:url" content="https://ai-code.ai/fr/" />
     <meta
       property="twitter:title"
-      content="AICode : Développez à la vitesse de la lumière sans code review | Agent de codage IA"
+      content="AICode : Développez à la vitesse de la lumière sans code review | Assistant IA de codage pour VS Code"
     />
     <meta
       property="twitter:description"
-      content="Le goulot d'étranglement de l'IA générative est la review humaine. AICode contrôle le code avant qu'il soit généré. Un développeur fait le travail de 10 à 200."
+      content="AICode est une extension VS Code et un assistant IA de codage qui contrôle le code avant qu'il soit généré. Un développeur fait le travail de 10 à 200."
     />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -140,7 +166,7 @@
           <div class="hero-inner">
             <h1 class="hero-headline reveal">
               <span class="hero-tagline-line1"
-                >Développez à la vitesse de la lumière, sans code review.</span
+                >AICode : Développez à la vitesse de la lumière, sans code review.</span
               >
               <span
                 class="hero-tagline-line2"
@@ -447,7 +473,7 @@
                 rel="noopener"
                 class="btn btn-primary"
               >
-                ↓ Installer sur VS Code Marketplace
+                ↓ Installer AICode sur VS Code Marketplace
               </a>
             </div>
 
@@ -680,27 +706,27 @@
               <a class="eco-img-button" href="/docs/index-fr.png">
                 <img
                   src="/docs/index-fr.png"
-                  alt="L'index 5D local de la codebase"
+                  alt="L'index 5D local de la codebase d'AICode"
                   loading="lazy"
                 />
               </a>
               <figcaption class="shot-caption">
-                L'index à cinq dimensions comprend toute la codebase en
-                profondeur, sans aucun transfert de connaissances.
+                L'index à cinq dimensions d'AICode comprend toute la
+                codebase en profondeur, sans aucun transfert de connaissances.
               </figcaption>
             </figure>
             <figure class="shot-fig reveal reveal-delay-2">
               <a class="eco-img-button" href="/docs/refine-fr.png">
                 <img
                   src="/docs/refine-fr.png"
-                  alt="Spécification avec les boutons Raffiner et Vérifier"
+                  alt="Spécification AICode avec les boutons Raffiner et Vérifier"
                   loading="lazy"
                 />
               </a>
               <figcaption class="shot-caption">
-                L'IA audite et trouve les erreurs, passe après passe, autant de
-                fois que nécessaire. Laissez l'IA faire le travail fastidieux et
-                trouver toutes les erreurs. Pourquoi le faire vous-même ?
+                AICode audite et trouve les erreurs, passe après passe, autant
+                de fois que nécessaire. Laissez l'IA faire le travail fastidieux
+                et trouver toutes les erreurs. Pourquoi vous en charger ?
               </figcaption>
             </figure>
           </div>
@@ -729,7 +755,7 @@
               <div class="frictionless-img">
                 <img
                   src="/docs/turnover.png"
-                  alt="Rétention de la connaissance du projet malgré le turnover"
+                  alt="Rétention de la connaissance du projet AICode malgré le turnover"
                   loading="lazy"
                 />
               </div>
@@ -744,7 +770,7 @@
           <div class="divider reveal reveal-delay-1"></div>
           <div class="features-pullquote reveal reveal-delay-2">
             <p>
-              Dans le case study suivant, l'agent reconstruit un invariant
+              Dans le case study suivant, AICode reconstruit un invariant
               central du système en seulement trois jours, avec une intervention
               humaine minimale, effectuant 31 passes de vérification et
               corrigeant 201 erreurs, avant de livrer un code avec zéro bug, zéro
@@ -1046,7 +1072,7 @@
                 rel="noopener"
                 class="btn btn-primary btn-mt"
               >
-                ↓ Installer maintenant
+                ↓ Installer AICode maintenant
               </a>
             </div>
 
@@ -1071,10 +1097,11 @@
           <h2 class="reveal">Investissez dans la vitesse de livraison.</h2>
           <div class="divider reveal reveal-delay-1"></div>
           <p class="section-intro-dim mb-3 reveal reveal-delay-1">
-            Évaluation gratuite pendant 30 jours. Ensuite, les licences
-            self-service sont facturées 10 $ TTC par utilisateur et par mois.
-            Sans engagement. Annulation à tout moment avec effet immédiat.
-            L'utilisation gratuite reste disponible si vous y êtes éligible.
+            AICode est gratuit à évaluer pendant 30 jours. Ensuite, les
+            licences self-service sont facturées 10 $ TTC par utilisateur et
+            par mois. Sans engagement. Annulation à tout moment avec effet
+            immédiat. L'utilisation gratuite reste disponible si vous y êtes
+            éligible.
           </p>
 
           <div class="personas-grid reveal reveal-delay-2">
@@ -1261,7 +1288,7 @@
               </li>
               <li>
                 <a href="/docs/LICENSE.txt" target="_blank" rel="noopener"
-                  >Licence logicielle</a
+                  >Licence logicielle AICode</a
                 >
               </li>
             </ul>
@@ -1328,14 +1355,14 @@
         <div class="footer-bottom" id="mentions-legales">
           <div class="footer-legal">
             <strong>Mentions légales / Legal notice</strong><br />
-            <strong>Éditeur / Publisher :</strong> AI Sovereign Labs, Société par
-            actions simplifiée à capital variable / French simplified joint-stock
-            company (SAS à capital variable)<br />
+            <strong>AICode Éditeur / Publisher :</strong> AI Sovereign Labs, Société
+            par actions simplifiée à capital variable / French simplified
+            joint-stock company (SAS à capital variable)<br />
             <strong>Capital social / Share capital :</strong> 30 000 € /
             <strong>Siège social / Registered office :</strong> Paris, France<br />
             <strong>Président / President :</strong> Joël Abenhaïm /
             <strong>SIRET :</strong> 104 364 484 R.C.S.<br />
-            <strong>Propriété intellectuelle / Intellectual property :</strong>
+            <strong>Licence logicielle AICode / AICode software license :</strong>
             Le logiciel AICode est protégé par dépôt eSoleau n° DSO2026012803 auprès
             de l'INPI (08/04/2026). / AICode software is protected by eSoleau
             deposit no. DSO2026012803 with the INPI (08/04/2026).<br />

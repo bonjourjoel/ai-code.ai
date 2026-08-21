@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
-      AICode: Develop at light speed without code review | AI coding agent
+      AICode: Develop at light speed without code review | VS Code AI coding
+      assistant
     </title>
     <meta
       name="description"
-      content="The bottleneck in generative AI is human review. AICode checks the code before it is generated. One developer does the work of 10 to 200."
+      content="AICode is a VS Code extension and AI coding assistant that checks the code before it is generated. One developer does the work of 10 to 200."
     />
     <link rel="icon" type="image/svg+xml" href="/docs/aicode-icon.svg" />
     <link
@@ -23,29 +24,55 @@
     <meta property="og:site_name" content="AICode" />
     <meta
       property="og:title"
-      content="AICode: Develop at light speed without code review | AI coding agent"
+      content="AICode: Develop at light speed without code review | VS Code AI coding assistant"
     />
     <meta
       property="og:description"
-      content="The bottleneck in generative AI is human review. AICode checks the code before it is generated. One developer does the work of 10 to 200."
+      content="AICode is a VS Code extension and AI coding assistant that checks the code before it is generated. One developer does the work of 10 to 200."
     />
+    <!-- Structured data must declare both the website and the software product so search engines do not index AICode as a generic AI article page. -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "AICode",
-        "url": "https://ai-code.ai/"
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://ai-code.ai/#website",
+            "name": "AICode",
+            "url": "https://ai-code.ai/",
+            "publisher": {
+              "@id": "https://aisovereignlabs.ai/#organization"
+            }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://ai-code.ai/#software",
+            "name": "AICode",
+            "applicationCategory": "DeveloperApplication",
+            "url": "https://ai-code.ai/",
+            "description": "AICode is a VS Code extension and AI coding assistant that checks the code before it is generated. One developer does the work of 10 to 200.",
+            "publisher": {
+              "@id": "https://aisovereignlabs.ai/#organization"
+            }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://aisovereignlabs.ai/#organization",
+            "name": "AI Sovereign Labs",
+            "url": "https://aisovereignlabs.ai/"
+          }
+        ]
       }
     </script>
     <meta property="twitter:card" content="summary" />
     <meta property="twitter:url" content="https://ai-code.ai/" />
     <meta
       property="twitter:title"
-      content="AICode: Develop at light speed without code review | AI coding agent"
+      content="AICode: Develop at light speed without code review | VS Code AI coding assistant"
     />
     <meta
       property="twitter:description"
-      content="The bottleneck in generative AI is human review. AICode checks the code before it is generated. One developer does the work of 10 to 200."
+      content="AICode is a VS Code extension and AI coding assistant that checks the code before it is generated. One developer does the work of 10 to 200."
     />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -142,7 +169,7 @@
           <div class="hero-inner">
             <h1 class="hero-headline reveal">
               <span class="hero-tagline-line1"
-                >Develop at light speed, without code review.</span
+                >AICode: Develop at light speed, without code review.</span
               >
               <span
                 class="hero-tagline-line2"
@@ -452,7 +479,7 @@
                 rel="noopener"
                 class="btn btn-primary"
               >
-                ↓ Install on VS Code Marketplace
+                ↓ Install AICode on VS Code Marketplace
               </a>
             </div>
 
@@ -684,25 +711,25 @@
               <a class="eco-img-button" href="/docs/index-en.png">
                 <img
                   src="/docs/index-en.png"
-                  alt="The local 5D index of the codebase"
+                  alt="AICode's local 5D index of the codebase"
                   loading="lazy"
                 />
               </a>
               <figcaption class="shot-caption">
-                The five-dimensional index understands the entire codebase in
-                depth, without any knowledge transfer.
+                AICode's five-dimensional index understands the entire codebase
+                in depth, without any knowledge transfer.
               </figcaption>
             </figure>
             <figure class="shot-fig reveal reveal-delay-2">
               <a class="eco-img-button" href="/docs/refine-en.png">
                 <img
                   src="/docs/refine-en.png"
-                  alt="Specification with Refine and Verify buttons"
+                  alt="AICode specification with Refine and Verify buttons"
                   loading="lazy"
                 />
               </a>
               <figcaption class="shot-caption">
-                The AI audits and finds the errors, pass after pass, as many
+                AICode audits and finds the errors, pass after pass, as many
                 times as needed. Let the AI do the tedious work and find all the
                 errors. Why would you bother?
               </figcaption>
@@ -733,7 +760,7 @@
               <div class="frictionless-img">
                 <img
                   src="/docs/turnover.png"
-                  alt="Project knowledge retention despite turnover"
+                  alt="AICode project knowledge retention despite turnover"
                   loading="lazy"
                 />
               </div>
@@ -748,7 +775,7 @@
           <div class="divider reveal reveal-delay-1"></div>
           <div class="features-pullquote reveal reveal-delay-2">
             <p>
-              In the following case study, the agent rebuilds a core system
+              In the following case study, AICode rebuilds a core system
               invariant in just three days, with minimal human input, running 31
               verification passes and correcting 201 errors, before shipping
               code with zero bugs, zero regressions, and zero technical debt.
@@ -1046,7 +1073,7 @@
                 rel="noopener"
                 class="btn btn-primary btn-mt"
               >
-                ↓ Install now
+                ↓ Install AICode now
               </a>
             </div>
 
@@ -1071,10 +1098,10 @@
           <h2 class="reveal">Invest in delivery speed.</h2>
           <div class="divider reveal reveal-delay-1"></div>
           <p class="section-intro-dim mb-3 reveal reveal-delay-1">
-            Free to evaluate for 30 days. After that, self-service licenses are
-            billed monthly at $10 per user, incl. tax. No commitment. Cancel
-            anytime with immediate effect. Free use remains available if you
-            qualify.
+            AICode is free to evaluate for 30 days. After that, self-service
+            licenses are billed monthly at $10 per user, incl. tax. No
+            commitment. Cancel anytime with immediate effect. Free use remains
+            available if you qualify.
           </p>
 
           <div class="personas-grid reveal reveal-delay-2">
@@ -1261,7 +1288,7 @@
               </li>
               <li>
                 <a href="/docs/LICENSE.txt" target="_blank" rel="noopener"
-                  >Software license</a
+                  >AICode software license</a
                 >
               </li>
             </ul>
@@ -1328,14 +1355,14 @@
         <div class="footer-bottom" id="mentions-legales">
           <div class="footer-legal">
             <strong>Mentions légales / Legal notice</strong><br />
-            <strong>Éditeur / Publisher :</strong> AI Sovereign Labs, Société par
-            actions simplifiée à capital variable / French simplified joint-stock
-            company (SAS à capital variable)<br />
+            <strong>AICode Éditeur / Publisher :</strong> AI Sovereign Labs, Société
+            par actions simplifiée à capital variable / French simplified
+            joint-stock company (SAS à capital variable)<br />
             <strong>Capital social / Share capital :</strong> 30 000 € /
             <strong>Siège social / Registered office :</strong> Paris, France<br />
             <strong>Président / President :</strong> Joël Abenhaïm /
             <strong>SIRET :</strong> 104 364 484 R.C.S.<br />
-            <strong>Propriété intellectuelle / Intellectual property :</strong>
+            <strong>Licence logicielle AICode / AICode software license :</strong>
             Le logiciel AICode est protégé par dépôt eSoleau n° DSO2026012803 auprès
             de l'INPI (08/04/2026). / AICode software is protected by eSoleau
             deposit no. DSO2026012803 with the INPI (08/04/2026).<br />
