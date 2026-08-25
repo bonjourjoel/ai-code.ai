@@ -5,8 +5,8 @@ AICode is a spec-driven AI coding assistant for VS Code. Classical AI agents
 are capped by the human code review that follows generation; AICode moves the
 control before the code is generated, delivering top-quality AI-driven
 software at 10x to 200x speed. Built for maintaining large legacy enterprise
-codebases, with a suggested specification and human approval workflow before
-any code touches disk.
+codebases, with a generic quality assurance harness, suggested specification
+and human approval workflow before any code touches disk.
 
 ## Product
 - Name: AICode

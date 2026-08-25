@@ -1299,6 +1299,16 @@ function switchLang(select) {
   const pathWithoutLangSuffix = getPathWithoutLangSuffix();
   const storedLang = getStoredLangOverride();
 
+  // An explicit language segment in the URL is stronger than a stale per-domain
+  // preference. This is what allows inter-domain `/fr/...` links to land on the
+  // translated destination without being bounced back by old localStorage state.
+  if (currentLang !== null) {
+    if (storedLang !== currentLang) {
+      localStorage.setItem("lang-override", currentLang);
+    }
+    return;
+  }
+
   // A manual language selection is the strongest signal: once the user picked
   // a language from the switcher, keep that language pinned on every later visit.
   if (storedLang !== null) {
@@ -1319,8 +1329,6 @@ function switchLang(select) {
     window.location.replace(desiredStoredPath);
     return;
   }
-
-  if (currentLang !== null) return;
 
   const browserLang = (navigator.language || "").slice(0, 2).toLowerCase();
   if (browserLang === DEFAULT_LANG || !SUPPORTED_LANGS.includes(browserLang))
