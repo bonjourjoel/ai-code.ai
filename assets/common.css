@@ -2397,6 +2397,18 @@ html.workflow-step-seq-active .workflow-step-seq.workflow-step-seq-entered {
    sections. Avoid hero-specific max-width caps so the reading column stays
    consistent across the site. */
 
+/* The semantic definition line must stay visually distinct from the darker
+   comparative copy below while remaining a plain, neutral sentence for AI
+   extraction and SEO systems. */
+.hero-definition {
+  margin: 1.4rem 0 2rem;
+  font-size: clamp(1.05rem, 1.3vw, 1.24rem);
+  font-weight: 500;
+  line-height: 1.75;
+  color: var(--text);
+  letter-spacing: -0.012em;
+}
+
 .hero-copy p {
   color: var(--text-dim);
   margin-bottom: 1.1rem;
